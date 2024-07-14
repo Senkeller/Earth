@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
-    <link rel="icon" href="https://github.com/Senkeller/Earth/blob/main/static/Earth.png?raw=true"><script>
+    <link rel="icon" href="https://secure2.wostatic.cn/static/um8wx3KJ3FETvx1PJJJJMP/%E5%9C%B0%E7%90%83.png?auth_key=1720959430-i4dS28qHgrakytycfVSw7V-0-17257365d9ca07169abe2597a8acd7b2&file_size=14006"><script>
         let theme = localStorage.getItem("meek_theme") || "light";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
@@ -16,7 +16,7 @@
 本期刊面向地球上的任何事物。">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://Senkeller.github.io/Earth/post/Journal%20of%20Earth.html">
-<meta property="og:image" content="https://github.com/Senkeller/Earth/blob/main/static/Earth.png?raw=true">
+<meta property="og:image" content="https://secure2.wostatic.cn/static/um8wx3KJ3FETvx1PJJJJMP/%E5%9C%B0%E7%90%83.png?auth_key=1720959430-i4dS28qHgrakytycfVSw7V-0-17257365d9ca07169abe2597a8acd7b2&file_size=14006">
 <title>Journal of Earth</title>
 
 
@@ -74,25 +74,22 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     <div id="content">
 <div class="markdown-body" id="postBody"><h1>Journal of Earth</h1>
 <p>本期刊面向地球上的任何事物。</p></div>
-<div style="font-size:small;margin-top:8px;float:right;"></div>
-
-<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
-<div class="comments" id="comments"></div>
+<div style="font-size:small;margin-top:8px;float:right;">联系我们：zzsenln@163.com</div>
 
 </div>
     <div id="footer">Copyright © <span id="year"></span><a href="https://Senkeller.github.io/Earth"> Joural of Earth </a>
-<p>
+<p><a href="https://beian.miit.gov.cn/" target="_blank">浙ICP备20023628号</a>
 <span id="runday"></span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a>
 </p>
 
 <script>
-if(""!=""){
+if("07/1/2024"!=""){
     var now=new Date();
-    var startSite=new Date("");
+    var startSite=new Date("07/1/2024");
     var diff=now.getTime()-startSite.getTime();
     var diffDay=Math.floor(diff/(1000*60*60*24));
     document.getElementById("year").innerHTML=now.getFullYear();
-    if(""!=""){document.getElementById("runday").innerHTML=" • "+"网站运行"+diffDay+"天"+" • ";}
+    if("浙ICP备20023628号"!=""){document.getElementById("runday").innerHTML=" • "+"网站运行"+diffDay+"天"+" • ";}
     else{document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";}
 }
 </script>
@@ -136,41 +133,6 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 
 
 
-function openComments(){
-    cm=document.getElementById("comments");
-    cmButton=document.getElementById("cmButton");
-    cmButton.innerHTML="loading";
-    span=document.createElement("span");
-    span.setAttribute("class","AnimatedEllipsis");
-    cmButton.appendChild(span);
-
-    script=document.createElement("script");
-    script.setAttribute("src","https://utteranc.es/client.js");
-    script.setAttribute("repo","Senkeller/Earth");
-    script.setAttribute("issue-term","title");
-    
-    if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
-    else if(localStorage.getItem("meek_theme")=="light") {script.setAttribute("theme","github-light");}
-    else{script.setAttribute("theme","preferred-color-scheme");}
-    
-    script.setAttribute("crossorigin","anonymous");
-    script.setAttribute("async","");
-    cm.appendChild(script);
-
-    int=self.setInterval("iFrameLoading()",200);
-}
-
-function iFrameLoading(){
-    var utterances=document.getElementsByClassName('utterances');
-    if(utterances.length==1){
-        if(utterances[0].style.height!=""){
-            utterancesLoad=1;
-            int=window.clearInterval(int);
-            document.getElementById("cmButton").style.display="none";
-            console.log("utterances Load OK");
-        }
-    }
-}
 </script>
 
 
