@@ -1,3 +1,4 @@
+国际EPD主页 https://www.environdec.com/home
 > 环境产品认证EPD（Environmental Product Declaration，也叫做Ⅲ型环境产品声明）是经由第三方验证的，科学的、可比的、国际认可的，对产品整个生命周期的环境影响综合信息披露。
 
 1. 企业申请前提供产品相关信息
