@@ -1,6 +1,8 @@
 国际EPD主页 https://www.environdec.com/home
 > 环境产品认证EPD（Environmental Product Declaration，也叫做Ⅲ型环境产品声明）是经由第三方验证的，科学的、可比的、国际认可的，对产品整个生命周期的环境影响综合信息披露。
 
+PCR 分区：PCR 2012:01 Construction Products and Construction Services Version 2.31 (2019-12-20) 
+
 1. 企业申请前提供产品相关信息
 2. 查找或创建相关的产品类别规则PCR
 3. 在PCR的基础上进行LCA研究和建模
@@ -12,6 +14,7 @@
 9. 年度监管 （第 2-3-4年）适用时变更
 10. 再认证
 
+
 # 1、企业申请前提供产品相关信息
 
 # 查找或创建相关的产品类别规则PCR
@@ -22,6 +25,7 @@
 对产品生命周期评估时，将产品的全生命周期（摇篮到坟墓）分为
 
 > A1-A3(原材料生产、原材料运输、产品制造)、
+ A1 原料
 > A4-A5（运输到施工场地、场内施工）、
 > B1-B5（产品使用、维护、修理、替换、翻新）、
 > B6-B7（能源使用、水资源使用)、
@@ -43,3 +47,24 @@
 
 # 8、年度监管 （第 2-3-4年）适用时变更
 # 9、再认证
+
+# PCR: EN 15804：2012
+Construction products and construction services (EN 15804:A1) (expired)`建筑产品和建筑服务（EN 15804：A1）（已过期）`
+Full name：PCR 2012:01 Construction products and construction services (EN 15804:A1) (expired) (2.34) `PCR 2012：01建筑产品和建筑服务（EN 15804：A1）（已过期）（2.34）`
+Prepared by：IVL Swedish Environmental Research Institute, Secretariat of the International EPD System `IVL瑞典环境研究所，国际环保署系统秘书处`
+CPC Name: This PCR refers to the old version of the standard EN 15804 (EN 15804:2012+A1:2013). A new version was published 2019-12-20 (PCR 2019:14), referring to the new version of EN 15804 (EN 15804:2012+A2:2019). `此PCR是指标准EN 15804（EN 15804：2012 + A1：2013）的旧版本。新版本发布于 2019-12-20 （PCR 2019：14），参考了 EN 15804 （EN 15804：2012+A2：2019） 的新版本。`
+
+The validity period of PCR 2012:01 ended 2022-02-28. As of 2022-03-01, PCR 2019:14 is the only valid main PCR for construction products in the International EPD System. `PCR 2012：01的有效期于2022-02-28结束。截至 2022-03-01，PCR 2019：14 是国际 EPD 系统中唯一有效的建筑产品主要 PCR。`
+
+The below listed sub-PCRs are no longer valid, instead the c-PCRs under PCR 2019:14 shall be used. `下面列出的子PCR不再有效，而是使用PCR 2019：14下的c-PCR。`
+
+This document serves as Product Category Rules (PCR) for Construction products and Construction services. It aims to be the main way to develop and register EPDs in the International EPD System, compliant with the European standard EN 15804:2012+A1:2013 (Sustainability of construction works - Environmental product declarations - Core rules for the product category of construction products). `本文档用作建筑产品和建筑服务的产品类别规则 （PCR）。它旨在成为在国际环保署体系中开发和注册环保署的主要途径，符合欧洲标准EN 15804：2012+A1：2013（建筑工程的可持续性 - 环境产品声明 - 建筑产品类别的核心规则）。`
+
+In addition, this document may also be the basis for development of "sub-PCRs" for more specific product categories `此外，本文件还可以作为针对更具体产品类别开发“子PCR”的基础`
+
+- If this document is used as a PCR, it may be used for Construction products and construction services for an EPD based on a declared unit, cradle-to-gate or cradle-to-gate with options; `如果此文件用作 PCR，则可用于基于声明单元、摇篮到大门或摇篮到大门的 EPD 的建筑产品和建筑服务，并提供选项;`
+- If this document is used together with a sub-PCR, it may be used for an EPD based on a functional unit, cradle-to-grave. `如果将本文档与子PCR一起使用，则可用于基于功能单元（从摇篮到坟墓）的EPD。`
+
+
+
+
