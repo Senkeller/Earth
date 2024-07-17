@@ -2,7 +2,6 @@
 > 环境产品认证EPD（Environmental Product Declaration，也叫做Ⅲ型环境产品声明）是经由第三方验证的，科学的、可比的、国际认可的，对产品整个生命周期的环境影响综合信息披露。
 
 PCR 分区：PCR 2012:01 Construction Products and Construction Services Version 2.31 (2019-12-20) 
-
 1. 企业申请前提供产品相关信息
 2. 查找或创建相关的产品类别规则PCR
 3. 在PCR的基础上进行LCA研究和建模
