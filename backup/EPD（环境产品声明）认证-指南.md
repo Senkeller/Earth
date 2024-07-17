@@ -23,6 +23,8 @@ PCR 分区：PCR 2012:01 Construction Products and Construction Services Version
 # 2、在PCR的基础上进行LCA研究和建模
     进行EPD认证需从生命周期角度描述产品的环境影响，再单独写一份LCA报告。
 对产品生命周期评估时，将产品的全生命周期（摇篮到坟墓）分为
+![image](https://github.com/user-attachments/assets/a83ca5fc-56dc-494f-a837-c74b8dc101ab)
+
 
 > A1-A3(原材料生产、原材料运输、产品制造)、
  A1 原料
