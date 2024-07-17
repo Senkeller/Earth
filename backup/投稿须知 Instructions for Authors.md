@@ -1,3 +1,4 @@
+ ![image](https://github.com/user-attachments/assets/65140b19-e1b1-4b84-b971-5bc1cba74904)
 [《**Journal of Earth**》](https://senkeller.github.io/Earth/)是个人创办的全球性刊物，于 2024年创刊。 刊宗旨为： 
 # **Viva la Vida！**  **人总有一死，但灵魂会在GitHub中会万岁！**
 
