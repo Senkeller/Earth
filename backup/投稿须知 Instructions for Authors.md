@@ -1,4 +1,5 @@
- ![image](https://github.com/user-attachments/assets/65140b19-e1b1-4b84-b971-5bc1cba74904)
+![JOE](https://github.com/user-attachments/assets/751d86df-ced6-4f49-8e37-0cfb1dc5f958)
+
 [《**Journal of Earth**》](https://senkeller.github.io/Earth/)是个人创办的全球性刊物，于 2024年创刊。 刊宗旨为： 
 # **Viva la Vida！**  **人总有一死，但灵魂会在GitHub中会万岁！**
 
@@ -46,6 +47,7 @@
 
 ## 2.2 凡本刊发表的文章将进入**github数据库公开**并在互联网上运行，其**作者著作权使用费为零**。如作者不同意将文章投稿本期刊，请勿投稿。
 
-# 3 联系方式
+ ![image](https://github.com/user-attachments/assets/65140b19-e1b1-4b84-b971-5bc1cba74904)
+# 联系方式
   [在线投稿：](https://github.com/Senkeller/Earth/issues) https://github.com/Senkeller/Earth/issues  
   E-mail：zzsenln.163.com
