@@ -29,7 +29,7 @@ style.innerHTML = `
 }
 
 html {
-    background: url('https://img.liyifan.xyz/file/a2262c314f6a8bd592eba.jpg') no-repeat center center fixed;
+    background: url('https://www.igdcc.com/e/DownSys/DownSoft/?classid=2&id=16512&pathid=0') no-repeat center center fixed;
     background-size: cover;
 }
 
