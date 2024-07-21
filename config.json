@@ -20,9 +20,9 @@
     "showPostSource":1,
     "commentLabelColor":"#006b75",
     "onePageListNum":20,
-    "script":"<script src='https://senkeller.github.io/Earth/assets/backtotop.js'></script><script src='https://senkeller.github.io/Earth/assets/lazyload.js'></script>",
+    "script":"<script src='https://blog.meekdai.com/assets/GmeekTOC.js'></script><script src='https://senkeller.github.io/Earth/assets/backtotop.js'></script><script src='https://senkeller.github.io/Earth/assets/lazyload.js'></script>",
     "indexScript":"<script src='https://senkeller.github.io/Earth/assets/NumPagination.js'></script><script src='https://senkeller.github.io/Earth/yifantheme_index.js'></script><script src='https://senkeller.github.io/Earth/assets/rain.js'></script>",
-    "allHead":"<script src='https://senkeller.github.io/Earth/assets/GmeekBSZ.js'></script>",
+    "allHead":"<script src='https://senkeller.github.io/Earth/assets/GmeekBSZ.js'></script><script src='https://blog.meekdai.com/assets/GmeekVercount.js'></script>",
     "GMEEK_VERSION":"last"
 
 
