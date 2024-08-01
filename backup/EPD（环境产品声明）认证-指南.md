@@ -2,6 +2,31 @@
 国际EPD主页 https://www.environdec.com/home
 > 环境产品认证EPD（Environmental Product Declaration，也叫做Ⅲ型环境产品声明）是经由第三方验证的，科学的、可比的、国际认可的，对产品整个生命周期的环境影响综合信息披露。
 
+
+ISO 14020系列标准：EPD 的类型定义，原则和一般要求
+ISO 14025, Ill型 EPD规定了基本原则、定义和要求，涵盖了EPD的编制过程、数据收集和验证、环境性能指标的选择和报告等方面
+ISO 14040/14044, LCA 原则和框架/要求和指南规定生命周期评价的方法和原则，包括目标和范围的确定、生命周期清单、影响评估等方面。
+EN15804，PCR,建筑产品类别针对建筑产品，按照LCA的理论分析，列出影响清单，并规定了相关数据的收集和计算方法
+ISO 14067 温室气体-产品碳足迹-量化要求和指南规定了碳足迹的计算方法和指南。
+
+建材的PCR标准是EN 15804
+
+## LCA主要内容
+
+> 1、计算的功能单位，一般以1kg/1m2/1m3等
+> 2、使用的数据库（Econinvent）和LCA软件（simapro 9）
+> 3、系统边界（生命周期阶段模型）
+> 4、关键假设和限制，报告假设没有再回收（D阶段），因为是直接通过焚烧发电了
+> 5、生命周期清单，（原材料消耗、运输、加工、产品运输、寿命终止的影响等）
+> 6、潜在环境影响LCIA（建议的影响指标和推荐评估方法）
+
+![image](https://github.com/user-attachments/assets/54cbcafe-892f-45f5-b64b-f2abaf0af65b)
+
+
+
+
+
+
 PCR 分区：PCR 2012:01 Construction Products and Construction Services Version 2.31 (2019-12-20) 
 1. 企业申请前提供产品相关信息
 2. 查找或创建相关的产品类别规则PCR
@@ -13,6 +38,8 @@ PCR 分区：PCR 2012:01 Construction Products and Construction Services Version
 8. EPD平台核查与等级，发布 有效期5年
 9. 年度监管 （第 2-3-4年）适用时变更
 10. 再认证
+
+![image](https://github.com/user-attachments/assets/c6309039-755e-4904-b2f3-e95e84b98163)
 
 
 # 1、企业申请前提供产品相关信息
@@ -33,6 +60,8 @@ PCR 分区：PCR 2012:01 Construction Products and Construction Services Version
 > C1-C4（拆除、运输至废物处理厂、再利用处理、处置）
 > D（回收效益）这6个阶段。
 
+
+
 | **A1** | **A2**   | **A3** | **A4**  | **A5** |  |   |
 |:------:|:--------:|:------:|:-------:|:------:|:----:|:-----:|
 | 原材料生产  | 原材料运输    | 产品制造   | 运输到施工场地 | 场内施工   |      |       |
@@ -43,11 +72,29 @@ PCR 分区：PCR 2012:01 Construction Products and Construction Services Version
 | D      |          |        |         |        |      |       |
 | 回收效益   |          |        |         |        |      |       |
 
+C3-EU中，国内焚烧收益73.3%（2015年调查）
 
-6个阶段中必须考虑到的阶段是A1-A3阶段（**新版EN15804(《Ⅲ型环境声明》)需考虑A1-A3、C1-C4、D**），其他阶段可以根据产品使用特点选择性考虑。
+| **Impact category **                 | **影响类别**      | ** 单位** | **A1** | **A2** | **A3** | **A4** | **C** | **D** | **** |
+|:------------------------------------:|:-------------:|:-------:|:------:|:------:|:------:|:------:|:-----:|:-----:|:----:|
+| **Abiotic depletion**                | 非生物资源枯竭       |         |        |        |        |        |       |       |      |
+| **Abiotic depletion (fossil fuels)** | 非生物资源枯竭（化石燃料） |         |        |        |        |        |       |       |      |
+| **Global warming (GWP100a)**         | 全球变暖（GWP100a） |         |        |        |        |        |       |       |      |
+| **Ozone layer depletion (ODP)**      | 臭氧层消耗（ODP）    |         |        |        |        |        |       |       |      |
+| **Human toxicity**                   | 人体毒性          |         |        |        |        |        |       |       |      |
+| **Fresh water aquatic ecotox**       | 淡水水生生态毒性      |         |        |        |        |        |       |       |      |
+| **Marine aquatic ecotoxicity**       | 海洋水生生态毒性      |         |        |        |        |        |       |       |      |
+| **Terrestrial ecotoxicity**          | 陆地生态毒性        |         |        |        |        |        |       |       |      |
+| **Photochemic al oxidation**         | 光化学氧化         |         |        |        |        |        |       |       |      |
+| **Acidification**                    | 酸化作用          |         |        |        |        |        |       |       |      |
+| **Eutrophication**                   | 富营养化          |         |        |        |        |        |       |       |      |
+
+
+**6个阶段中必须考虑到的阶段是A1-A3阶段**（**新版EN15804(《Ⅲ型环境声明》)需考虑A1-A3、C1-C4、D**），其他阶段可以根据产品使用特点选择性考虑。
 **如B阶段是运营、维护阶段，若评估的产品不涉及运营维护阶段，那么B阶段就可以不考虑**。
 **A1~A3阶段包括生产该产品的所有材料、能源、制造过程，也包括所有材料运输到工厂大门的运输过程以及该阶段产生的废弃物处置**（waste processing up to the end-of-waste state），**D阶段不再重复计算**。
 报告一开始便是对产品的性能，外观进行描述，以及我们在计算时用到的软件、数据库来源等。
+
+
 接下来便是LCA报告的主要内容，包括评估时选取的环境指标，计算结果以及结果分析。
 在结果展示和分析时，我们可以利用图表使结果更清晰，更好的表达所评估产品的环境性能。
 
@@ -82,6 +129,9 @@ In addition, this document may also be the basis for development of "sub-PCRs" f
 - If this document is used as a PCR, it may be used for Construction products and construction services for an EPD based on a declared unit, cradle-to-gate or cradle-to-gate with options; `如果此文件用作 PCR，则可用于基于声明单元、摇篮到大门或摇篮到大门的 EPD 的建筑产品和建筑服务，并提供选项;`
 - If this document is used together with a sub-PCR, it may be used for an EPD based on a functional unit, cradle-to-grave. `如果将本文档与子PCR一起使用，则可用于基于功能单元（从摇篮到坟墓）的EPD。`
 
+国内代理机构：
+![image](https://github.com/user-attachments/assets/6880a266-18b1-4e79-9094-e7ef0fee424c)
+![image](https://github.com/user-attachments/assets/7d7a3a43-fa7d-4062-be9f-fa6a09169ae0)
 
 
 
