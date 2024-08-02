@@ -46,10 +46,20 @@ document.addEventListener("DOMContentLoaded", function() {
     loadResource('link', { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.27.4/tocbot.css' });
 
     const headings = document.querySelectorAll('.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6');
+    const idMap = new Map();
+
     headings.forEach((heading) => {
-        if (!heading.id) {
-            heading.id = heading.textContent.trim().replace(/\s+/g, '-');
+        let baseId = heading.textContent.trim().replace(/\s+/g, '-').toLowerCase();
+        let id = baseId;
+        let count = idMap.get(baseId) || 0;
+
+        while (document.getElementById(id)) {
+            count += 1;
+            id = `${baseId}-${count}`;
         }
+
+        idMap.set(baseId, count);
+        heading.id = id;
     });
 
     var footerPlaceholder = document.createElement('div');
