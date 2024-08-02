@@ -29,7 +29,7 @@ style.innerHTML = `
 }
 
 html {
-    background: url('https://www.igdcc.com/e/DownSys/DownSoft/?classid=2&id=16512&pathid=0') no-repeat center center fixed;
+    background: url('https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB1msyO8.img') no-repeat center center fixed;
     background-size: cover;
 }
 
