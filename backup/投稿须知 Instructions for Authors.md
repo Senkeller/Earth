@@ -46,7 +46,8 @@
 ## 2.1 采用在线投稿查稿，网址 ：https://github.com/Senkeller/Earth/issues。投稿成功后 , 请随时登录本刊[网站](https://senkeller.github.io/Earth/)，查看稿件状态。
 
 ## 2.2 凡本刊发表的文章将进入**github数据库公开**并在互联网上运行，其**作者著作权使用费为零**。如作者不同意将文章投稿本期刊，请勿投稿。
-![logo](https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590)
+<img src="https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590"  alt="img" width="25%">
+
 # 联系方式
   [在线投稿：](https://github.com/Senkeller/Earth/issues) https://github.com/Senkeller/Earth/issues  
   E-mail：zzsenln.163.com
