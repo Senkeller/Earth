@@ -8,7 +8,7 @@
  
 
 - 图片大小
-` img src=" "  alt="img" width="50%"`
+` <img src="  "  alt="img" width="50%">`
 
 -  logo显示
  `![JOE](https://github.com/user-attachments/assets/8e3980da-e615-4710-a4f3-7a5eea566394)`
