@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Joural of Earth</title><link>https://Senkeller.github.io/Earth</link><description>  地球上的任何事物都在此享有自由</description><copyright>Joural of Earth</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590</url><title>avatar</title><link>https://Senkeller.github.io/Earth</link></image><lastBuildDate>Mon, 11 Nov 2024 07:14:59 +0000</lastBuildDate><managingEditor>Joural of Earth</managingEditor><ttl>60</ttl><webMaster>Joural of Earth</webMaster><item><title>脲醛树脂固化剂</title><link>https://Senkeller.github.io/Earth/post/niao-quan-shu-zhi-gu-hua-ji.html</link><description># 脲醛树脂固化剂体系&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Joural of Earth</title><link>https://Senkeller.github.io/Earth</link><description>  地球上的任何事物都在此享有自由</description><copyright>Joural of Earth</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590</url><title>avatar</title><link>https://Senkeller.github.io/Earth</link></image><lastBuildDate>Mon, 11 Nov 2024 07:29:20 +0000</lastBuildDate><managingEditor>Joural of Earth</managingEditor><ttl>60</ttl><webMaster>Joural of Earth</webMaster><item><title>脲醛树脂固化剂</title><link>https://Senkeller.github.io/Earth/post/niao-quan-shu-zhi-gu-hua-ji.html</link><description># 脲醛树脂固化剂体系&#13;
 &#13;
 ## 固化原理&#13;
 &#13;
@@ -78,6 +78,18 @@
 &#13;
 - ### [**投稿须知**](https://senkeller.github.io/Earth/post/tou-gao-xu-zhi-%20Instructions%20for%20Authors.html)&#13;
 - ### [**投稿入口**](https://github.com/Senkeller/Earth/issues/new)&#13;
+***&#13;
+## 常用技巧&#13;
+ &#13;
+&#13;
+&gt; 图片大小` img src=' '  alt='img' width='50%'`&#13;
+&#13;
+&gt; logo显示 `![JOE](https://github.com/user-attachments/assets/8e3980da-e615-4710-a4f3-7a5eea566394)`&#13;
+&#13;
+| [ 在线表格转换 ](https://tableconvert.com/zh-cn/excel-to-markdown) | [图片格式](https://www.runoob.com/markdown/md-image.html) | [表格格式](https://www.runoob.com/markdown/md-table.html) | [其他技巧](https://www.runoob.com/markdown/md-advance.html) |&#13;
+|--------------------------------------------------------------|-------------------------------------------------------|-------------------------------------------------------|---------------------------------------------------------|&#13;
+| [ 在线表格转换 ](https://tableconvert.com/zh-cn/excel-to-markdown) | [图片格式](https://www.runoob.com/markdown/md-image.html) | [表格格式](https://www.runoob.com/markdown/md-table.html) | [其他技巧](https://www.runoob.com/markdown/md-advance.html) |&#13;
+&#13;
 &#13;
 - 联系我们：zzsenln@163.com &#13;
 &#13;
