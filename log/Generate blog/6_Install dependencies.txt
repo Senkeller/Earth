@@ -1,0 +1,90 @@
+﻿2026-05-08T00:53:37.9263305Z ##[group]Run pip install --upgrade pip
+2026-05-08T00:53:37.9263638Z [36;1mpip install --upgrade pip[0m
+2026-05-08T00:53:37.9263912Z [36;1mpip install -r tool/Gmeek/requirements.txt[0m
+2026-05-08T00:53:37.9280350Z shell: /usr/bin/bash -e {0}
+2026-05-08T00:53:37.9280607Z env:
+2026-05-08T00:53:37.9280783Z   GITHUB_PAGES: true
+2026-05-08T00:53:37.9281062Z   pythonLocation: /opt/hostedtoolcache/Python/3.8.18/x64
+2026-05-08T00:53:37.9281460Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.8.18/x64/lib/pkgconfig
+2026-05-08T00:53:37.9281843Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.8.18/x64
+2026-05-08T00:53:37.9282182Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.8.18/x64
+2026-05-08T00:53:37.9282512Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.8.18/x64
+2026-05-08T00:53:37.9282874Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.8.18/x64/lib
+2026-05-08T00:53:37.9283155Z ##[endgroup]
+2026-05-08T00:53:38.2325378Z Requirement already satisfied: pip in /opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages (25.0.1)
+2026-05-08T00:53:38.8260342Z Collecting PyGithub (from -r tool/Gmeek/requirements.txt (line 1))
+2026-05-08T00:53:38.8842963Z   Downloading pygithub-2.8.1-py3-none-any.whl.metadata (3.9 kB)
+2026-05-08T00:53:38.9355109Z Collecting requests (from -r tool/Gmeek/requirements.txt (line 2))
+2026-05-08T00:53:38.9555910Z   Downloading requests-2.32.4-py3-none-any.whl.metadata (4.9 kB)
+2026-05-08T00:53:38.9865104Z Collecting xpinyin (from -r tool/Gmeek/requirements.txt (line 3))
+2026-05-08T00:53:39.0077149Z   Downloading xpinyin-0.7.7-py3-none-any.whl.metadata (5.5 kB)
+2026-05-08T00:53:39.0368875Z Collecting feedgen (from -r tool/Gmeek/requirements.txt (line 4))
+2026-05-08T00:53:39.0596568Z   Downloading feedgen-1.0.0.tar.gz (258 kB)
+2026-05-08T00:53:39.1399401Z   Installing build dependencies: started
+2026-05-08T00:53:40.5880976Z   Installing build dependencies: finished with status 'done'
+2026-05-08T00:53:40.5892668Z   Getting requirements to build wheel: started
+2026-05-08T00:53:40.7827207Z   Getting requirements to build wheel: finished with status 'done'
+2026-05-08T00:53:40.7839990Z   Preparing metadata (pyproject.toml): started
+2026-05-08T00:53:40.9946115Z   Preparing metadata (pyproject.toml): finished with status 'done'
+2026-05-08T00:53:41.0286186Z Collecting Jinja2 (from -r tool/Gmeek/requirements.txt (line 5))
+2026-05-08T00:53:41.0487357Z   Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+2026-05-08T00:53:41.0796799Z Collecting transliterate (from -r tool/Gmeek/requirements.txt (line 6))
+2026-05-08T00:53:41.1006488Z   Downloading transliterate-1.10.2-py2.py3-none-any.whl.metadata (14 kB)
+2026-05-08T00:53:41.1572841Z Collecting pynacl>=1.4.0 (from PyGithub->-r tool/Gmeek/requirements.txt (line 1))
+2026-05-08T00:53:41.1773467Z   Downloading pynacl-1.6.2-cp38-abi3-manylinux_2_34_x86_64.whl.metadata (10.0 kB)
+2026-05-08T00:53:41.2239419Z Collecting pyjwt>=2.4.0 (from pyjwt[crypto]>=2.4.0->PyGithub->-r tool/Gmeek/requirements.txt (line 1))
+2026-05-08T00:53:41.2437929Z   Downloading PyJWT-2.9.0-py3-none-any.whl.metadata (3.0 kB)
+2026-05-08T00:53:41.2816358Z Collecting typing-extensions>=4.5.0 (from PyGithub->-r tool/Gmeek/requirements.txt (line 1))
+2026-05-08T00:53:41.3017857Z   Downloading typing_extensions-4.13.2-py3-none-any.whl.metadata (3.0 kB)
+2026-05-08T00:53:41.3453608Z Collecting urllib3>=1.26.0 (from PyGithub->-r tool/Gmeek/requirements.txt (line 1))
+2026-05-08T00:53:41.3658769Z   Downloading urllib3-2.2.3-py3-none-any.whl.metadata (6.5 kB)
+2026-05-08T00:53:41.5120720Z Collecting charset_normalizer<4,>=2 (from requests->-r tool/Gmeek/requirements.txt (line 2))
+2026-05-08T00:53:41.5324253Z   Downloading charset_normalizer-3.4.7-cp38-cp38-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (40 kB)
+2026-05-08T00:53:41.5656671Z Collecting idna<4,>=2.5 (from requests->-r tool/Gmeek/requirements.txt (line 2))
+2026-05-08T00:53:41.5858772Z   Downloading idna-3.13-py3-none-any.whl.metadata (8.0 kB)
+2026-05-08T00:53:41.6349296Z Collecting certifi>=2017.4.17 (from requests->-r tool/Gmeek/requirements.txt (line 2))
+2026-05-08T00:53:41.6548160Z   Downloading certifi-2026.4.22-py3-none-any.whl.metadata (2.5 kB)
+2026-05-08T00:53:41.8890396Z Collecting lxml (from feedgen->-r tool/Gmeek/requirements.txt (line 4))
+2026-05-08T00:53:41.9103508Z   Downloading lxml-6.1.0-cp38-cp38-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl.metadata (3.7 kB)
+2026-05-08T00:53:41.9416320Z Collecting python-dateutil (from feedgen->-r tool/Gmeek/requirements.txt (line 4))
+2026-05-08T00:53:41.9616534Z   Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+2026-05-08T00:53:42.0320451Z Collecting MarkupSafe>=2.0 (from Jinja2->-r tool/Gmeek/requirements.txt (line 5))
+2026-05-08T00:53:42.0525257Z   Downloading MarkupSafe-2.1.5-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.0 kB)
+2026-05-08T00:53:42.0841321Z Collecting six>=1.1.0 (from transliterate->-r tool/Gmeek/requirements.txt (line 6))
+2026-05-08T00:53:42.1041291Z   Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+2026-05-08T00:53:42.3237460Z Collecting cryptography>=3.4.0 (from pyjwt[crypto]>=2.4.0->PyGithub->-r tool/Gmeek/requirements.txt (line 1))
+2026-05-08T00:53:42.3438231Z   Downloading cryptography-47.0.0-cp38-abi3-manylinux_2_34_x86_64.whl.metadata (4.5 kB)
+2026-05-08T00:53:42.4549554Z Collecting cffi>=1.4.1 (from pynacl>=1.4.0->PyGithub->-r tool/Gmeek/requirements.txt (line 1))
+2026-05-08T00:53:42.4749338Z   Downloading cffi-1.17.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (1.5 kB)
+2026-05-08T00:53:42.5105183Z Collecting pycparser (from cffi>=1.4.1->pynacl>=1.4.0->PyGithub->-r tool/Gmeek/requirements.txt (line 1))
+2026-05-08T00:53:42.5311763Z   Downloading pycparser-2.23-py3-none-any.whl.metadata (993 bytes)
+2026-05-08T00:53:42.5650757Z Downloading pygithub-2.8.1-py3-none-any.whl (432 kB)
+2026-05-08T00:53:42.6087984Z Downloading requests-2.32.4-py3-none-any.whl (64 kB)
+2026-05-08T00:53:42.6323582Z Downloading xpinyin-0.7.7-py3-none-any.whl (129 kB)
+2026-05-08T00:53:42.6560697Z Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+2026-05-08T00:53:42.6800383Z Downloading transliterate-1.10.2-py2.py3-none-any.whl (45 kB)
+2026-05-08T00:53:42.7015985Z Downloading certifi-2026.4.22-py3-none-any.whl (135 kB)
+2026-05-08T00:53:42.7243709Z Downloading charset_normalizer-3.4.7-cp38-cp38-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (199 kB)
+2026-05-08T00:53:42.7486742Z Downloading idna-3.13-py3-none-any.whl (68 kB)
+2026-05-08T00:53:42.7711610Z Downloading MarkupSafe-2.1.5-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (26 kB)
+2026-05-08T00:53:42.7931368Z Downloading PyJWT-2.9.0-py3-none-any.whl (22 kB)
+2026-05-08T00:53:42.8156749Z Downloading pynacl-1.6.2-cp38-abi3-manylinux_2_34_x86_64.whl (1.4 MB)
+2026-05-08T00:53:42.8581853Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.4/1.4 MB 30.3 MB/s eta 0:00:00
+2026-05-08T00:53:42.8780677Z Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+2026-05-08T00:53:42.9003009Z Downloading typing_extensions-4.13.2-py3-none-any.whl (45 kB)
+2026-05-08T00:53:42.9228674Z Downloading urllib3-2.2.3-py3-none-any.whl (126 kB)
+2026-05-08T00:53:42.9480035Z Downloading lxml-6.1.0-cp38-cp38-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl (5.2 MB)
+2026-05-08T00:53:43.0111736Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.2/5.2 MB 82.7 MB/s eta 0:00:00
+2026-05-08T00:53:43.0308841Z Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+2026-05-08T00:53:43.0537243Z Downloading cffi-1.17.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (446 kB)
+2026-05-08T00:53:43.0815895Z Downloading cryptography-47.0.0-cp38-abi3-manylinux_2_34_x86_64.whl (4.7 MB)
+2026-05-08T00:53:43.1083852Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.7/4.7 MB 183.6 MB/s eta 0:00:00
+2026-05-08T00:53:43.1291022Z Downloading pycparser-2.23-py3-none-any.whl (118 kB)
+2026-05-08T00:53:43.1610901Z Building wheels for collected packages: feedgen
+2026-05-08T00:53:43.1617181Z   Building wheel for feedgen (pyproject.toml): started
+2026-05-08T00:53:43.3488772Z   Building wheel for feedgen (pyproject.toml): finished with status 'done'
+2026-05-08T00:53:43.3496986Z   Created wheel for feedgen: filename=feedgen-1.0.0-py2.py3-none-any.whl size=45341 sha256=40dee2675675dbeff111f997078b10aba5cc65f3f51924062cab2899864c93d6
+2026-05-08T00:53:43.3498545Z   Stored in directory: /home/runner/.cache/pip/wheels/e7/3f/94/7094f62dbe1dec79c4ede89d549932fbd588ad77354044e989
+2026-05-08T00:53:43.3517542Z Successfully built feedgen
+2026-05-08T00:53:43.3848507Z Installing collected packages: xpinyin, urllib3, typing-extensions, six, pyjwt, pycparser, MarkupSafe, lxml, idna, charset_normalizer, certifi, transliterate, requests, python-dateutil, Jinja2, cffi, pynacl, feedgen, cryptography, PyGithub
+2026-05-08T00:53:44.3983278Z Successfully installed Jinja2-3.1.6 MarkupSafe-2.1.5 PyGithub-2.8.1 certifi-2026.4.22 cffi-1.17.1 charset_normalizer-3.4.7 cryptography-47.0.0 feedgen-1.0.0 idna-3.13 lxml-6.1.0 pycparser-2.23 pyjwt-2.9.0 pynacl-1.6.2 python-dateutil-2.9.0.post0 requests-2.32.4 six-1.17.0 transliterate-1.10.2 typing-extensions-4.13.2 urllib3-2.2.3 xpinyin-0.7.7

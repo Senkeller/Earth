@@ -1,0 +1,21 @@
+﻿2026-05-08T00:53:44.4892924Z ##[group]Run cd tool/Gmeek/
+2026-05-08T00:53:44.4893220Z [36;1mcd tool/Gmeek/[0m
+2026-05-08T00:53:44.4893815Z [36;1mpython Gmeek.py *** Senkeller/Earth --issue_number ''[0m
+2026-05-08T00:53:44.4894424Z [36;1mcp -a docs /home/runner/work/Earth/Earth [0m
+2026-05-08T00:53:44.4894771Z [36;1mcp -a backup /home/runner/work/Earth/Earth [0m
+2026-05-08T00:53:44.4895132Z [36;1mcp blogBase.json /home/runner/work/Earth/Earth [0m
+2026-05-08T00:53:44.4909162Z shell: /usr/bin/bash -e {0}
+2026-05-08T00:53:44.4909404Z env:
+2026-05-08T00:53:44.4909581Z   GITHUB_PAGES: true
+2026-05-08T00:53:44.4909855Z   pythonLocation: /opt/hostedtoolcache/Python/3.8.18/x64
+2026-05-08T00:53:44.4910243Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.8.18/x64/lib/pkgconfig
+2026-05-08T00:53:44.4910771Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.8.18/x64
+2026-05-08T00:53:44.4911118Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.8.18/x64
+2026-05-08T00:53:44.4911448Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.8.18/x64
+2026-05-08T00:53:44.4911841Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.8.18/x64/lib
+2026-05-08T00:53:44.4912134Z ##[endgroup]
+2026-05-08T00:53:44.5043692Z   File "<fstring>", line 2
+2026-05-08T00:53:44.5044300Z     var startSite)
+2026-05-08T00:53:44.5044514Z         ^
+2026-05-08T00:53:44.5044710Z SyntaxError: invalid syntax
+2026-05-08T00:53:44.5074560Z ##[error]Process completed with exit code 1.

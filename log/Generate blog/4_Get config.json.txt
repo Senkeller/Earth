@@ -1,0 +1,40 @@
+﻿2026-05-08T00:53:29.1033912Z ##[group]Run echo "====== check config.josn file ======"
+2026-05-08T00:53:29.1035592Z [36;1mecho "====== check config.josn file ======"[0m
+2026-05-08T00:53:29.1036707Z [36;1mcat config.json[0m
+2026-05-08T00:53:29.1037694Z [36;1mecho "====== check config.josn end  ======"[0m
+2026-05-08T00:53:29.1038786Z [36;1msudo apt-get install jq[0m
+2026-05-08T00:53:29.1059050Z shell: /usr/bin/bash -e {0}
+2026-05-08T00:53:29.1059879Z env:
+2026-05-08T00:53:29.1060503Z   GITHUB_PAGES: true
+2026-05-08T00:53:29.1061201Z ##[endgroup]
+2026-05-08T00:53:29.1125504Z ====== check config.josn file ======
+2026-05-08T00:53:29.1134136Z {
+2026-05-08T00:53:29.1135289Z     "title":"Joural of Earth",
+2026-05-08T00:53:29.1136973Z     "subTitle":"地球上的任何事物都在此享有自由",
+2026-05-08T00:53:29.1139131Z     "avatarUrl":"https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590",
+2026-05-08T00:53:29.1140577Z     "email":"zzsenln@163.com",
+2026-05-08T00:53:29.1141375Z     "startSite":"07/1/2024",
+2026-05-08T00:53:29.1142205Z     "bottomText":"相信美好的事物正在发生",
+2026-05-08T00:53:29.1143056Z     "needComment":0,
+2026-05-08T00:53:29.1143790Z     "commentLabelColor":"#2563eb",
+2026-05-08T00:53:29.1144813Z     "i18n":"CN",
+2026-05-08T00:53:29.1145509Z     "UTC":8,
+2026-05-08T00:53:29.1146140Z     "themeMode":"manual",
+2026-05-08T00:53:29.1146882Z     "dayTheme":"light",
+2026-05-08T00:53:29.1147598Z     "nightTheme":"dark",
+2026-05-08T00:53:29.1148320Z     "urlMode":"pinyin",
+2026-05-08T00:53:29.1149321Z     "style":"<link rel='stylesheet' href='./assets/journal-style.css'>",
+2026-05-08T00:53:29.1150428Z     "indexStyle":"",
+2026-05-08T00:53:29.1151128Z     "showPostSource":1,
+2026-05-08T00:53:29.1151847Z     "onePageListNum":20,
+2026-05-08T00:53:29.1153538Z     "script":"<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekTOC.js'></script><script src='./assets/journal-post.js'></script>",
+2026-05-08T00:53:29.1155711Z     "indexScript":"<script src='./assets/yifantheme_index.js'></script>",
+2026-05-08T00:53:29.1157393Z     "allHead":"<script src='./assets/GmeekBSZ.js'></script><script src='./assets/yifantheme.js'></script>",
+2026-05-08T00:53:29.1158883Z     "GMEEK_VERSION":"last"
+2026-05-08T00:53:29.1159585Z }
+2026-05-08T00:53:29.1160208Z ====== check config.josn end  ======
+2026-05-08T00:53:30.1009720Z Reading package lists...
+2026-05-08T00:53:30.3200035Z Building dependency tree...
+2026-05-08T00:53:30.3213105Z Reading state information...
+2026-05-08T00:53:30.5386036Z jq is already the newest version (1.7.1-3ubuntu0.24.04.1).
+2026-05-08T00:53:30.5387252Z 0 upgraded, 0 newly installed, 0 to remove and 7 not upgraded.

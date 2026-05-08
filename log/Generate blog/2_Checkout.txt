@@ -1,0 +1,72 @@
+﻿2026-05-08T00:53:27.9428382Z ##[group]Run actions/checkout@v4
+2026-05-08T00:53:27.9429532Z with:
+2026-05-08T00:53:27.9430189Z   repository: Senkeller/Earth
+2026-05-08T00:53:27.9431307Z   token: ***
+2026-05-08T00:53:27.9431939Z   ssh-strict: true
+2026-05-08T00:53:27.9432626Z   ssh-user: git
+2026-05-08T00:53:27.9433305Z   persist-credentials: true
+2026-05-08T00:53:27.9434218Z   clean: true
+2026-05-08T00:53:27.9434914Z   sparse-checkout-cone-mode: true
+2026-05-08T00:53:27.9435724Z   fetch-depth: 1
+2026-05-08T00:53:27.9436381Z   fetch-tags: false
+2026-05-08T00:53:27.9437057Z   show-progress: true
+2026-05-08T00:53:27.9437736Z   lfs: false
+2026-05-08T00:53:27.9438352Z   submodules: false
+2026-05-08T00:53:27.9439038Z   set-safe-directory: true
+2026-05-08T00:53:27.9439987Z ##[endgroup]
+2026-05-08T00:53:28.0549008Z Syncing repository: Senkeller/Earth
+2026-05-08T00:53:28.0552639Z ##[group]Getting Git version info
+2026-05-08T00:53:28.0553807Z Working directory is '/home/runner/work/Earth/Earth'
+2026-05-08T00:53:28.0556115Z [command]/usr/bin/git version
+2026-05-08T00:53:28.0569701Z git version 2.53.0
+2026-05-08T00:53:28.0595561Z ##[endgroup]
+2026-05-08T00:53:28.0612444Z Temporarily overriding HOME='/home/runner/work/_temp/4a7296d1-2bdd-4fdf-bb94-3e9cfbe00202' before making global git config changes
+2026-05-08T00:53:28.0616688Z Adding repository directory to the temporary git global config as a safe directory
+2026-05-08T00:53:28.0628622Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Earth/Earth
+2026-05-08T00:53:28.0661829Z Deleting the contents of '/home/runner/work/Earth/Earth'
+2026-05-08T00:53:28.0666486Z ##[group]Initializing the repository
+2026-05-08T00:53:28.0672050Z [command]/usr/bin/git init /home/runner/work/Earth/Earth
+2026-05-08T00:53:28.0757991Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-05-08T00:53:28.0759698Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-05-08T00:53:28.0761615Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-05-08T00:53:28.0763063Z hint: call:
+2026-05-08T00:53:28.0763770Z hint:
+2026-05-08T00:53:28.0764841Z hint: 	git config --global init.defaultBranch <name>
+2026-05-08T00:53:28.0765806Z hint:
+2026-05-08T00:53:28.0766705Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-05-08T00:53:28.0768177Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-05-08T00:53:28.0769666Z hint:
+2026-05-08T00:53:28.0770281Z hint: 	git branch -m <name>
+2026-05-08T00:53:28.0770997Z hint:
+2026-05-08T00:53:28.0771958Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-05-08T00:53:28.0773563Z Initialized empty Git repository in /home/runner/work/Earth/Earth/.git/
+2026-05-08T00:53:28.0776419Z [command]/usr/bin/git remote add origin https://github.com/Senkeller/Earth
+2026-05-08T00:53:28.0797405Z ##[endgroup]
+2026-05-08T00:53:28.0798589Z ##[group]Disabling automatic garbage collection
+2026-05-08T00:53:28.0801280Z [command]/usr/bin/git config --local gc.auto 0
+2026-05-08T00:53:28.0825827Z ##[endgroup]
+2026-05-08T00:53:28.0826986Z ##[group]Setting up auth
+2026-05-08T00:53:28.0832130Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-05-08T00:53:28.0860947Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-05-08T00:53:28.1099473Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-05-08T00:53:28.1125573Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-05-08T00:53:28.1307956Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-05-08T00:53:28.1345632Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-05-08T00:53:28.1527500Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-05-08T00:53:28.1555185Z ##[endgroup]
+2026-05-08T00:53:28.1556444Z ##[group]Fetching the repository
+2026-05-08T00:53:28.1563525Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +a1486963512c0a0b060fb2b2b9d1eb6d28539e14:refs/remotes/origin/main
+2026-05-08T00:53:28.7250632Z From https://github.com/Senkeller/Earth
+2026-05-08T00:53:28.7252121Z  * [new ref]         a1486963512c0a0b060fb2b2b9d1eb6d28539e14 -> origin/main
+2026-05-08T00:53:28.7274722Z ##[endgroup]
+2026-05-08T00:53:28.7276672Z ##[group]Determining the checkout info
+2026-05-08T00:53:28.7278852Z ##[endgroup]
+2026-05-08T00:53:28.7282422Z [command]/usr/bin/git sparse-checkout disable
+2026-05-08T00:53:28.7316456Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-05-08T00:53:28.7340766Z ##[group]Checking out the ref
+2026-05-08T00:53:28.7345644Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-05-08T00:53:28.7458891Z Switched to a new branch 'main'
+2026-05-08T00:53:28.7459987Z branch 'main' set up to track 'origin/main'.
+2026-05-08T00:53:28.7469151Z ##[endgroup]
+2026-05-08T00:53:28.7495637Z [command]/usr/bin/git log -1 --format=%H
+2026-05-08T00:53:28.7515995Z a1486963512c0a0b060fb2b2b9d1eb6d28539e14
