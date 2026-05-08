@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html data-color-mode="light" data-dark-theme="dark_colorblind" data-light-theme="light" lang="zh-CN">
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
 <head>
     <meta content="text/html; charset=utf-8" http-equiv="content-type" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
-    <script src='https://blog.liyifan.xyz/assets/GmeekBSZ.js'></script><script src='https://blog.liyifan.xyz/assets/yifantheme.js'></script><script src='https://blog.liyifan.xyz/assets/live2d.js'></script>
+    <script src='./assets/GmeekBSZ.js'></script><script src='./assets/yifantheme.js'></script>
     <link rel="icon" href="https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590"><script>
         let theme = localStorage.getItem("meek_theme") || "light";
         document.documentElement.setAttribute("data-color-mode", theme);
@@ -45,7 +45,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 }
 
 </style>
-
+<link rel='stylesheet' href='./assets/journal-style.css'>
 
 
 
@@ -316,7 +316,7 @@ if("07/1/2024"!=""){
     var startSite=new Date("07/1/2024");
     var diff=now.getTime()-startSite.getTime();
     var diffDay=Math.floor(diff/(1000*60*60*24));
-    document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";
+    document.getElementById("runday").innerHTML="网站运行 "+diffDay+" 天"+" • ";
 }
 </script></div>
 </body>
@@ -362,6 +362,6 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 
 
 </script>
-<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekTOC.js'></script>
+<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekTOC.js'></script><script src='./assets/journal-post.js'></script>
 
 </html>

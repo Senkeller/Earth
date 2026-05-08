@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html data-color-mode="light" data-dark-theme="dark_colorblind" data-light-theme="light" lang="zh-CN">
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
 <head>
     <meta content="text/html; charset=utf-8" http-equiv="content-type" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
-    <script src='https://blog.liyifan.xyz/assets/GmeekBSZ.js'></script><script src='https://blog.liyifan.xyz/assets/yifantheme.js'></script><script src='https://blog.liyifan.xyz/assets/live2d.js'></script>
+    <script src='./assets/GmeekBSZ.js'></script><script src='./assets/yifantheme.js'></script>
     <link rel="icon" href="https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590"><script>
         let theme = localStorage.getItem("meek_theme") || "light";
         document.documentElement.setAttribute("data-color-mode", theme);
@@ -43,7 +43,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 }
 
 </style>
-
+<link rel='stylesheet' href='./assets/journal-style.css'>
 
 
 
@@ -74,7 +74,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 </div>
     <div id="content">
 <div class="markdown-body" id="postBody"><p>高分子的燃烧过程十分复杂，属于激烈的热氧化过程（如下图所示)。<br>
-<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/b5114298f1d7fe2dcfce4b8b675074fe5bceafa0068a8e82a6466bd3b63fe39c/68747470733a2f2f6d6d62697a2e717069632e636e2f6d6d62697a5f706e672f6b79516a70717057574b37387269626377435a4564636135704b51396b566c345859314a6b76656f49636254564f394a496f3137614f696277483233387569624743687a5a574a375855627162685a577967613251617a42412f3634303f77785f666d743d706e672666726f6d3d6170706d73672674703d7765627026777866726f6d3d352677785f6c617a793d312677785f636f3d31"><img src="https://camo.githubusercontent.com/b5114298f1d7fe2dcfce4b8b675074fe5bceafa0068a8e82a6466bd3b63fe39c/68747470733a2f2f6d6d62697a2e717069632e636e2f6d6d62697a5f706e672f6b79516a70717057574b37387269626377435a4564636135704b51396b566c345859314a6b76656f49636254564f394a496f3137614f696277483233387569624743687a5a574a375855627162685a577967613251617a42412f3634303f77785f666d743d706e672666726f6d3d6170706d73672674703d7765627026777866726f6d3d352677785f6c617a793d312677785f636f3d31" alt="image" data-canonical-src="https://mmbiz.qpic.cn/mmbiz_png/kyQjpqpWWK78ribcwCZEdca5pKQ9kVl4XY1JkveoIcbTVO9JIo17aOibwH238uibGChzZWJ7XUbqbhZWyga2QazBA/640?wx_fmt=png&amp;from=appmsg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" style="max-width: 100%;"></a><br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/2433e4f3ff87eaf539430f2b495bfa906776599cf1640e70fa6ae94f4634ce51/68747470733a2f2f6d6d62697a2e717069632e636e2f6d6d62697a5f706e672f6b79516a70717057574b37387269626377435a4564636135704b51396b566c345859314a6b76656f49636254564f394a496f3137614f696277483233387569624743687a5a574a375855627162685a577967613251617a42412f3634303f77785f666d743d706e672666726f6d3d6170706d73672674703d7765627026777866726f6d3d352677785f6c617a793d312677785f636f3d31"><img src="https://camo.githubusercontent.com/2433e4f3ff87eaf539430f2b495bfa906776599cf1640e70fa6ae94f4634ce51/68747470733a2f2f6d6d62697a2e717069632e636e2f6d6d62697a5f706e672f6b79516a70717057574b37387269626377435a4564636135704b51396b566c345859314a6b76656f49636254564f394a496f3137614f696277483233387569624743687a5a574a375855627162685a577967613251617a42412f3634303f77785f666d743d706e672666726f6d3d6170706d73672674703d7765627026777866726f6d3d352677785f6c617a793d312677785f636f3d31" alt="image" data-canonical-src="https://mmbiz.qpic.cn/mmbiz_png/kyQjpqpWWK78ribcwCZEdca5pKQ9kVl4XY1JkveoIcbTVO9JIo17aOibwH238uibGChzZWJ7XUbqbhZWyga2QazBA/640?wx_fmt=png&amp;from=appmsg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" style="max-width: 100%;"></a><br>
 高分子材料在外界热源作用下温度达到裂解温度时，发生热裂解反应，释放出低分子量的气态有机可燃物，并逐渐扩散到材料表面，与O2发生剧烈的燃烧反应，同时释放光和热。燃烧产生的一部分热量传递给热解中的高分子，加剧了其热解过程，使火灾迅速蔓延。<br>
 由于高分子材料的组成、结构和化学键的差异，其热裂解的机理和产生的气相可燃气与分解产物亦有不同。<br>
 例如，聚氯乙烯(PVC)中C-H键、C-C键和C-Cl键的键能分别为 413、345和338 kJ·mol-1，因此C-Cl键在热降解时会最先断裂，主链则相对稳定。而聚烯烃在热解过程中，由于C-C键能小于C-H键，因此更容易发生主链断裂从而形成分子量较小的自由基。<br>
@@ -111,7 +111,7 @@ if("07/1/2024"!=""){
     var startSite=new Date("07/1/2024");
     var diff=now.getTime()-startSite.getTime();
     var diffDay=Math.floor(diff/(1000*60*60*24));
-    document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";
+    document.getElementById("runday").innerHTML="网站运行 "+diffDay+" 天"+" • ";
 }
 </script></div>
 </body>
@@ -157,6 +157,6 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 
 
 </script>
-<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekTOC.js'></script>
+<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekTOC.js'></script><script src='./assets/journal-post.js'></script>
 
 </html>

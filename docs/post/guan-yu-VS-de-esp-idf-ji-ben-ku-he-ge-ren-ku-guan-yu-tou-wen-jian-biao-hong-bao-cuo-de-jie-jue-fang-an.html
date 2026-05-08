@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html data-color-mode="light" data-dark-theme="dark_colorblind" data-light-theme="light" lang="zh-CN">
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
 <head>
     <meta content="text/html; charset=utf-8" http-equiv="content-type" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
-    <script src='https://blog.liyifan.xyz/assets/GmeekBSZ.js'></script><script src='https://blog.liyifan.xyz/assets/yifantheme.js'></script><script src='https://blog.liyifan.xyz/assets/live2d.js'></script>
+    <script src='./assets/GmeekBSZ.js'></script><script src='./assets/yifantheme.js'></script>
     <link rel="icon" href="https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590"><script>
         let theme = localStorage.getItem("meek_theme") || "light";
         document.documentElement.setAttribute("data-color-mode", theme);
@@ -53,7 +53,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     font-size: 12px;
 }
 </style>
-
+<link rel='stylesheet' href='./assets/journal-style.css'>
 
 
 
@@ -91,7 +91,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 编译完成后就不报错了。</p>
 <p>2.添加自己创建的库<br>
 在实际过程中，我们要对工程进行模块化，所以就必须要学会创建添加自己的库。<br>
-<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/1caf8bd0f04e10a9144a1750b848fd494331fc41ab5dc43e5841371574eb0145/68747470733a2f2f692d626c6f672e6373646e696d672e636e2f626c6f675f6d6967726174652f65613932376538653338316436636139616236616337336266633766613736322e6a706567"><img src="https://camo.githubusercontent.com/1caf8bd0f04e10a9144a1750b848fd494331fc41ab5dc43e5841371574eb0145/68747470733a2f2f692d626c6f672e6373646e696d672e636e2f626c6f675f6d6967726174652f65613932376538653338316436636139616236616337336266633766613736322e6a706567" alt="img" data-canonical-src="https://i-blog.csdnimg.cn/blog_migrate/ea927e8e381d6ca9ab6ac73bfc7fa762.jpeg" style="max-width: 100%;"></a><br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/6a2fd44c1d52d8626ba85dc458e60421d4eb09f4105d7bdc303fef169ec24e0d/68747470733a2f2f692d626c6f672e6373646e696d672e636e2f626c6f675f6d6967726174652f65613932376538653338316436636139616236616337336266633766613736322e6a706567"><img src="https://camo.githubusercontent.com/6a2fd44c1d52d8626ba85dc458e60421d4eb09f4105d7bdc303fef169ec24e0d/68747470733a2f2f692d626c6f672e6373646e696d672e636e2f626c6f675f6d6967726174652f65613932376538653338316436636139616236616337336266633766613736322e6a706567" alt="img" data-canonical-src="https://i-blog.csdnimg.cn/blog_migrate/ea927e8e381d6ca9ab6ac73bfc7fa762.jpeg" style="max-width: 100%;"></a><br>
 首先  ，创建一个组件文件夹，名字是组件（components），其他名字应该也可以但是为了防止各种问题，就使用components。</p>
 <pre class="notranslate"><code class="notranslate">    之后在这个文件夹中添加 .txt 文件，名字命名为CMakeLists.txt，如图
 
@@ -161,7 +161,7 @@ if("07/1/2024"!=""){
     var startSite=new Date("07/1/2024");
     var diff=now.getTime()-startSite.getTime();
     var diffDay=Math.floor(diff/(1000*60*60*24));
-    document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";
+    document.getElementById("runday").innerHTML="网站运行 "+diffDay+" 天"+" • ";
 }
 </script></div>
 </body>
@@ -270,6 +270,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
-<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekTOC.js'></script>
+<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekTOC.js'></script><script src='./assets/journal-post.js'></script>
 
 </html>

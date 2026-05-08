@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html data-color-mode="light" data-dark-theme="dark_colorblind" data-light-theme="light" lang="zh-CN">
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
 <head>
     <meta content="text/html; charset=utf-8" http-equiv="content-type" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
-    <script src='https://blog.liyifan.xyz/assets/GmeekBSZ.js'></script><script src='https://blog.liyifan.xyz/assets/yifantheme.js'></script><script src='https://blog.liyifan.xyz/assets/live2d.js'></script>
+    <script src='./assets/GmeekBSZ.js'></script><script src='./assets/yifantheme.js'></script>
     <link rel="icon" href="https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590"><script>
         let theme = localStorage.getItem("meek_theme") || "light";
         document.documentElement.setAttribute("data-color-mode", theme);
@@ -26,480 +26,65 @@
 
 </head>
 <style>
-:root {
-    --primary-color: #1a1a2e;
-    --secondary-color: #16213e;
-    --accent-color: #0f3460;
-    --text-color: #2d2d2d;
-    --text-light: #555555;
-    --border-color: #dddddd;
-    --bg-color: #ffffff;
-    --paper-bg: #fafafa;
-}
-
-html[data-color-mode="dark"] {
-    --primary-color: #eaeaea;
-    --secondary-color: #d0d0d0;
-    --accent-color: #00d4ff;
-    --text-color: #e0e0e0;
-    --text-light: #a0a0a0;
-    --border-color: #444444;
-    --bg-color: #1a1a2e;
-    --paper-bg: #16213e;
-}
-
-body {
-    box-sizing: border-box;
-    min-width: 320px;
-    max-width: 1200px;
-    margin: 30px auto;
-    padding: 40px 60px;
-    font-size: 14px;
-    font-family: 'Times New Roman', 'Times', 'SimSun', 'Songti SC', serif;
-    line-height: 1.8;
-    color: var(--text-color);
-    background: var(--bg-color);
-}
-
-.paper-container {
-    background: var(--paper-bg);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    border-radius: 4px;
-    padding: 60px 80px;
-}
-
-#header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 20px;
-    border-bottom: 2px solid var(--primary-color);
-    margin-bottom: 40px;
-}
-
-#footer {
-    margin-top: 60px;
-    text-align: center;
-    font-size: 12px;
-    color: var(--text-light);
-    padding-top: 30px;
-    border-top: 1px solid var(--border-color);
-}
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
 
 </style>
 
 <style>
-.journal-header {
-    text-align: center;
-    margin-bottom: 50px;
-    padding-bottom: 30px;
-    border-bottom: 1px solid var(--border-color);
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
 }
 
-.journal-title {
-    font-size: 1.1em;
-    font-weight: 600;
-    color: var(--accent-color);
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-}
-
-.journal-subtitle {
-    font-size: 0.9em;
-    color: var(--text-light);
-    margin-bottom: 30px;
-}
-
-.postTitle {
-    font-size: 28px;
-    font-weight: bold;
-    color: var(--primary-color);
-    text-align: center;
-    line-height: 1.4;
-    margin-bottom: 25px;
-    letter-spacing: 1px;
-}
-
-.authors {
-    font-size: 14px;
-    color: var(--text-color);
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.authors span {
-    margin-right: 8px;
-}
-
-.affiliation {
-    font-size: 12px;
-    color: var(--text-light);
-    text-align: center;
-    margin-bottom: 35px;
-    font-style: italic;
-}
-
-.title-right {
-    display: flex;
-    gap: 10px;
-}
-
-.title-right .circle {
-    padding: 12px 14px;
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 50%;
-    transition: all 0.3s ease;
-}
-
-.title-right .circle:hover {
-    background: var(--accent-color);
-    transform: translateY(-2px);
-}
-
-#postBody {
-    column-count: 2;
-    column-gap: 40px;
-    column-rule: 1px solid var(--border-color);
-    text-align: justify;
-    hyphens: auto;
-}
-
-#postBody h1 {
-    column-span: all;
-    font-size: 18px;
-    font-weight: bold;
-    color: var(--primary-color);
-    margin: 30px 0 20px 0;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border-color);
-    letter-spacing: 2px;
-}
-
-#postBody h2 {
-    column-span: all;
-    font-size: 16px;
-    font-weight: bold;
-    color: var(--primary-color);
-    margin: 25px 0 15px 0;
-    letter-spacing: 1px;
-}
-
-#postBody h3 {
-    font-size: 14px;
-    font-weight: bold;
-    color: var(--accent-color);
-    margin: 20px 0 12px 0;
-}
-
-#postBody p {
-    margin-bottom: 12px;
-    text-indent: 2em;
-}
-
-#postBody p:first-of-type:first-letter {
-    float: left;
-    font-size: 3.5em;
-    line-height: 1;
-    font-weight: bold;
-    color: var(--accent-color);
-    margin: 0 8px 0 0;
-}
-
-#postBody blockquote {
-    column-span: all;
-    margin: 25px 0;
-    padding: 20px 25px;
-    background: rgba(0, 0, 0, 0.03);
-    border-left: 4px solid var(--accent-color);
-    font-style: italic;
-    color: var(--text-light);
-}
-
-#postBody blockquote p {
-    margin: 0;
-    text-indent: 0;
-}
-
-#postBody strong {
-    font-weight: bold;
-    color: var(--primary-color);
-}
-
-#postBody a {
-    color: var(--accent-color);
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.3s ease;
-}
-
-#postBody a:hover {
-    border-bottom-color: var(--accent-color);
-}
-
-#postBody hr {
-    column-span: all;
-    height: 1px;
-    border: none;
-    background: var(--border-color);
-    margin: 30px 0;
-}
-
-#postBody img {
-    column-span: all;
-    max-width: 100%;
-    height: auto;
-    margin: 20px 0;
-    border-radius: 4px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.abstract-section {
-    column-span: all;
-    margin-bottom: 35px;
-}
-
-.abstract-section h1 {
-    font-size: 16px;
-    font-weight: bold;
-    color: var(--primary-color);
-    text-align: center;
-    margin-bottom: 15px;
-    letter-spacing: 3px;
-}
-
-.abstract-section blockquote {
-    background: rgba(15, 52, 96, 0.05);
-    border-left: 3px solid var(--accent-color);
-    padding: 18px 22px;
-    margin: 0;
-}
-
-.abstract-section blockquote p {
-    font-size: 13px;
-    line-height: 1.9;
-    text-indent: 2em;
-    color: var(--text-color);
-    font-style: normal;
-}
-
-.keywords {
-    margin-top: 15px;
-    padding: 10px 22px;
-    background: rgba(0, 0, 0, 0.03);
-    font-size: 13px;
-    color: var(--text-light);
-}
-
-.keywords strong {
-    color: var(--primary-color);
-}
-
-.author-info {
-    column-span: all;
-    margin: 30px 0;
-    padding: 15px 20px;
-    background: rgba(0, 0, 0, 0.03);
-    border-left: 3px solid var(--accent-color);
-    font-size: 13px;
-}
-
-.author-info p {
-    margin: 5px 0;
-    text-indent: 0;
-}
-
-.author-info strong {
-    color: var(--primary-color);
-}
-
-.page-footer {
-    column-span: all;
-    text-align: center;
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border-color);
-    font-size: 12px;
-    color: var(--text-light);
-    font-style: italic;
-}
-
-.page-footer p {
-    margin: 0;
-    text-indent: 0;
-}
-
-.references {
-    column-span: all;
-    margin-top: 40px;
-}
-
-.references h2 {
-    margin-bottom: 20px;
-}
-
-.references blockquote {
-    background: transparent;
-    border-left: none;
-    padding: 15px 20px;
-    font-style: normal;
-    color: var(--text-color);
-    background: rgba(0, 0, 0, 0.03);
-    border-radius: 4px;
-}
-
-.references blockquote p {
-    font-size: 12px;
-    line-height: 1.9;
-    text-indent: -1.8em;
-    padding-left: 1.8em;
-    margin-bottom: 10px;
-    color: var(--text-light);
-}
-
-#cmButton {
-    column-span: all;
-    height: 48px;
-    margin-top: 48px;
-}
-
-#comments {
-    column-span: all;
-    margin-top: 64px;
-}
-
-.g-emoji {
-    font-size: 24px;
-}
-
-@media (max-width: 1024px) {
-    .paper-container {
-        padding: 40px 40px;
-    }
-    
-    #postBody {
-        column-count: 2;
-        column-gap: 30px;
-    }
-    
-    .postTitle {
-        font-size: 24px;
-    }
-}
-
-@media (max-width: 768px) {
-    body {
-        margin: 15px;
-        padding: 20px;
-    }
-    
-    .paper-container {
-        padding: 25px;
-    }
-    
-    #header {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
-    
-    .title-right {
-        order: -1;
-    }
-    
-    #postBody {
-        column-count: 1;
-        column-rule: none;
-    }
-    
-    .postTitle {
-        font-size: 20px;
-    }
-    
-    .journal-title {
-        font-size: 0.9em;
-    }
-    
-    #postBody p:first-of-type:first-letter {
-        font-size: 2.5em;
-    }
-}
-
-@media (max-width: 480px) {
-    body {
-        margin: 8px;
-        padding: 10px;
-    }
-    
-    .paper-container {
-        padding: 15px;
-    }
-    
-    .postTitle {
-        font-size: 18px;
-    }
-    
-    #postBody h1 {
-        font-size: 16px;
-    }
-    
-    #postBody h2 {
-        font-size: 14px;
-    }
-}
 </style>
-
+<link rel='stylesheet' href='./assets/journal-style.css'>
 
 
 
 <body>
-    <div class="paper-container">
     <div id="header">
-        <div class="title-right">
-            <a href="https://Senkeller.github.io/Earth" id="buttonHome" class="btn btn-invisible circle" title="首页">
-                <svg class="octicon" width="16" height="16">
-                    <path id="pathHome" fill-rule="evenodd"></path>
-                </svg>
-            </a>
-            
-            <a href="https://github.com/Senkeller/Earth/issues/3" target="_blank" class="btn btn-invisible circle" title="Issue">
-                <svg class="octicon" width="16" height="16">
-                    <path id="pathIssue" fill-rule="evenodd"></path>
-                </svg>
-            </a>
-            
+<h1 class="postTitle">竹材物理性能概述</h1>
+<div class="title-right">
+    <a href="https://Senkeller.github.io/Earth" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/Senkeller/Earth/issues/3" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
 
-            <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
-                <svg class="octicon" width="16" height="16" >
-                    <path id="themeSwitch" fill-rule="evenodd"></path>
-                </svg>
-            </a>
-        </div>
-    </div>
-    
-    <div class="journal-header">
-        <div class="journal-title">Journal of Earth</div>
-        <div class="journal-subtitle">地球上的任何事物都在此享有自由</div>
-        <h1 class="postTitle">竹材物理性能概述</h1>
-        <div class="authors">
-            <span>Jason</span>
-        </div>
-        <div class="affiliation">
-            地球科学研究中心 | Earth Science Research Center
-        </div>
-    </div>
-    
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
     <div id="content">
-    <div class="markdown-body" id="postBody">
-        <div class="abstract-section">
-            <h1>摘 要</h1>
-            <blockquote>
-                <p>在查阅国内外竹材材性研究文献的基础上,系统总结了竹材解剖、物理性质研究的进展。竹类植物具有生长快、产量高、生态功能强等特点,近年来,许多国家和地区大力发展竹类植物的栽培种植,不仅促进了生态环境改善,而且还为社会经济发展提供了原材料。因此,竹材这种绿色环保材料的经济、生态和社会效益将会日益突出。科学技术的进步也极大地促进了竹类产业的迅速发展。竹材的工业化利用, 使竹材大幅度增值,应用前景更加广阔。竹材的利用促进了相关研究人员对竹材的性质、竹类资源的培育及其开发利用等多个方面进行研究。本文拟就竹材的有关材料物理性质的研究进展及开发利用情况进行文献综述。</p>
-            </blockquote>
-            <div class="keywords">
-                <strong>关键词：</strong>竹材；解剖特征；物理性质
-            </div>
-        </div>
+<div class="markdown-body" id="postBody"><p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/751d86df-ced6-4f49-8e37-0cfb1dc5f958"><img src="https://github.com/user-attachments/assets/751d86df-ced6-4f49-8e37-0cfb1dc5f958" alt="JOE" style="max-width: 100%;"></a></p>
+<h1>摘 要：</h1>
+<blockquote>
+<p>在查阅国内外竹材材性研究文献的基础上,系统总结了竹材解剖、物理性质研究的进展。竹类植物具有生长快、产量高、生态功能强等特点,近年来,许多国家和地区大力发展竹类植物的栽培种植,不仅促进了生态环境改善,而且还为社会经济发展提供了原材料。因此,竹材这种绿色环保材料的经济、生态和社会效益将会日益突出。科学技术的进步也极大地促进了竹类产业的迅速发展。竹材的工业化利用, 使竹材大幅度增值,应用前景更加广阔。竹材的利用促进了相关研究人员对竹材的性质、竹类资源的培育及其开发利用等多个方面进行研究。本文拟就竹材的有关材料物理性质的研究进展及开发利用情况进行文献综述。</p>
+</blockquote>
+<blockquote>
+<p><strong>关键词：竹材；解剖特征；物理性质</strong></p>
+</blockquote>
 <h2>1 竹材的解剖特征</h2>
 <p>竹材的解剖特征与其物理力学性质密切相关,并直接影响其防腐处理、干燥和加工利用。</p>
 <h3>1.1 显微及超微构造</h3>
@@ -519,58 +104,52 @@ body {
 <h3>2.3 干缩</h3>
 <p>竹材学者对竹材的不同年龄、不同部位和不同方向的干缩率研究较多。竹材的径向和弦向干缩差别不大, 轴向最小。毛竹从气干到全干状态, 平均干缩系数(含水率降低1  的平均干缩率)分别为:弦向0.182 ;径向0.189  ;纵向0.024 [10]。同一高度竹壁的内外层的干缩程度也有差异,竹青部分纵向干缩小,而横向部分的干缩最大;竹横部分纵向干缩较竹青大,但横向部分的干缩明显比竹青小。据报道,与木材只有在纤维饱和点以下时才干缩不同,竹材一旦干燥即开始收缩,但是当含水率在 70  ～ 40  之间时,收缩停止,在此范围以下收缩又开始,在25以下时干缩最大[10,15]。<br>
 研究者对竹材的不同年龄、部位及方向的干缩率进行了大量的研究。孙照斌等对微波干燥的方式下龙竹竹材径向、弦向、纵向的干燥速度分别进行了试验,并将不同微波功率的干燥效果进行对比。采用正交试验对试件尺寸进行了研究,以确定其对干燥速度和干缩率的影响。结果表明:竹材径向的干缩率大于弦向;纵向干燥速度大于弦向和径向;竹材水分主要沿纵向排除;尺寸大小对竹材的干缩率没有影响, 试件长度对干燥速度有较显著影响。王建和等对毛竹竹片的湿胀性能及热压机板间接触干燥、烘箱气流循环干燥2种不同干燥方式在竹片失水干缩性能及干燥速率方面的影响进行了研究,结果表明:气干竹片的湿 胀和干缩都是径向最大,弦向次之,纵向最小,且节子部位要大于无节部位。竹片的热风干燥速率要大于 压板干燥速率,竹材胶合板生产的竹片干燥适宜用热风气流循环干燥[17-25]。Khosrow Ghavami 通过对竹材干缩性、耐久性、吸水性和粘结强度的分析, 对竹子作为加固混凝土的结构构件进行了讨论,研究结果表明:将竹子有规则的组合起来有利于提高竹材与混凝土粘接强度以及竹筋混凝土的抗拉强度[26-30]。</p>
-<div class="author-info">
-    <p><strong>作者：</strong>jason</p>
-    <p><strong>Email：</strong><a href="mailto:zzsenln@163.com">zzsenln@163.com</a></p>
-</div>
-<div class="references">
-    <h2>参考文献</h2>
-    <blockquote>
-        <p>[1]温太辉等.浙江产竹类纤维长度之测定.林业科学,1955,(1)</p>
-        <p>[2]李正理,靳紫宸,腰希申.几种国产竹材的比较解剖观察.植物学报,1960,(3)</p>
-        <p>[3]Grosser D and W Liese .On the anatomy of Asian bamboos, with special reference to their vascular bundles. Wood Sci.Technol.1971,5:290～312</p>
-        <p>[4]腰希申,梁景森,马乃训等.中国主要竹材微观构造.大连出版社,1993</p>
-        <p>[5]周芳纯.竹材的构造.南京林业大学.竹类研究编委会,1998:83～101</p>
-        <p>[6]Suzuki K, Itoh T.The changes in cell wall architecture during lignification of bamboo.Phyllostachys aurea Carr.Trees,2001,15:137～147</p>
-        <p>[7]Kumar S, Dobriyal P B.Treatablilty and flow path studies in bamboo.Wood and Fiber Science.1992,24(2):113～117</p>
-        <p>[8]吴顺昭.台湾产竹材解剖特性及其与渗透性的关系.北京:竹子结构与性质和利用的关系.国际竹类工业利用研讨会.1992:139～143</p>
-        <p>[9]冼杏娟,冼定国,叶颖薇.竹纤维增强树脂复合材料及其微观形貌.北京:科学出版社,1995</p>
-        <p>[10]江泽慧主编.世界竹藤.沈阳:辽宁科学技术出版社,2002</p>
-        <p>[11]杨云芳,刘志坤.毛竹材抗拉弹性模量及抗拉强度.浙江林学院学报,1996,13(1):21～27</p>
-        <p>[12]杨源哲,张寿槐,白同仁等.中国七种竹材的物理力学性质.中国林业科学研究院木材工业研究所研究报告,木工.1986,4号(总18号)</p>
-        <p>[13]王朝晖.竹材材性变异规律与加工利用研究.北京:中国林业科学研究院博士论文,2001</p>
-        <p>[14]Mansur Ahmad.Analysis of Calcutta Bamboo for Structural Composite Materials.Dissertation for the Degree of Doctor of Philosophy in Wood Science and Forest Products.August 11,2000.Blacksburg,Virginia</p>
-        <p>[15]周芳纯.竹材培育和利用.南京林业大学.竹类研究编委会,1998:195～211</p>
-        <p>[16]Peralta P N,Lee A W C.Unsteady-state diffusion of moisture in giant timber bamboo.Wood and Fiber Science.1995,27(4):421～427</p>
-        <p>[17]Navin Chand,U.K.Dwivedi.High stress abrasive wear study on bamboo[J].Journal of Materials Processing Technology,2007(183):155-159.</p>
-        <p>[18]张宏键,杜凡.云南4中典型材用丛生竹宏观解剖结构与主要物理力学性质的关系[J].林业科学,1999,35(4):66-70.</p>
-        <p>[19]Grosser D,and W.Liese.On the anatomy of Asian bamboos,with special reference to their vascular bundles[J].Wood Sci.Technol,1971,5:290-312.</p>
-        <p>[20]薛联凤,刘云飞,于芬.基于图像处理的畸形竹材细胞壁晶区的特征研究[J].森林工程,2007,23(1):15-18.</p>
-        <p>[21]Abd.Latif,M,W.A.Wan Tarmeze,and A.Fauzidah.Anatomical features and mechanical properties of three Malaysian bamboos[J].Journal Tropical ForestScience,1990,2(3):227-234.</p>
-        <p>[22]陈祖松.福建柏人工林木材物理力学性质的试验研究[J].福建林学院学报,1999,19(3):223-226.</p>
-        <p>[23]汪佑宏,田根林,刘杏娥,等.不同海拔高度对毛竹主要物理力学性质的影响[J].安徽农业大学学报,2007,34(2):222-225.</p>
-        <p>[24]俞友明,方伟,杨云芳,等.不同立地条件红壳竹竹材物理力学性质的比较[J].浙江林业学报,2001,18(4):380-388</p>
-        <p>[25]孙照斌,杨燕,顾炼百.龙竹的常压液体渗透性研究[J].林产工业,2005,32(1):17-19.</p>
-        <p>[26]孙照斌,田芸.龙竹竹材纵向气体渗透性测定[J].林业科技开发,2006,20(4):44-47.</p>
-        <p>[27]林福兴,林如青,林拯.不同绿竹种源含水率与持水量研究[J].水土保持应用技术,2007(2):6-8.</p>
-        <p>[28]吴再兴,赵仁杰.用木材测湿仪测量竹篾含水率的研究[J].中国人造板,2006,13(7):19-21</p>
-        <p>[29]虞华强.竹材材性研究概述[J].世界竹藤通讯,2003,1(4):5-9.</p>
-        <p>[30]王建和,孙丰文,张齐生.竹片胀缩性能的初步研究[J].竹子研究汇刊,1993,12(1):39-46.</p>
-        <p>[31]Khosrow Ghavami.Bamboo as reinforcement in structural concrete elements[J].Cement &amp; Concrete Composites,2005,27:637-649.</p>
-        <p>[32]Abd.Latif,M.W.A.Wan Tarmeze,and A.Fauzidah.Anatomical features and mechanical properties of three Malaysian bamboos[J].Journal Tropical ForestScience,1990,2(3):227-234.</p>
-        <p>[33]俞友明,张宏,严建明,等.不同地位级雷竹竹材的物理力学性质比较[J].浙江林业科技,2004,24(3):27-29.</p>
-        <p>[34]杨永福,习宝田,李黎.毛竹切削力的研究[J].北京林业大学学报,2006,28(4):17-21.</p>
-        <p>[35]虞华强,费本华,任海青,等.毛竹顺纹抗拉性质的变异及与气干密度的关系[J].林业科学,2006,42(3):72-76.</p>
-    </blockquote>
-</div>
-</div>
-<div class="page-footer">
-    <p>相信美好的事物正在发生</p>
-</div>
+<blockquote>
+<p>作者：jason<br>
+Email：<a href="mailto:zzsenln@163.com">zzsenln@163.com</a></p>
+</blockquote>
+<h2>参考文献</h2>
+<blockquote>
+<p>[1]温太辉等.浙江产竹类纤维长度之测定.林业科学,1955,(1)<br>
+[2]李正理,靳紫宸,腰希申.几种国产竹材的比较解剖观察.植物学报,1960,(3)<br>
+[3]Grosser D and W Liese .On the anatomy of Asian bam- boos, with special reference to their vascular bundles . Wood Sci .Technol.1971,5 :290～312<br>
+[4]腰希申,梁景森,马乃训等.中国主要竹材微观构造.大连出版社,1993<br>
+[5]周芳纯.竹材的构造.南京林业大学.竹类研究编委会,1998 :83～101<br>
+[6]Suzuki K, Itoh T .The changes in cell wall architecture during lignification of bamboo .Phyllostachys aurea Carr.Trees, 2001,15:137～147<br>
+[7]Kumar S, Dobriyal P B.Treatablilty and flow path studies in bamboo .Wood and Fiber Science.1992,24(2):113～117<br>
+[8]吴顺昭.台湾产竹材解剖特性及其与渗透性的关系.北京:竹子结构与性质和利用的关系.国际竹 类工业利用研讨会.1992:139～143<br>
+[9]冼杏娟, 冼定国, 叶颖薇.竹纤维增强树脂复合材料及其微观形貌.北京:科学出版社, 1995<br>
+[10]江泽慧主编.世界竹藤.沈阳:辽宁科学技术出版社, 2002<br>
+[11]杨云芳,刘志坤.毛竹材抗拉弹性模量及抗拉强度.浙江林学院学报,1996,13(1):21～27<br>
+[12]杨源哲,张寿槐,白同仁等.中国七种竹材的物理 力学性质.中国林业科学研究院木材工业研究所 研究报告,木工.1986,4号(总18号)<br>
+[13]王朝晖.竹材材性变异规律与加工利用研究.北京:中国林业科学研究院博士论文,2001<br>
+[14]Mansur Ahmad .Analysis of Calcutta Bamboo for Struc- tural Composite Materials .Dissertation for the Degree of Doctor of Philosophy in Wood Science and Forest Products .August 11, 2000 .Blacksburg, Virginia<br>
+[15]周芳纯.竹材培育和利用.南京林业大学.竹类研究编委会,1998:195～211<br>
+[16]Peralta P N, Lee A W C Unsteady -state diffusion of moisture in giant timber bamboo .Wood and Fiber Sci- ence .1995,27(4):421～427<br>
+[17] Navin Chand, U.K.Dwivedi.High stress abrasive wear study on bamboo[J].Journal of Materials Pro cessing Technology,2007(183):155-159.<br>
+[18]张宏键, 杜 凡.云南 4 中典型材用丛生竹宏观解剖结构与主要物理力学性质的关系[J].林业科学,1999,35(4):66-70.<br>
+[19]Grosser D,and W.Liese.On the anatomy of Asian bamboos, w ith special reference to their vascular bundles[J].Wood Sci.Technol, 1971,5:290 -312.<br>
+[20]薛联凤,刘云飞,于芬.基于图像处理的畸形竹材细胞壁晶区的特征研究[J].森林工程, 2007,23(1):15-18.<br>
+[21] Abd.Latif, M,W.A.Wan Tarmeze, and A.Fauzidah.Anatomical features and mechanical properties of three Malay sian bam- boos[J].Journal Tropical ForestScience,1990,2(3):227-234.<br>
+[22]陈祖松.福建柏人工林木材物理力学性质的试验研究[J].福建林学院学报,1999,19(3):223 -226.<br>
+[23]汪佑宏,田根林,刘杏娥,等.不同海拔高度对毛竹主要物理力学性质的影响[J].安徽农业大学学报,2007, 34(2):222-225.<br>
+[24]俞友明,方伟,杨云芳,等.不同立地条件红壳竹竹材物理力学性质的比较[J].浙江林业学报, 2001,18(4):380-388<br>
+[25]孙照斌,杨燕, 顾炼百.龙竹的常压液体渗透性研究[J].林产工业, 2005, 32(1):17-19.<br>
+[26]孙照斌,田芸.龙竹竹材纵向气体渗透性测定[J].林业科技开发, 2006,20(4):44-47.<br>
+[27]林福兴,林如青,林拯.不同绿竹种源含水率与持水量研究[J].水土保持应用技术, 2007(2):6-8.<br>
+[28] 吴再兴,赵仁杰.用木材测湿仪测量竹篾含水率的研究[J].中国人造板, 2006, 13(7):19-21<br>
+[29]虞华强.竹材材性研究概述[J].世界竹藤通讯,2003,1(4):5-9.<br>
+[30]王建和,孙丰文,张齐生.竹片胀缩性能的初步研究[J].竹子研究汇刊,1993,12(1):39 -46.<br>
+[31]Khosrow Ghavami.Bamboo as reinforcement in structural concrete elements[J].Cement &amp; Concrete Composites,2005,27:637-649.<br>
+[32]Abd.Latif, M.W.A.Wan Tarmeze, and A.Fauzidah.Anatomical features andmechanical properties of three Malay sian bam- boos[J].Journal Tropical ForestScience, 1990,2(3):227 -234.<br>
+[33]俞友明,张宏,严建明,等.不同地位级雷竹竹材的物理力学性质比较[J] .浙江林业科技, 2004,24(3):27-29.<br>
+[34]杨永福,习宝田,李黎.毛竹切削力的研究[J].北京林业大学学报,2006,28(4):17-21.<br>
+[35]虞华强,费本华,任海青,等.毛竹顺纹抗拉性质的变异及与气干密度的关系[J].林业科学,2006,42(3):72-76.</p>
+</blockquote></div>
+<div style="font-size:small;margin-top:8px;float:right;">相信美好的事物正在发生</div>
 
 </div>
-    </div>
-    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://Senkeller.github.io/Earth">Journal of Earth</a></div>
+    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://Senkeller.github.io/Earth">Joural of Earth</a></div>
 <div id="footer2">
     <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
 </div>
@@ -583,7 +162,7 @@ if("07/1/2024"!=""){
     var startSite=new Date("07/1/2024");
     var diff=now.getTime()-startSite.getTime();
     var diffDay=Math.floor(diff/(1000*60*60*24));
-    document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";
+    document.getElementById("runday").innerHTML="网站运行 "+diffDay+" 天"+" • ";
 }
 </script></div>
 </body>
@@ -629,6 +208,6 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 
 
 </script>
-<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekTOC.js'></script>
+<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekTOC.js'></script><script src='./assets/journal-post.js'></script>
 
 </html>
