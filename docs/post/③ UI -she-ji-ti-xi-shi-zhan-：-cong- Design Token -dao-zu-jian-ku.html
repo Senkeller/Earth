@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
+    <script src='./assets/GmeekBSZ.js'></script><script src='./assets/yifantheme.js'></script>
+    <link rel="icon" href="https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="# ③ UI 设计体系实战：从 Design Token 到组件库
+
+> AI 生成的 UI 为什么总是'蓝紫色 + 奇怪图标'？怎么让它看起来像一个真正的产品？
+>
+> 阅读时间：约 14 分钟
+> 难度：★★☆☆☆（没经验也能看懂，但需要耐心）
+
+---
+
+## 这篇文章是给谁看的？
+
+- AI 给你写的界面总是'一眼 AI'——蓝紫色调、奇怪图标、到处都是边框线
+- 你翻来覆去跟 AI 说'好看一点'，但它就是改不好
+- 同一个 App 里，A 页面圆角 8px、B 页面圆角 16px，看起来不像同一个产品
+- 你想知道专业的 UI 设计师是怎么保证所有页面风格统一的
+
+恭喜你，你说的所有问题，都有一个共同的解法——**UI 设计体系**。">
+<meta property="og:title" content="③ UI 设计体系实战：从 Design Token 到组件库">
+<meta property="og:description" content="# ③ UI 设计体系实战：从 Design Token 到组件库
+
+> AI 生成的 UI 为什么总是'蓝紫色 + 奇怪图标'？怎么让它看起来像一个真正的产品？
+>
+> 阅读时间：约 14 分钟
+> 难度：★★☆☆☆（没经验也能看懂，但需要耐心）
+
+---
+
+## 这篇文章是给谁看的？
+
+- AI 给你写的界面总是'一眼 AI'——蓝紫色调、奇怪图标、到处都是边框线
+- 你翻来覆去跟 AI 说'好看一点'，但它就是改不好
+- 同一个 App 里，A 页面圆角 8px、B 页面圆角 16px，看起来不像同一个产品
+- 你想知道专业的 UI 设计师是怎么保证所有页面风格统一的
+
+恭喜你，你说的所有问题，都有一个共同的解法——**UI 设计体系**。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://Senkeller.github.io/Earth/post/%E2%91%A2%20UI%20-she-ji-ti-xi-shi-zhan-%EF%BC%9A-cong-%20Design%20Token%20-dao-zu-jian-ku.html">
+<meta property="og:image" content="https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590">
+<title>③ UI 设计体系实战：从 Design Token 到组件库</title>
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
+
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+.copy-feedback {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    color: var(--color-fg-on-emphasis);
+    background-color: var(--color-fg-muted);
+    border-radius: 3px;
+    padding: 5px 8px;
+    font-size: 12px;
+}
+</style>
+<link rel='stylesheet' href='./assets/journal-style.css'>
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">③ UI 设计体系实战：从 Design Token 到组件库</h1>
+<div class="title-right">
+    <a href="https://Senkeller.github.io/Earth" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/Senkeller/Earth/issues/34" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><h1>③ UI 设计体系实战：从 Design Token 到组件库</h1>
+<blockquote>
+<p>AI 生成的 UI 为什么总是"蓝紫色 + 奇怪图标"？怎么让它看起来像一个真正的产品？</p>
+<p>阅读时间：约 14 分钟<br>
+难度：★★☆☆☆（没经验也能看懂，但需要耐心）</p>
+</blockquote>
+<hr>
+<h2>这篇文章是给谁看的？</h2>
+<ul>
+<li>AI 给你写的界面总是"一眼 AI"——蓝紫色调、奇怪图标、到处都是边框线</li>
+<li>你翻来覆去跟 AI 说"好看一点"，但它就是改不好</li>
+<li>同一个 App 里，A 页面圆角 8px、B 页面圆角 16px，看起来不像同一个产品</li>
+<li>你想知道专业的 UI 设计师是怎么保证所有页面风格统一的</li>
+</ul>
+<p>恭喜你，你说的所有问题，都有一个共同的解法——<strong>UI 设计体系</strong>。</p>
+<hr>
+<h2>引子：为什么 AI 写的 UI 总是丑？</h2>
+<p>先看一个真实场景。</p>
+<p>你让 AI "帮我做一个报销列表页面"。AI 刷刷刷生成了——你觉得还行。然后你说"再加一个审批页面"——也还行。</p>
+<p>但把两个页面放一起：</p>
+<pre lang="text" class="notranslate"><code class="notranslate">列表页：蓝色主调、直角卡片、粗体标题
+审批页：紫色主调、圆角卡片、细体标题
+
+这两个页面看起来像两个不同的人做的两个不同 App
+</code></pre>
+<p><strong>不是 AI 不努力，是 AI 每次都在重新发明轮子。</strong></p>
+<p>AI 没有"刚才那页用了什么颜色"的记忆，它每次都是"从零开始设计"。所以同一个项目的不同页面，风格总是不统一。</p>
+<p>解法就是——<strong>给 AI 一套"积木"，让它只能拼积木，不能自己造积木。</strong></p>
+<hr>
+<h2>第一章：.UI 设计的三个底层原则</h2>
+<p>在开始搭积木之前，先理解三条<strong>不可破坏的规则</strong>。</p>
+<h3>原则一：留白——防止 AI 把界面塞满</h3>
+<p>AI 的默认倾向：只要有空间就继续塞内容。</p>
+<pre lang="text" class="notranslate"><code class="notranslate">❌ "看起来宽松一点"（模糊描述 → AI 不会改）
+✅ "卡片内边距统一 24px，卡片之间间距 16px，页面左右边距不小于 20px"
+   （精确数字 → AI 执行到位）
+</code></pre>
+<p><strong>留白不是浪费空间，是给用户的眼睛喘息的机会。</strong></p>
+<h3>原则二：一致性——所有页面看起来像同一个 App</h3>
+<p>AI 最容易犯的错：A 页面按钮圆角 8px，B 页面变成 12px。</p>
+<pre lang="text" class="notranslate"><code class="notranslate">✅ 同一类元素在任何地方看起来都一样
+✅ 圆角值固定、阴影层级固定、边框有无固定
+✅ 图标风格不混用
+✅ 直接告诉 AI："所有按钮使用同一套样式，不允许在不同页面自行变化"
+</code></pre>
+<p><strong>这一条能砍掉 70% 的"AI 味"。</strong></p>
+<h3>原则三：层级——不用边框也能分清主次</h3>
+<p>"AI 味"界面最明显的特征：<strong>到处都是边框线</strong>。</p>
+<pre lang="text" class="notranslate"><code class="notranslate">✅ 用阴影区分"浮起来"的元素
+✅ 用背景明度差（深/浅）区分区域，而不是画线
+✅ 用字号和字重区分标题/正文/说明
+</code></pre>
+<p>专业的界面不用框框，用"视觉重量"来区分主次。</p>
+<hr>
+<h2>第二章：Design Token——设计规范的"原子"</h2>
+<p>Design Token 是个听起来高大上、其实很简单的概念。</p>
+<p><strong>Design Token = 把颜色、圆角、间距、字号这些"视觉属性"存成有名字的变量。</strong></p>
+<h3>举个例子</h3>
+<pre lang="text" class="notranslate"><code class="notranslate">❌ 没有 Token：
+  每个页面各自写 #D4A574
+  想换主色 → 搜遍所有文件 → 改几百处
+
+✅ 有了 Token：
+  定义一次 colorPrimary = #D4A574
+  所有页面引用 colorPrimary
+  想换主色 → 改这一行 → 所有页面自动变
+</code></pre>
+<h3>一个完整的 Token 体系长这样</h3>
+<div class="highlight highlight-source-yaml"><pre class="notranslate"><span class="pl-c"><span class="pl-c">#</span> 颜色</span>
+<span class="pl-ent">colorPrimary</span>: <span class="pl-s"><span class="pl-pds">"</span>#D4A574<span class="pl-pds">"</span></span>     <span class="pl-c"><span class="pl-c">#</span> 主色（暖棕）</span>
+<span class="pl-ent">colorBackground</span>: <span class="pl-s"><span class="pl-pds">"</span>#FFF8F0<span class="pl-pds">"</span></span>  <span class="pl-c"><span class="pl-c">#</span> 背景（暖白）</span>
+<span class="pl-ent">colorSurface</span>: <span class="pl-s"><span class="pl-pds">"</span>#F5E6D3<span class="pl-pds">"</span></span>     <span class="pl-c"><span class="pl-c">#</span> 卡片底色（米白）</span>
+<span class="pl-ent">colorText</span>: <span class="pl-s"><span class="pl-pds">"</span>#3C2415<span class="pl-pds">"</span></span>        <span class="pl-c"><span class="pl-c">#</span> 文字色（深棕）</span>
+
+<span class="pl-c"><span class="pl-c">#</span> 圆角</span>
+<span class="pl-ent">radiusCard</span>: <span class="pl-s">20px            </span><span class="pl-c"><span class="pl-c">#</span> 卡片圆角</span>
+<span class="pl-ent">radiusButton</span>: <span class="pl-s">30px          </span><span class="pl-c"><span class="pl-c">#</span> 按钮圆角（胶囊形）</span>
+<span class="pl-ent">radiusInput</span>: <span class="pl-s">16px           </span><span class="pl-c"><span class="pl-c">#</span> 输入框圆角</span>
+
+<span class="pl-c"><span class="pl-c">#</span> 间距</span>
+<span class="pl-ent">spacingPage</span>: <span class="pl-s">20px           </span><span class="pl-c"><span class="pl-c">#</span> 页面左右边距</span>
+<span class="pl-ent">spacingCard</span>: <span class="pl-s">16px           </span><span class="pl-c"><span class="pl-c">#</span> 卡片间距</span>
+<span class="pl-ent">spacingInner</span>: <span class="pl-s">24px          </span><span class="pl-c"><span class="pl-c">#</span> 卡片内边距</span>
+
+<span class="pl-c"><span class="pl-c">#</span> 字号</span>
+<span class="pl-ent">fontTitle</span>: <span class="pl-s">18px             </span><span class="pl-c"><span class="pl-c">#</span> 标题</span>
+<span class="pl-ent">fontBody</span>: <span class="pl-s">14px              </span><span class="pl-c"><span class="pl-c">#</span> 正文</span>
+<span class="pl-ent">fontCaption</span>: <span class="pl-s">12px           </span><span class="pl-c"><span class="pl-c">#</span> 辅助文字</span></pre></div>
+<h3>什么时候提取 Design Token？</h3>
+<p>最佳时机：<strong>AI 生成了一个你满意的页面之后。</strong></p>
+<pre lang="text" class="notranslate"><code class="notranslate">你让 AI 做一个登录页面 → AI 生成 → 你觉得"这个配色好看"
+→ 让 AI 提取 Design Token："基于你刚才生成的页面，提取所有设计令牌"
+→ 得到 Token 文件 → 后续所有页面引用这个文件
+→ 保证后续所有页面和这个页面风格一致
+</code></pre>
+<p>这种方法确保你拿到的 Token 源自你已经认可的效果，而不是凭空想象的参数。</p>
+<hr>
+<h2>第三章：shadcn_flutter——别人的组件库，你的参考书</h2>
+<h3>传统组件库 vs shadcn 的区别</h3>
+<p>传统组件库（像 Material UI、Ant Design）：</p>
+<pre lang="text" class="notranslate"><code class="notranslate">npm install @mui/material → 引入别人做好的组件 → 几乎不能改样式
+</code></pre>
+<p>shadcn 的哲学：</p>
+<pre lang="text" class="notranslate"><code class="notranslate">npx shadcn add button → 把按钮源码复制到你的项目 → 你完全拥有它
+                       → 你想改成什么样就改成什么样
+</code></pre>
+<p><strong>核心哲学：你不是在使用别人的组件，你是在拥有自己的组件。</strong></p>
+<h3>shadcn_flutter 在 Flutter 中的用法</h3>
+<p>两个层次：</p>
+<pre lang="text" class="notranslate"><code class="notranslate">方式一：当普通包用（最快上手）
+  在 pubspec.yaml 添加 shadcn_flutter 依赖
+  import 直接用，和你用 Material 组件一样
+
+方式二：当参考源码用（最灵活）
+  去 GitHub 看 shadcn_flutter 各组件是怎么写的
+  自己照着写一套"你的组件库"
+  完全控制样式和行为
+</code></pre>
+<p><strong>方式二才是 shadcn 的真精神</strong>——不依赖别人，自己做一套拥有完整所有权的组件库。</p>
+<hr>
+<h2>第四章：Stitch——用 AI 做 UI 预览</h2>
+<p>Stitch（stitch.withgoogle.com）是 Google 出的一个 AI 设计工具。</p>
+<p><strong>核心能力：你描述一个界面，它直接生成 Flutter 代码 + 预览效果。</strong></p>
+<h3>在开发流程中的位置</h3>
+<pre lang="text" class="notranslate"><code class="notranslate">你的完整 UI 设计体系：
+
+① 定规矩 —— DESIGN_SYSTEM.md
+   ↓ 颜色、圆角、字体、间距全写成 Design Token
+
+② 搭积木 —— 基础组件库
+   ↓ AppButton / AppCard / AppTextField
+   ↓ 用 Design Token 统一风格
+
+③ 验想法 —— Google Stitch
+   ↓ 新页面用 Stitch 出设计图
+   ↓ 确认好看后，用你的组件库搭出来
+
+④ 搭页面 —— 基于组件库开发
+   ↓ 所有页面只用组件库里的零件
+   ↓ 不再给 AI 自由发挥样式的机会
+</code></pre>
+<h3>Stitch 的精确用法</h3>
+<pre lang="text" class="notranslate"><code class="notranslate">Stitch 不是"代码生成器"，是"设计探索工具"。
+
+✅ 用它看"好不好看"、"怎么布局"
+❌ 不要用它生成最终代码
+
+具体流程：
+Step 1 → 打开 Stitch，描述页面需求，看布局效果
+Step 2 → 截图保存到你的讨论区
+Step 3 → 确认好看后，用自己项目里的组件库搭一遍
+Step 4 → AI 只能调用 AppButton / AppCard / AppTextField
+         不能自己发明新样式
+</code></pre>
+<hr>
+<h2>第五章：完整实施路线</h2>
+<h3>4 周上手路线</h3>
+<pre lang="text" class="notranslate"><code class="notranslate">第1周：搭好 Design Token + 3 个核心组件
+  AppButton（胶囊形按钮）
+  AppCard（暖棕+米白卡片）
+  AppTextField（圆角输入框）
+
+第2周：玩一玩 Stitch
+  去 stitch.withgoogle.com 试试
+  上传一张你喜欢的 App 截图，看 Stitch 生成什么
+  感受一下 AI 设计的过程
+
+第3周：参考 shadcn_flutter 补组件
+  需要新页面 → 去 shadcn_flutter 看对应的组件怎么写
+  按你的配色做自己的版本
+  每做一个就加到 core/widgets/ 里
+
+第4周之后：形成肌肉记忆
+  所有新页面 = 从核心组件库里"拼"出来
+  不再让 AI 自由发挥控件样式
+</code></pre>
+<h3>项目文件结构</h3>
+<pre lang="text" class="notranslate"><code class="notranslate">lib/
+├── core/
+│   ├── theme/              ← Design Token 集中营
+│   │   ├── app_colors.dart
+│   │   ├── app_typography.dart
+│   │   ├── app_spacing.dart
+│   │   └── app_theme.dart
+│   └── widgets/            ← 基础组件库
+│       ├── app_button.dart
+│       ├── app_card.dart
+│       ├── app_text_field.dart
+│       └── app_dialog.dart
+├── data/                   ← 数据层
+├── domain/                 ← 业务层
+└── presentation/           ← 页面层（只用组件库拼）
+</code></pre>
+<hr>
+<h2>这篇的核心收获</h2>
+<pre lang="text" class="notranslate"><code class="notranslate">① 三个原则：留白、一致性、层级
+② Design Token = 把颜色/圆角/间距存成有名字的变量
+③ shadcn 哲学 = 拥有自己的组件，而不是依赖别人的
+④ Stitch = 设计探索工具，不是代码生成器
+⑤ 完整流程：定Token → 搭组件 → Stitch验想法 → 拼页面
+⑥ 先积木后房子，所有页面只用组件库里的零件
+⑦ AI 没有自由发挥样式的机会，UI 自然统一
+</code></pre>
+<hr>
+<p><strong>📌 下篇预告：</strong> 架构有了、UI 规范有了，下一步是理解 Flutter 的具体概念。下一篇讲依赖注入、状态管理、路由、存储——不用看懂代码，用白话说清楚每个概念是干什么用的。</p>
+<hr>
+<p><em>本系列整理自我的学习记录《从小白学软件开发》。建议按顺序阅读。</em></p></div>
+<div style="font-size:small;margin-top:8px;float:right;">相信美好的事物正在发生</div>
+
+</div>
+    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://Senkeller.github.io/Earth">Joural of Earth</a></div>
+<div id="footer2">
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+</div>
+
+<script>
+var now=new Date();
+document.getElementById("copyrightYear").innerHTML=now.getFullYear();
+
+if("07/1/2024"!=""){
+    var startSite=new Date("07/1/2024");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("runday").innerHTML="网站运行 "+diffDay+" 天"+" • ";
+}
+</script></div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z', 'copy': 'M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z', 'check': 'M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const createClipboardHTML = (codeContent, additionalClasses = '') => `
+        <pre class="notranslate"><code class="notranslate">${codeContent}</code></pre>
+        <div class="clipboard-container position-absolute right-0 top-0 ${additionalClasses}">
+            <clipboard-copy class="ClipboardButton btn m-2 p-0" role="button" style="display: inherit;">
+                <svg height="16" width="16" class="octicon octicon-copy m-2"><path d="${IconList["copy"]}"></path></svg>
+                <svg height="16" width="16" class="octicon octicon-check color-fg-success m-2 d-none"><path d="${IconList["check"]}"></path></svg>
+            </clipboard-copy>
+            <div class="copy-feedback">Copied!</div>
+        </div>
+    `;
+
+    const handleCodeElements = (selector = '') => {
+        document.querySelectorAll(selector).forEach(codeElement => {
+            const codeContent = codeElement.innerHTML;
+            const newStructure = document.createElement('div');
+            newStructure.className = 'snippet-clipboard-content position-relative overflow-auto';
+            newStructure.innerHTML = createClipboardHTML(codeContent);
+
+            const parentElement = codeElement.parentElement;
+            if (selector.includes('highlight')) {
+                parentElement.insertBefore(newStructure, codeElement.nextSibling);
+                parentElement.removeChild(codeElement);
+            } else {
+                parentElement.parentElement.replaceChild(newStructure, parentElement);
+            }
+        });
+    };
+
+    handleCodeElements('pre.notranslate > code.notranslate');
+    handleCodeElements('div.highlight > pre.notranslate');
+
+    let currentFeedback = null;
+    document.querySelectorAll('clipboard-copy').forEach(copyButton => {
+        copyButton.addEventListener('click', () => {
+            const codeContent = copyButton.closest('.snippet-clipboard-content').innerText;
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = codeContent;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+
+            const copyIcon = copyButton.querySelector('.octicon-copy');
+            const checkIcon = copyButton.querySelector('.octicon-check');
+            const copyFeedback = copyButton.nextElementSibling;
+
+            if (currentFeedback && currentFeedback !== copyFeedback) {currentFeedback.style.display = 'none';}
+            currentFeedback = copyFeedback;
+
+            copyIcon.classList.add('d-none');
+            checkIcon.classList.remove('d-none');
+            copyFeedback.style.display = 'block';
+            copyButton.style.borderColor = 'var(--color-success-fg)';
+
+            setTimeout(() => {
+                copyIcon.classList.remove('d-none');
+                checkIcon.classList.add('d-none');
+                copyFeedback.style.display = 'none';
+                copyButton.style.borderColor = '';
+            }, 2000);
+        });
+    });
+});
+
+</script>
+<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekTOC.js'></script><script src='./assets/journal-post.js'></script>
+
+</html>

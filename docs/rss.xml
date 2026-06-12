@@ -1,5 +1,21 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Joural of Earth</title><link>https://Senkeller.github.io/Earth</link><description>地球上的任何事物都在此享有自由</description><copyright>Joural of Earth</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590</url><title>avatar</title><link>https://Senkeller.github.io/Earth</link></image><lastBuildDate>Fri, 12 Jun 2026 10:07:52 +0000</lastBuildDate><managingEditor>Joural of Earth</managingEditor><ttl>60</ttl><webMaster>Joural of Earth</webMaster><item><title>② 软件架构入门：从三层架构到 DDD</title><link>https://Senkeller.github.io/Earth/post/%E2%91%A1%20-ruan-jian-jia-gou-ru-men-%EF%BC%9A-cong-san-ceng-jia-gou-dao-%20DDD.html</link><description># ② 软件架构入门：从三层架构到 DDD
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Joural of Earth</title><link>https://Senkeller.github.io/Earth</link><description>地球上的任何事物都在此享有自由</description><copyright>Joural of Earth</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590</url><title>avatar</title><link>https://Senkeller.github.io/Earth</link></image><lastBuildDate>Fri, 12 Jun 2026 10:11:10 +0000</lastBuildDate><managingEditor>Joural of Earth</managingEditor><ttl>60</ttl><webMaster>Joural of Earth</webMaster><item><title>③ UI 设计体系实战：从 Design Token 到组件库</title><link>https://Senkeller.github.io/Earth/post/%E2%91%A2%20UI%20-she-ji-ti-xi-shi-zhan-%EF%BC%9A-cong-%20Design%20Token%20-dao-zu-jian-ku.html</link><description># ③ UI 设计体系实战：从 Design Token 到组件库
+
+&gt; AI 生成的 UI 为什么总是'蓝紫色 + 奇怪图标'？怎么让它看起来像一个真正的产品？
+&gt;
+&gt; 阅读时间：约 14 分钟
+&gt; 难度：★★☆☆☆（没经验也能看懂，但需要耐心）
+
+---
+
+## 这篇文章是给谁看的？
+
+- AI 给你写的界面总是'一眼 AI'——蓝紫色调、奇怪图标、到处都是边框线
+- 你翻来覆去跟 AI 说'好看一点'，但它就是改不好
+- 同一个 App 里，A 页面圆角 8px、B 页面圆角 16px，看起来不像同一个产品
+- 你想知道专业的 UI 设计师是怎么保证所有页面风格统一的
+
+恭喜你，你说的所有问题，都有一个共同的解法——**UI 设计体系**。</description><guid isPermaLink="true">https://Senkeller.github.io/Earth/post/%E2%91%A2%20UI%20-she-ji-ti-xi-shi-zhan-%EF%BC%9A-cong-%20Design%20Token%20-dao-zu-jian-ku.html</guid><pubDate>Fri, 12 Jun 2026 10:10:43 +0000</pubDate></item><item><title>② 软件架构入门：从三层架构到 DDD</title><link>https://Senkeller.github.io/Earth/post/%E2%91%A1%20-ruan-jian-jia-gou-ru-men-%EF%BC%9A-cong-san-ceng-jia-gou-dao-%20DDD.html</link><description># ② 软件架构入门：从三层架构到 DDD
 
 &gt; 零基础也能懂的架构课——用厨房比喻讲清楚所有概念
 &gt;
