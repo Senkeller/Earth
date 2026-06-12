@@ -1,5 +1,21 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Joural of Earth</title><link>https://Senkeller.github.io/Earth</link><description>地球上的任何事物都在此享有自由</description><copyright>Joural of Earth</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590</url><title>avatar</title><link>https://Senkeller.github.io/Earth</link></image><lastBuildDate>Fri, 12 Jun 2026 09:49:13 +0000</lastBuildDate><managingEditor>Joural of Earth</managingEditor><ttl>60</ttl><webMaster>Joural of Earth</webMaster><item><title>一个零基础小白的真实学习记录-① AI 时代的软件开发新思维</title><link>https://Senkeller.github.io/Earth/post/yi-ge-ling-ji-chu-xiao-bai-de-zhen-shi-xue-xi-ji-lu--%E2%91%A0%20AI%20-shi-dai-de-ruan-jian-kai-fa-xin-si-wei.html</link><description># ① AI 时代的软件开发新思维
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Joural of Earth</title><link>https://Senkeller.github.io/Earth</link><description>地球上的任何事物都在此享有自由</description><copyright>Joural of Earth</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590</url><title>avatar</title><link>https://Senkeller.github.io/Earth</link></image><lastBuildDate>Fri, 12 Jun 2026 10:07:52 +0000</lastBuildDate><managingEditor>Joural of Earth</managingEditor><ttl>60</ttl><webMaster>Joural of Earth</webMaster><item><title>② 软件架构入门：从三层架构到 DDD</title><link>https://Senkeller.github.io/Earth/post/%E2%91%A1%20-ruan-jian-jia-gou-ru-men-%EF%BC%9A-cong-san-ceng-jia-gou-dao-%20DDD.html</link><description># ② 软件架构入门：从三层架构到 DDD
+
+&gt; 零基础也能懂的架构课——用厨房比喻讲清楚所有概念
+&gt;
+&gt; 阅读时间：约 15 分钟
+&gt; 难度：★★☆☆☆（需要耐心，但不需要代码基础）
+
+---
+
+## 这篇文章是给谁看的？
+
+- 你让 AI 写过代码，但出来的东西'浑成一坨'，改一个功能炸三个地方
+- 你听说过'分层架构'、'MVVM'、'DDD'这些词，但不知道它们是什么意思
+- 你希望 AI 生成的代码结构清晰、容易修改，而不是一锅粥
+- 你想知道：不同大小的项目，到底该用什么架构？
+
+如果你中了任何一条，这篇文章就是给你写的。</description><guid isPermaLink="true">https://Senkeller.github.io/Earth/post/%E2%91%A1%20-ruan-jian-jia-gou-ru-men-%EF%BC%9A-cong-san-ceng-jia-gou-dao-%20DDD.html</guid><pubDate>Fri, 12 Jun 2026 10:07:26 +0000</pubDate></item><item><title>一个零基础小白的真实学习记录-① AI 时代的软件开发新思维</title><link>https://Senkeller.github.io/Earth/post/yi-ge-ling-ji-chu-xiao-bai-de-zhen-shi-xue-xi-ji-lu--%E2%91%A0%20AI%20-shi-dai-de-ruan-jian-kai-fa-xin-si-wei.html</link><description># ① AI 时代的软件开发新思维
 
 &gt; 一个零基础小白的真实学习记录
 &gt;

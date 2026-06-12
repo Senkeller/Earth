@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
+    <script src='./assets/GmeekBSZ.js'></script><script src='./assets/yifantheme.js'></script>
+    <link rel="icon" href="https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="# ② 软件架构入门：从三层架构到 DDD
+
+> 零基础也能懂的架构课——用厨房比喻讲清楚所有概念
+>
+> 阅读时间：约 15 分钟
+> 难度：★★☆☆☆（需要耐心，但不需要代码基础）
+
+---
+
+## 这篇文章是给谁看的？
+
+- 你让 AI 写过代码，但出来的东西'浑成一坨'，改一个功能炸三个地方
+- 你听说过'分层架构'、'MVVM'、'DDD'这些词，但不知道它们是什么意思
+- 你希望 AI 生成的代码结构清晰、容易修改，而不是一锅粥
+- 你想知道：不同大小的项目，到底该用什么架构？
+
+如果你中了任何一条，这篇文章就是给你写的。">
+<meta property="og:title" content="② 软件架构入门：从三层架构到 DDD">
+<meta property="og:description" content="# ② 软件架构入门：从三层架构到 DDD
+
+> 零基础也能懂的架构课——用厨房比喻讲清楚所有概念
+>
+> 阅读时间：约 15 分钟
+> 难度：★★☆☆☆（需要耐心，但不需要代码基础）
+
+---
+
+## 这篇文章是给谁看的？
+
+- 你让 AI 写过代码，但出来的东西'浑成一坨'，改一个功能炸三个地方
+- 你听说过'分层架构'、'MVVM'、'DDD'这些词，但不知道它们是什么意思
+- 你希望 AI 生成的代码结构清晰、容易修改，而不是一锅粥
+- 你想知道：不同大小的项目，到底该用什么架构？
+
+如果你中了任何一条，这篇文章就是给你写的。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://Senkeller.github.io/Earth/post/%E2%91%A1%20-ruan-jian-jia-gou-ru-men-%EF%BC%9A-cong-san-ceng-jia-gou-dao-%20DDD.html">
+<meta property="og:image" content="https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590">
+<title>② 软件架构入门：从三层架构到 DDD</title>
+
+
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+
+</style>
+<link rel='stylesheet' href='./assets/journal-style.css'>
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">② 软件架构入门：从三层架构到 DDD</h1>
+<div class="title-right">
+    <a href="https://Senkeller.github.io/Earth" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/Senkeller/Earth/issues/33" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><h1>② 软件架构入门：从三层架构到 DDD</h1>
+<blockquote>
+<p>零基础也能懂的架构课——用厨房比喻讲清楚所有概念</p>
+<p>阅读时间：约 15 分钟<br>
+难度：★★☆☆☆（需要耐心，但不需要代码基础）</p>
+</blockquote>
+<hr>
+<h2>这篇文章是给谁看的？</h2>
+<ul>
+<li>你让 AI 写过代码，但出来的东西"浑成一坨"，改一个功能炸三个地方</li>
+<li>你听说过"分层架构"、"MVVM"、"DDD"这些词，但不知道它们是什么意思</li>
+<li>你希望 AI 生成的代码结构清晰、容易修改，而不是一锅粥</li>
+<li>你想知道：不同大小的项目，到底该用什么架构？</li>
+</ul>
+<p>如果你中了任何一条，这篇文章就是给你写的。</p>
+<hr>
+<h2>引子：为什么需要架构？</h2>
+<p>先说一个真实场景。</p>
+<p>你有天让 AI "帮我做个报销 App，能提交报销、审批、查看历史"。AI 很听话，刷刷刷写出来了。</p>
+<p>看起来功能都有。但过了几天你想改一个东西——"报销上限从 10000 改成 5000"。</p>
+<p>然后你发现：</p>
+<pre lang="text" class="notranslate"><code class="notranslate">改一个数字 → 炸了三个页面
+提交页面的上限改了 → 审批页面的没改 → 历史页面的也没改
+因为 AI 把"上限 10000"这个数字写在了 5 个不同的文件里
+</code></pre>
+<p>这就是<strong>没有架构</strong>的后果。</p>
+<p>架构的作用，就是确保<strong>改一个东西，只改一个地方</strong>。</p>
+<hr>
+<h2>第一章：三问定需求——写代码前先问自己</h2>
+<p>很多小白犯的第一个错误：拿到需求直接让 AI 开写。</p>
+<p>在写任何代码之前，先问自己三个问题。这比看懂代码更重要。</p>
+<h3>第一问：价值锚点——做这个东西到底是为了什么？</h3>
+<pre lang="text" class="notranslate"><code class="notranslate">❌ 模糊说法："让用户更好地社交"
+✅ 合格说法：针对新用户，解决不知如何开口的孤立感，
+   在注册后3分钟内自动引导至兴趣匹配群聊
+
+❌ 模糊说法："做个报销 App"
+✅ 合格说法：让员工 30 秒内提交报销单，
+   审批人手机上 10 秒完成审批
+</code></pre>
+<p>如果无法清晰定义核心价值，这个需求大概率是个"功能废墟"。</p>
+<h3>第二问：第一动作——用户进来第一件事做什么？</h3>
+<p>找到用户进入产品后最核心的<strong>唯一路径</strong>：</p>
+<pre lang="text" class="notranslate"><code class="notranslate">❌ 用户进来看到一堆东西：好友列表、群聊广场、个人设置、动态发现
+✅ 用户进来只看到一条路：登录 → 找人 → 发消息
+
+❌ 报销 App 用户进来：看到统计图表、待办列表、历史记录、个人信息
+✅ 报销 App 用户进来：打开 → 拍照上传小票 → 填写金额 → 提交
+</code></pre>
+<p>用户如果停顿一秒想"我该点哪"，设计就是次品。</p>
+<h3>第三问：Not-To-Do——明确不做清单</h3>
+<p>这可能是三个问题里最重要的一个。</p>
+<p>大多数项目死掉，不是因为做得太少，而是因为做得太多。</p>
+<pre lang="text" class="notranslate"><code class="notranslate">✅ 先列清楚哪些功能当前版本绝对不做
+✅ 每个"顺便做一下"都会让代码复杂度翻倍
+✅ AI 不会拒绝你——你让它加功能，它就加，哪怕代码已经快炸了
+</code></pre>
+<p><strong>这三个问题的质量，决定了代码的寿命。</strong></p>
+<hr>
+<h2>第二章：三层架构——所有架构的基础</h2>
+<h3>厨房比喻</h3>
+<p>想象你开了一家餐厅：</p>
+<pre lang="text" class="notranslate"><code class="notranslate">不分层（Vibecoding 默认产物）：
+  一个人干所有事：买菜→洗菜→切菜→炒菜→洗碗→收银→招呼客人
+  要换菜单——得把这个人从头到脚换一遍
+
+分层（专业做法）：
+  🖼️ 前台（UI层）→ 只负责"画界面"
+  👨‍🍳 后厨（业务层）→ 只负责"做菜"
+  🧊 仓库（数据层）→ 只负责"管东西"
+
+  换菜单只改前台，换供应商只改仓库
+</code></pre>
+<h3>三层架构在 Flutter 中的映射</h3>
+<p>你用 Flutter 开发 App，代码分三个文件夹：</p>
+<pre lang="text" class="notranslate"><code class="notranslate">lib/
+├── data/              ← 🟢 数据层：只管增删改查
+│   ├── models/        ←   数据长什么样
+│   └── repositories/  ←   读写数据的地方
+│
+├── domain/            ← 🟡 业务层：最核心
+│   └── services/      ←   验证、计算、业务流程
+│
+└── presentation/      ← 🔵 UI层：只管界面
+    ├── pages/         ←   页面
+    └── widgets/       ←   可复用组件
+</code></pre>
+<h3>三层架构的核心规则：只准单向依赖</h3>
+<pre lang="text" class="notranslate"><code class="notranslate">UI层 → 调 → 业务层 → 调 → 数据层
+数据层 → 不知道 (不能调) → 业务层 → 不知道 (不能调) → UI层
+                    ↑ 内层绝对不能知道外层的存在
+</code></pre>
+<p>这就像餐厅后厨：</p>
+<ul>
+<li>前台可以对接后厨（"客人点了一份红烧肉"）</li>
+<li>后厨可以去仓库拿食材（"猪肉不够了，去冷库拿"）</li>
+<li>但后厨不能直接跑出去跟客人聊天（业务层不知道 UI 的存在）</li>
+</ul>
+<h3>怎么判断代码写得好不好？（不用看懂代码）</h3>
+<p>只需要问三个问题：</p>
+<pre lang="text" class="notranslate"><code class="notranslate">① 新功能改了几个文件？
+   → 理想情况：加新文件，不动旧文件（说明结构好）
+   → 坏情况：改 5 个旧文件才能加一个新功能（说明耦合严重）
+
+② "保存"功能出现在几个地方？
+   → 理想情况：只在 data/ 层出现
+   → 坏情况：每个页面都有自己的"保存"逻辑
+
+③ 想改报销上限（10000 → 5000）——去哪改？
+   → 理想情况：只去 domain/ 层的一个文件
+   → 坏情况：搜一下发现有 5 个地方都写了"10000"
+</code></pre>
+<p><strong>这三个问题，比看懂代码更重要。</strong></p>
+<hr>
+<h2>第三章：MVVM——UI 层内部怎么组织</h2>
+<h3>又一个厨房比喻</h3>
+<pre lang="text" class="notranslate"><code class="notranslate">🍽️ View（界面层）     = 摆盘 → 菜长什么样，顾客直接看到
+📋 ViewModel（中间层） = 配菜师 → 把食材加工成适合摆盘的状态
+🧊 Model（数据层）     = 食材 → 原始数据，怎么存的不重要
+</code></pre>
+<h3>MVVM 和三层的区别</h3>
+<p>很多初学者搞混这两个概念，一句话说清楚：</p>
+<pre lang="text" class="notranslate"><code class="notranslate">三层架构是"大格局"——整个 App 怎么分三个大区
+MVVM 是"小模式"——专门管 UI 层内部怎么和业务层交互
+
+它们不冲突，是搭配使用的。
+</code></pre>
+<p>具体长这样：</p>
+<pre lang="text" class="notranslate"><code class="notranslate">三层的大框架：
+    presentation/  ← 这里用 MVVM：View = Widget, ViewModel = Provider
+    domain/        ← 纯业务逻辑，不知道 UI
+    data/          ← 只管数据读写
+</code></pre>
+<h3>什么时候需要 MVVM？</h3>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th align="left">情况</th>
+<th align="left">需要吗</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">只有 1-2 个简单页面，数据不共享</td>
+<td align="left">❌ 不需要，用 setState 更简单</td>
+</tr>
+<tr>
+<td align="left">5+ 个页面，数据需要跨页面共享</td>
+<td align="left">✅ 需要</td>
+</tr>
+<tr>
+<td align="left">同一批数据要在不同页面展示不同样子</td>
+<td align="left">✅ 需要</td>
+</tr>
+<tr>
+<td align="left">要写测试</td>
+<td align="left">✅ 需要（ViewModel 可以脱离 UI 单独测试）</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<hr>
+<h2>第四章：DDD（领域驱动设计）——大项目的分而治之</h2>
+<h3>什么是"领域"？</h3>
+<pre lang="text" class="notranslate"><code class="notranslate">做报销 App → "报销"就是你的领域
+做外卖 App → "外卖"就是你的领域
+做记账 App → "账单"就是你的领域
+</code></pre>
+<p>DDD 的核心思想只有一句话：</p>
+<blockquote>
+<p><strong>代码的结构，应该和业务的结构保持一致。</strong></p>
+</blockquote>
+<h3>用超市类比理解</h3>
+<pre lang="text" class="notranslate"><code class="notranslate">三层架构 = 按职能分区的超市
+  一个仓库区管所有货
+  一个收银区管所有收银
+  一个货架区摆所有商品
+
+DDD = 按商品类别分区的超市
+  生鲜区有：自己的冷库 + 自己的收银 + 自己的货架
+  日用品区有：自己的仓库 + 自己的收银 + 自己的货架
+</code></pre>
+<p>每个区都是一个<strong>独立的小超市</strong>，各管各的，互不干扰。改生鲜区的规则不会影响到日用品区。</p>
+<h3>那到底该用什么架构？</h3>
+<p>这个表格直接照着选就行：</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th align="left">项目规模</th>
+<th align="left">推荐架构</th>
+<th align="left">状态管理</th>
+<th align="left">适合谁</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">🐣 微型（1-3 页面）</td>
+<td align="left">不分层，单文件</td>
+<td align="left">setState</td>
+<td align="left">个人小工具</td>
+</tr>
+<tr>
+<td align="left">🐕 小型（3-10 页面）</td>
+<td align="left">简单分层：UI / 逻辑 / 数据</td>
+<td align="left">Provider</td>
+<td align="left">个人 App MVP</td>
+</tr>
+<tr>
+<td align="left">🐘 中型（10-50 页面）</td>
+<td align="left">三层架构 + MVVM</td>
+<td align="left">Riverpod</td>
+<td align="left">正式产品</td>
+</tr>
+<tr>
+<td align="left">🏢 大型（50+ 页，多人团队）</td>
+<td align="left">三层 + MVVM + DDD 思想</td>
+<td align="left">Riverpod / Bloc</td>
+<td align="left">复杂业务系统</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<h3>三步快速选型法</h3>
+<pre lang="text" class="notranslate"><code class="notranslate">第1步：数页面数量
+   1-3页 → 微型方案，别折腾
+   3页以上 → 继续往下看
+
+第2步：要不要多人协作？
+   一个人开发 → 小型/中型
+   团队开发 → 中型/大型
+
+第3步：业务复杂吗？
+   简单增删改查 → 三层架构足够
+   多角色、多流程、多规则 → 引入 DDD 思想
+</code></pre>
+<h3>给报销 App 做个诊断</h3>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th align="left">维度</th>
+<th align="left">你的情况</th>
+<th align="left">结论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">页面数</td>
+<td align="left">大概 10-20 个</td>
+<td align="left">🐘 中型</td>
+</tr>
+<tr>
+<td align="left">开发人数</td>
+<td align="left">1 人</td>
+<td align="left">🐕 小型</td>
+</tr>
+<tr>
+<td align="left">业务复杂度</td>
+<td align="left">多角色多状态</td>
+<td align="left">🔶 中等偏复杂</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p><strong>建议：三层架构 + MVVM（Riverpod）</strong></p>
+<p>初创期用三层 + MVVM 打好骨架，增长期用 DDD 思想分疆而治。</p>
+<hr>
+<h2>这篇的核心收获</h2>
+<pre lang="text" class="notranslate"><code class="notranslate">① 写代码前先三问：价值锚点？第一动作？Not-To-Do？
+② 三层架构 = UI / 业务 / 数据，各管各的
+③ 核心规则：只准外层调内层，内层不知道外层的存在
+④ MVVM = UI 层内部的组织方式，和三层是搭配关系
+⑤ DDD = 大项目时按业务领域分模块，各模块独立
+⑥ 不同项目大小用不同架构，不要过度设计
+⑦ 小白判断代码好坏：看"改一个功能要动几个文件"就够了
+</code></pre>
+<hr>
+<p><strong>📌 下篇预告：</strong> 架构选好了，下一步就是让 App 看起来好看。下一篇讲 UI 设计体系——怎么用 Design Token、Stitch、shadcn_flutter 搭出一套统一漂亮的界面，彻底告别"AI 蓝紫色"和"弗兰肯斯坦 UI"。</p>
+<hr>
+<p><em>本系列整理自我的学习记录《从小白学软件开发》。建议按顺序阅读。</em></p></div>
+<div style="font-size:small;margin-top:8px;float:right;">相信美好的事物正在发生</div>
+
+</div>
+    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://Senkeller.github.io/Earth">Joural of Earth</a></div>
+<div id="footer2">
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+</div>
+
+<script>
+var now=new Date();
+document.getElementById("copyrightYear").innerHTML=now.getFullYear();
+
+if("07/1/2024"!=""){
+    var startSite=new Date("07/1/2024");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("runday").innerHTML="网站运行 "+diffDay+" 天"+" • ";
+}
+</script></div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+
+
+
+
+
+</script>
+<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekTOC.js'></script><script src='./assets/journal-post.js'></script>
+
+</html>
