@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
+    <script src='./assets/GmeekBSZ.js'></script><script src='./assets/yifantheme.js'></script>
+    <link rel="icon" href="https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="# ① AI 时代的软件开发新思维
+
+> 一个零基础小白的真实学习记录
+>
+> 阅读时间：约 12 分钟
+> 难度：★☆☆☆☆（完全零基础友好）
+
+---
+
+## 写在前面：这篇文章是给谁看的？
+
+如果你符合以下任意一条，这篇文章就是为你写的：
+
+- 你完全没学过编程，但想自己做一个 App
+- 你用过 ChatGPT 写代码，但出来的东西总是'能用但不好用'
+- 你听说过 Vibecoding（用 AI 哼着歌就把代码写了），但试了几次发现代码越改越乱
+- 你想知道 AI 时代学软件开发，到底该学什么、怎么学
+
+这篇文章整理自我和 AI 助手的真实对话记录。">
+<meta property="og:title" content="一个零基础小白的真实学习记录-① AI 时代的软件开发新思维">
+<meta property="og:description" content="# ① AI 时代的软件开发新思维
+
+> 一个零基础小白的真实学习记录
+>
+> 阅读时间：约 12 分钟
+> 难度：★☆☆☆☆（完全零基础友好）
+
+---
+
+## 写在前面：这篇文章是给谁看的？
+
+如果你符合以下任意一条，这篇文章就是为你写的：
+
+- 你完全没学过编程，但想自己做一个 App
+- 你用过 ChatGPT 写代码，但出来的东西总是'能用但不好用'
+- 你听说过 Vibecoding（用 AI 哼着歌就把代码写了），但试了几次发现代码越改越乱
+- 你想知道 AI 时代学软件开发，到底该学什么、怎么学
+
+这篇文章整理自我和 AI 助手的真实对话记录。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://Senkeller.github.io/Earth/post/yi-ge-ling-ji-chu-xiao-bai-de-zhen-shi-xue-xi-ji-lu--%E2%91%A0%20AI%20-shi-dai-de-ruan-jian-kai-fa-xin-si-wei.html">
+<meta property="og:image" content="https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590">
+<title>一个零基础小白的真实学习记录-① AI 时代的软件开发新思维</title>
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
+
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+.copy-feedback {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    color: var(--color-fg-on-emphasis);
+    background-color: var(--color-fg-muted);
+    border-radius: 3px;
+    padding: 5px 8px;
+    font-size: 12px;
+}
+</style>
+<link rel='stylesheet' href='./assets/journal-style.css'>
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">一个零基础小白的真实学习记录-① AI 时代的软件开发新思维</h1>
+<div class="title-right">
+    <a href="https://Senkeller.github.io/Earth" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/Senkeller/Earth/issues/32" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><h1>① AI 时代的软件开发新思维</h1>
+<blockquote>
+<p>一个零基础小白的真实学习记录</p>
+<p>阅读时间：约 12 分钟<br>
+难度：★☆☆☆☆（完全零基础友好）</p>
+</blockquote>
+<hr>
+<h2>写在前面：这篇文章是给谁看的？</h2>
+<p>如果你符合以下任意一条，这篇文章就是为你写的：</p>
+<ul>
+<li>你完全没学过编程，但想自己做一个 App</li>
+<li>你用过 ChatGPT 写代码，但出来的东西总是"能用但不好用"</li>
+<li>你听说过 Vibecoding（用 AI 哼着歌就把代码写了），但试了几次发现代码越改越乱</li>
+<li>你想知道 AI 时代学软件开发，到底该学什么、怎么学</li>
+</ul>
+<p>这篇文章整理自我和 AI 助手的真实对话记录。我不是程序员，没有技术背景，就是一个"想知道 App 怎么做出来的"普通人。</p>
+<p>下面记录的是我在学习过程中问过的问题、踩过的坑、和 AI 给我的回答。</p>
+<hr>
+<h2>第一篇：软件开发的底牌变了</h2>
+<p>在开始学任何具体技术之前，有一件事你必须先想清楚——</p>
+<p><strong>AI 时代，学软件开发和十年前完全不一样了。</strong></p>
+<p>十年前：</p>
+<pre lang="text" class="notranslate"><code class="notranslate">你要学编程语言 → 学语法 → 学框架 → 学工具 → 学部署
+每个环节都要自己亲手做
+学一年才能做出一个"能看"的东西
+</code></pre>
+<p>现在：</p>
+<pre lang="text" class="notranslate"><code class="notranslate">你只需要学会"怎么跟 AI 描述你要什么"
+AI 帮你写 90% 的代码
+你的价值在于：知道要做什么、知道什么不该做、知道怎么验收
+</code></pre>
+<p>这不是夸张。下面我就用我自己的经历告诉你，一个零基础的人是怎么在 AI 帮助下，理解整个软件开发流程的。</p>
+<hr>
+<h2>第一篇核心：三个必须知道的概念</h2>
+<h3>概念一：什么是 Skills（技能）？</h3>
+<p>如果你用过 ChatGPT，你肯定遇到过这种情况——同一个问题，它有时候回答得很好，有时候胡说八道。</p>
+<p>Skills 就是为了解决这个问题而生的。</p>
+<p><strong>Skills = 给 AI 看的"操作手册"</strong></p>
+<p>比如，你让 AI 帮你做一道菜：</p>
+<ul>
+<li>没有 Skill：AI 凭自己的"常识"乱做，可能做成黑暗料理</li>
+<li>有 Skill：AI 按食谱做，每一步都有明确指引</li>
+</ul>
+<p>在实际开发中，Skills 长这样：</p>
+<div class="highlight highlight-source-yaml"><pre class="notranslate"><span class="pl-ent">name</span>: <span class="pl-s">github-pr-workflow</span>
+<span class="pl-ent">description</span>: <span class="pl-s"><span class="pl-pds">"</span>Use when creating or reviewing a GitHub Pull Request<span class="pl-pds">"</span></span>
+<span class="pl-ent">steps</span>:
+  <span class="pl-s">1. git checkout -b feature/xxx</span>
+  <span class="pl-s">2. 写代码</span>
+  <span class="pl-ent">3. git commit -m "feat</span>: <span class="pl-s">xxx"</span>
+  <span class="pl-s">4. gh pr create --fill</span></pre></div>
+<p>当你告诉 AI "创建个 PR"，它加载这个 Skill，就知道该按什么步骤做。</p>
+<p><strong>Skills 的核心理念：</strong> 不是让 AI 自由发挥，而是让 AI 按你的成熟流程执行。</p>
+<hr>
+<h3>概念二：什么是 Agent 开发？</h3>
+<p>你可能听说过"Agent"这个词，感觉很高大上。其实很简单。</p>
+<p><strong>传统程序和 Agent 的区别：</strong></p>
+<pre lang="text" class="notranslate"><code class="notranslate">传统程序：输入 → [固定的 if/else 逻辑] → 输出
+  就像一台自动售货机——投币、选商品、出货，过程是固定的
+
+Agent：   输入 → [大模型 + 工具 + 记忆 + 规划] → 决策 + 行动
+  像一个有脑子的助手——你说"帮我订个外卖"，它自己查餐厅、比价格、下单
+</code></pre>
+<p>一个 Agent 有三个核心零件：</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th align="left">零件</th>
+<th align="left">是什么</th>
+<th align="left">打个比方</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">🧠 <strong>大脑（LLM）</strong></td>
+<td align="left">理解你的话、做推理决策的大模型</td>
+<td align="left">人的大脑</td>
+</tr>
+<tr>
+<td align="left">🛠️ <strong>工具集（Tools）</strong></td>
+<td align="left">Agent 能用什么工具（读文件、写代码、搜网页）</td>
+<td align="left">人的手和脚</td>
+</tr>
+<tr>
+<td align="left">📋 <strong>行为规则（Prompt + Skills）</strong></td>
+<td align="left">什么时候用什么工具、按什么步骤做</td>
+<td align="left">人的行为准则</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p><strong>一个最简 Agent 的核心逻辑，其实就这么几行（不用看懂，感受一下）：</strong></p>
+<div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-v">SimpleAgent</span>:
+    <span class="pl-k">def</span> <span class="pl-en">__init__</span>(<span class="pl-s1">self</span>, <span class="pl-s1">llm_client</span>, <span class="pl-s1">tools</span>):
+        <span class="pl-s1">self</span>.<span class="pl-c1">llm</span> <span class="pl-c1">=</span> <span class="pl-s1">llm_client</span>
+        <span class="pl-s1">self</span>.<span class="pl-c1">tools</span> <span class="pl-c1">=</span> <span class="pl-s1">tools</span>
+        <span class="pl-s1">self</span>.<span class="pl-c1">memory</span> <span class="pl-c1">=</span> []
+    
+    <span class="pl-k">def</span> <span class="pl-en">run</span>(<span class="pl-s1">self</span>, <span class="pl-s1">user_input</span>):
+        <span class="pl-s1">prompt</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-c1">build_prompt</span>(<span class="pl-s1">user_input</span>)
+        <span class="pl-s1">response</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-c1">llm</span>.<span class="pl-c1">chat</span>(<span class="pl-s1">prompt</span>)
+        <span class="pl-k">if</span> <span class="pl-s1">response</span>.<span class="pl-c1">has_tool_call</span>():
+            <span class="pl-s1">result</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-c1">execute_tool</span>(<span class="pl-s1">response</span>.<span class="pl-c1">tool_call</span>)
+            <span class="pl-k">return</span> <span class="pl-s1">self</span>.<span class="pl-c1">run</span>(<span class="pl-s1">result</span>)  <span class="pl-c"># 递归——做完一步接着做下一步</span>
+        <span class="pl-k">return</span> <span class="pl-s1">response</span>.<span class="pl-c1">text</span></pre></div>
+<p>关键在最后一行的<strong>递归调用</strong>——Agent 做一步、看结果、再做下一步，而不是一次输出完就没下文了。</p>
+<p>这就是为什么 Agent 能"自主完成一个任务"，而普通 AI 只能"回答一个问题"。</p>
+<hr>
+<h3>概念三：Vibecoding 的三大陷阱</h3>
+<p>Vibecoding（用 AI 哼着歌写代码）听起来很美好——你说"帮我做个 App"，AI 一口气给你全写出来。</p>
+<p>但你试过就知道，这样出来的东西，最初看起来很惊艳，用起来全是坑。</p>
+<h4>陷阱 1：逻辑稀释</h4>
+<pre lang="text" class="notranslate"><code class="notranslate">你让 AI 做一个"报销 App"：
+→ AI 把 50% 的精力花在按钮颜色、圆角大小、页面动画上
+→ 剩下 50% 才用在核心功能（提交报销、审批流程）
+→ 结果：UI 花里胡哨，核心功能漏洞百出
+
+这就像你让厨师做一桌菜：
+→ 厨师花了 2 小时雕萝卜花做摆盘
+→ 主菜随便炒了炒
+→ 端上来好看，但不好吃
+</code></pre>
+<p><strong>AI 的注意力是有限的。</strong> 你让它一次做太多，它就照顾不过来。</p>
+<h4>陷阱 2：技术债堆积——弗兰肯斯坦困境</h4>
+<p>这是 Vibecoding 最大的坑。</p>
+<pre lang="text" class="notranslate"><code class="notranslate">第1次：AI 用 TableView 做列表 ✅ 看起来不错
+第2次：你说"加个搜索" → AI 改成 SearchBar + ListView
+第3次：你说"加筛选" → AI 改成 CustomScrollView
+第4次：你说"加个编辑功能" → AI 用 BottomSheet，和之前的风格完全不搭
+</code></pre>
+<p>结果就是一个 App 里，每个控件都有自己的"脾气"——这个页面圆角 8px，那个页面圆角 16px；这个页面用蓝色按钮，那个页面用灰色按钮。看起来像<strong>弗兰肯斯坦</strong>——用不同尸体的零件拼出来的怪物。</p>
+<p><strong>根本原因：AI 没有"全局设计系统"的概念。</strong> 它每次只看你当前的要求，不知道前面做了什么选择。</p>
+<h4>陷阱 3：反馈断裂</h4>
+<p>Vibecoding 的精髓是"快速生成 → 即时反馈"——写一段、看效果、再改。</p>
+<p>但你让 AI "一次写完所有功能"：</p>
+<pre lang="text" class="notranslate"><code class="notranslate">→ AI 埋头写了 2000 行代码
+→ 你一看——完全不是你要的样子
+→ 想改——不知道从哪改起
+→ 重来——又浪费几十分钟
+</code></pre>
+<p><strong>核心原因：AI 的"智力"有上下文边界。</strong> 项目越大，AI 要处理的关系越复杂，一旦超过临界点，AI 就开始"幻觉"——你以为它在写代码，其实它在编造不存在的逻辑。</p>
+<hr>
+<h2>解决思路：三个方法</h2>
+<h3>方法一：做减法——什么是 MVP</h3>
+<p>MVP（Minimum Viable Product，最小可行产品）是解决上面所有问题的钥匙。</p>
+<pre lang="text" class="notranslate"><code class="notranslate">不是"这个功能也加上吧"
+而是"这个功能能砍掉吗？"
+
+不是"让 AI 一次性做完"
+而是"先让 AI 做一个能跑的最小版本"
+</code></pre>
+<p><strong>每加一个功能前先问自己：</strong></p>
+<ol>
+<li>没有这个功能，用户能不能完成核心任务？</li>
+<li>这个功能能不能放到 V2？</li>
+<li>这个"顺便做一下"会不会增加 3 倍的复杂度？</li>
+</ol>
+<h3>方法二：定规矩——DESIGN_SYSTEM.md</h3>
+<p>不要让 AI 自由发挥样式。在项目里放一个设计规范文件，每次开发前告诉 AI "先读这个文件"。</p>
+<div class="highlight highlight-text-md"><pre class="notranslate"><span class="pl-mh"># <span class="pl-en">DESIGN_SYSTEM.md</span></span>
+
+本项目 UI 规范：
+🎨 颜色：暖棕 #D4A574 / 米白 #F5E6D3 / 暖白底 #FFF8F0
+📐 圆角：卡片 20px / 按钮 30px（胶囊形）/ 输入框 16px
+🖋️ 字号：标题 18px Bold / 正文 14px / 辅助 12px
+📏 间距：卡片内边距 24px / 卡片间距 16px / 页面边距 20px</pre></div>
+<h3>方法三：用好 Git 后悔药</h3>
+<p>每次 AI 改完代码，确认没问题了再 <code class="notranslate">git commit</code>。改坏了直接 <code class="notranslate">git revert</code> 恢复。</p>
+<p><strong>不需要懂 Git 原理</strong>，只需要记住这个流程：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">AI 写代码 → 你检查 → 没问题 → git commit
+                   → 有问题 → git revert → 重来</pre></div>
+<hr>
+<h2>这篇的核心收获</h2>
+<pre class="notranslate"><code class="notranslate">① Skills = 给 AI 看的操作手册，让 AI 按你的流程走
+② Agent = 有大脑+工具+规则的自主执行者，不是简单的问答机器
+③ Vibecoding 有三大陷阱（逻辑稀释、技术债、反馈断裂）
+④ MVP 思维 = 砍功能比加功能重要
+⑤ 定规矩（DESIGN_SYSTEM.md）比 AI 自由发挥靠谱
+⑥ Git 是后悔药，AI 时代更不能缺
+</code></pre>
+<hr>
+<p><strong>📌 下篇预告：</strong> 当你知道了" AI 会犯什么错"，下一步就是学会"怎么让 AI 不犯错"——这就是软件架构要做的事。下一篇我们将用一个厨房的比喻，把三层架构、MVVM、DDD 这些听起来吓人的概念，一次讲清楚。</p>
+<hr>
+<p><em>本系列文章整理自我的学习记录《从小白学软件开发》。如果你是从零开始、想用 AI 辅助开发的人，建议按顺序阅读。</em></p></div>
+<div style="font-size:small;margin-top:8px;float:right;">相信美好的事物正在发生</div>
+
+</div>
+    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://Senkeller.github.io/Earth">Joural of Earth</a></div>
+<div id="footer2">
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+</div>
+
+<script>
+var now=new Date();
+document.getElementById("copyrightYear").innerHTML=now.getFullYear();
+
+if("07/1/2024"!=""){
+    var startSite=new Date("07/1/2024");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("runday").innerHTML="网站运行 "+diffDay+" 天"+" • ";
+}
+</script></div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z', 'copy': 'M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z', 'check': 'M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const createClipboardHTML = (codeContent, additionalClasses = '') => `
+        <pre class="notranslate"><code class="notranslate">${codeContent}</code></pre>
+        <div class="clipboard-container position-absolute right-0 top-0 ${additionalClasses}">
+            <clipboard-copy class="ClipboardButton btn m-2 p-0" role="button" style="display: inherit;">
+                <svg height="16" width="16" class="octicon octicon-copy m-2"><path d="${IconList["copy"]}"></path></svg>
+                <svg height="16" width="16" class="octicon octicon-check color-fg-success m-2 d-none"><path d="${IconList["check"]}"></path></svg>
+            </clipboard-copy>
+            <div class="copy-feedback">Copied!</div>
+        </div>
+    `;
+
+    const handleCodeElements = (selector = '') => {
+        document.querySelectorAll(selector).forEach(codeElement => {
+            const codeContent = codeElement.innerHTML;
+            const newStructure = document.createElement('div');
+            newStructure.className = 'snippet-clipboard-content position-relative overflow-auto';
+            newStructure.innerHTML = createClipboardHTML(codeContent);
+
+            const parentElement = codeElement.parentElement;
+            if (selector.includes('highlight')) {
+                parentElement.insertBefore(newStructure, codeElement.nextSibling);
+                parentElement.removeChild(codeElement);
+            } else {
+                parentElement.parentElement.replaceChild(newStructure, parentElement);
+            }
+        });
+    };
+
+    handleCodeElements('pre.notranslate > code.notranslate');
+    handleCodeElements('div.highlight > pre.notranslate');
+
+    let currentFeedback = null;
+    document.querySelectorAll('clipboard-copy').forEach(copyButton => {
+        copyButton.addEventListener('click', () => {
+            const codeContent = copyButton.closest('.snippet-clipboard-content').innerText;
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = codeContent;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+
+            const copyIcon = copyButton.querySelector('.octicon-copy');
+            const checkIcon = copyButton.querySelector('.octicon-check');
+            const copyFeedback = copyButton.nextElementSibling;
+
+            if (currentFeedback && currentFeedback !== copyFeedback) {currentFeedback.style.display = 'none';}
+            currentFeedback = copyFeedback;
+
+            copyIcon.classList.add('d-none');
+            checkIcon.classList.remove('d-none');
+            copyFeedback.style.display = 'block';
+            copyButton.style.borderColor = 'var(--color-success-fg)';
+
+            setTimeout(() => {
+                copyIcon.classList.remove('d-none');
+                checkIcon.classList.add('d-none');
+                copyFeedback.style.display = 'none';
+                copyButton.style.borderColor = '';
+            }, 2000);
+        });
+    });
+});
+
+</script>
+<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekTOC.js'></script><script src='./assets/journal-post.js'></script>
+
+</html>

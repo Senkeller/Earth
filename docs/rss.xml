@@ -1,5 +1,23 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Joural of Earth</title><link>https://Senkeller.github.io/Earth</link><description>地球上的任何事物都在此享有自由</description><copyright>Joural of Earth</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590</url><title>avatar</title><link>https://Senkeller.github.io/Earth</link></image><lastBuildDate>Fri, 08 May 2026 01:29:10 +0000</lastBuildDate><managingEditor>Joural of Earth</managingEditor><ttl>60</ttl><webMaster>Joural of Earth</webMaster><item><title>阴离子改性以及阳离子改性</title><link>https://Senkeller.github.io/Earth/post/yin-li-zi-gai-xing-yi-ji-yang-li-zi-gai-xing.html</link><description># 纤维素和木材表面的电荷特性&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Joural of Earth</title><link>https://Senkeller.github.io/Earth</link><description>地球上的任何事物都在此享有自由</description><copyright>Joural of Earth</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590</url><title>avatar</title><link>https://Senkeller.github.io/Earth</link></image><lastBuildDate>Fri, 12 Jun 2026 09:49:13 +0000</lastBuildDate><managingEditor>Joural of Earth</managingEditor><ttl>60</ttl><webMaster>Joural of Earth</webMaster><item><title>一个零基础小白的真实学习记录-① AI 时代的软件开发新思维</title><link>https://Senkeller.github.io/Earth/post/yi-ge-ling-ji-chu-xiao-bai-de-zhen-shi-xue-xi-ji-lu--%E2%91%A0%20AI%20-shi-dai-de-ruan-jian-kai-fa-xin-si-wei.html</link><description># ① AI 时代的软件开发新思维
+
+&gt; 一个零基础小白的真实学习记录
+&gt;
+&gt; 阅读时间：约 12 分钟
+&gt; 难度：★☆☆☆☆（完全零基础友好）
+
+---
+
+## 写在前面：这篇文章是给谁看的？
+
+如果你符合以下任意一条，这篇文章就是为你写的：
+
+- 你完全没学过编程，但想自己做一个 App
+- 你用过 ChatGPT 写代码，但出来的东西总是'能用但不好用'
+- 你听说过 Vibecoding（用 AI 哼着歌就把代码写了），但试了几次发现代码越改越乱
+- 你想知道 AI 时代学软件开发，到底该学什么、怎么学
+
+这篇文章整理自我和 AI 助手的真实对话记录。</description><guid isPermaLink="true">https://Senkeller.github.io/Earth/post/yi-ge-ling-ji-chu-xiao-bai-de-zhen-shi-xue-xi-ji-lu--%E2%91%A0%20AI%20-shi-dai-de-ruan-jian-kai-fa-xin-si-wei.html</guid><pubDate>Fri, 12 Jun 2026 09:44:28 +0000</pubDate></item><item><title>阴离子改性以及阳离子改性</title><link>https://Senkeller.github.io/Earth/post/yin-li-zi-gai-xing-yi-ji-yang-li-zi-gai-xing.html</link><description># 纤维素和木材表面的电荷特性&#13;
 &#13;
 纤维素和木材表面通常带有负电荷，原因如下：&#13;
 &#13;
