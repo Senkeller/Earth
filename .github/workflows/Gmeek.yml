@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     name: Generate blog
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     if: ${{ github.event.repository.owner.id == github.event.sender.id || github.event_name == 'schedule' }}
     permissions: write-all
     steps:
@@ -70,7 +70,7 @@ jobs:
           
   deploy:
     name: Deploy blog
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build
     permissions:
       contents: write
