@@ -14,46 +14,33 @@
 <title>Journal of Earth - Tag</title>
 
 </head>
+<!-- 布局样式统一下沉到共享纸刊样式表（assets/journal-style.css），由每个页面显式加载。
+     此处不再写 body/#header/#footer 的硬编码布局：内联的 ID 选择器特异性高于共享 CSS 的
+     类选择器，一旦写入就会在样式顺序上覆盖纸刊视觉（border/margin/line-height 均会冲突）。
+     只保留一个极端兜底，用于未加载共享样式的场景保证可读性。 -->
 <style>
-body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
-#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
-#footer {margin-top:64px; text-align: center;font-size: small;}
-
+body{margin:0 auto;padding:45px;font-size:16px;line-height:1.25;}
 </style>
 
 <style>
-.tagTitle{margin:auto 0;font-size:40px;font-weight:bold;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
-.title-right{display:flex;margin:auto 0 0 auto;}
-.title-right .circle{padding: 14px 16px;margin-right:8px;}
-
-.subnav-search{width:222px;margin-top:8px;margin-right:8px;}
-.subnav-search-input{width:160px;border-top-right-radius:0px;border-bottom-right-radius:0px;}
-.subnav-search button{padding:5px 8px;border-top-left-radius:0px;border-bottom-left-radius:0px;}
-
+/* 标签页内联样式只保留共享纸刊样式表不覆盖的细节：
+   页标题/目录标题的省略号、图标间距依赖这里的 overflow，Task1 契约要求
+   共享 CSS 不含裁剪类规则，故这些细节留在本模板局部。 */
+.tagTitle{margin:auto 0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-family:var(--fontStack-headings,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif);}
 .SideNav-icon{margin-right:16px}
-.Label{color: #fff;margin-left:4px;}
-#taglabel .Label {margin-bottom:8px;}
-.Counter{color:#fff;background-color:rgba(234, 238, 242, 0.5)}
-
-.genTime{float: right;}
 .d-flex{min-width:0;}
-.listTitle{overflow:hidden;white-space:nowrap;text-overflow: ellipsis;max-width: 100%;}
-.listLabels{white-space:nowrap;}
-
-@media (max-width: 600px) {
-    body { padding: 8px;}
-    .tagTitle{display:none;}
-    .LabelTime{display:none;}
-}
+.listTitle{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:100%;}
 </style>
+<!-- 共享纸刊样式：与文章页/首页同一份，保证标签筛选结果与原视觉一致 -->
+<link rel="stylesheet" href="https://Senkeller.github.io/Earth/assets/journal-style.css" />
 
 
-<body>
-    <div id="header">
-<span class="tagTitle"><span>Loading</span><span class="AnimatedEllipsis"></span></span>
+<body class="journal-site">
+    <div id="header" class="journal-header">
+<span class="tagTitle journal-page-title"><span>Loading</span><span class="AnimatedEllipsis"></span></span>
 <div class="title-right">
-    <div class="subnav-search">
-        <input type="search" class="form-control subnav-search-input float-left" aria-label="Search site" value="" style="height:32px;">
+    <div class="subnav-search journal-search">
+        <input type="search" class="form-control subnav-search-input float-left journal-search-input" aria-label="Search site" value="" style="height:32px;">
         <button class="btn float-left" type="submit" onclick="javascript:searchShow()">搜索</button>
         <svg class="subnav-search-icon octicon octicon-search" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
             <path id="searchSVG" fill-rule="evenodd"></path>
@@ -71,12 +58,12 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     </a>
 </div>
 </div>
-    <div id="content">
-<div id="taglabel" style="margin-bottom:8px;"></div>
-<nav class="SideNav"></nav>
-<div class="notFind" style="display:none;font-size:24px;margin:8px;">Not Find</div>
+    <div id="content" class="journal-content">
+<div id="taglabel" class="journal-tags" style="margin-bottom:8px;"></div>
+<nav class="SideNav journal-list"></nav>
+<div class="notFind journal-none" style="display:none;font-size:24px;margin:8px;">Not Find</div>
 </div>
-    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://Senkeller.github.io/Earth">Journal of Earth</a></div>
+    <div id="footer" class="journal-footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://Senkeller.github.io/Earth">Journal of Earth</a></div>
 <div id="footer2">
     <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
 </div>
@@ -181,11 +168,11 @@ function showList(labelsCount){
             let div=document.createElement("div");
             div.setAttribute("class","lists "+jsonData[i]['labels'].join(" "));
             let item=document.createElement("a");
-            item.setAttribute("class","SideNav-item d-flex flex-items-center flex-justify-between");
+            item.setAttribute("class","SideNav-item d-flex flex-items-center flex-justify-between journal-row");
             item.setAttribute("href",jsonData[i]['postUrl']);
 
             let center=document.createElement("div");
-            center.setAttribute("class","d-flex flex-items-center");
+            center.setAttribute("class","d-flex flex-items-center journal-dir-icon");
 
             svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
             path=document.createElementNS("http://www.w3.org/2000/svg","path"); 
@@ -202,7 +189,7 @@ function showList(labelsCount){
             center.appendChild(title);
 
             let listLabels=document.createElement("div");
-            listLabels.setAttribute("class","listLabels");
+            listLabels.setAttribute("class","listLabels journal-meta");
             
             for(label of jsonData[i]['labels']){
                 let LabelName=document.createElement("span");

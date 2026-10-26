@@ -21,105 +21,32 @@
 
 
 </head>
+<!-- 布局样式统一下沉到共享纸刊样式表（assets/journal-style.css），由每个页面显式加载。
+     此处不再写 body/#header/#footer 的硬编码布局：内联的 ID 选择器特异性高于共享 CSS 的
+     类选择器，一旦写入就会在样式顺序上覆盖纸刊视觉（border/margin/line-height 均会冲突）。
+     只保留一个极端兜底，用于未加载共享样式的场景保证可读性。 -->
 <style>
-body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
-#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
-#footer {margin-top:64px; text-align: center;font-size: small;}
-
+body{margin:0 auto;padding:45px;font-size:16px;line-height:1.25;}
 </style>
 
 <style>
-/* ================= 期刊阅读器样式 ================= */
+/* 期刊文章页：此处只保留共享 CSS 之外的差异项。
+   纸页与正文排版统一由共享 CSS（journal-style.css）控制，
+   避免内联的 14px 字号、0.6em 段距与 fixed 高度裁剪等旧规则与新令牌冲突。 */
 .title-right{display:flex;margin:auto 0 0 auto;}
-.title-right .circle{padding: 14px 16px;margin-right:8px;}
+.title-right .circle{padding:14px 16px;margin-right:8px;}
 .g-emoji{font-size:24px;}
-
-/* 期刊头部（题名/作者/摘要/关键词） */
-.journal-head{border-bottom:1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom:24px;padding-bottom:20px;text-align:center;}
-.journal-title{margin:0 0 12px;font-size:24px;font-weight:700;line-height:1.5;font-family:var(--fontStack-headings,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif);}
-.journal-authors{margin-bottom:4px;font-size:15px;color:var(--fgColor-default,var(--color-fg-default));}
-.journal-affil{margin-bottom:14px;font-size:13px;color:var(--fgColor-muted,var(--color-fg-muted));}
-.journal-abstract{margin:14px auto 0;max-width:760px;text-align:left;background:var(--bgColor-muted,var(--color-canvas-subtle));border-left:3px solid var(--borderColor-accent-muted,#0969da);padding:10px 14px;font-size:14px;line-height:1.75;}
-.journal-abstract .jlabel,.journal-keywords .jlabel{font-weight:600;margin-right:4px;}
-.journal-keywords{margin:12px auto 0;max-width:760px;text-align:left;font-size:14px;}
-.jkeyword{display:inline-block;margin:2px 6px 2px 0;padding:1px 10px;border-radius:12px;font-size:12px;color:#fff;line-height:1.7;}
-
-/* 纸面容器：竖屏单列，宽屏横屏双页并排 */
-.journal-paper{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);gap:24px;align-items:start;}
-.jpage{
-    background:#fff;color:#1f2328;
-    box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);
-    border-radius:4px;
-    padding:44px 40px 40px;
-    margin-bottom:20px;
-    height:780px;                /* 页内高：双列各 ~780px */
-    column-count:2;column-gap:38px;column-fill:auto;
-    overflow:hidden;
-    position:relative;
-    font-family:"Songti SC","Noto Serif SC","SimSun",serif;
-    font-size:14px;line-height:1.75;color:#1f2328;
-}
-/* 页脚页码 */
-.jpage::after{
-    counter-increment:jpage-counter;
-    content:counter(jpage-counter);
-    position:absolute;left:0;right:0;bottom:12px;text-align:center;
-    font-family:Helvetica,Arial,sans-serif;font-size:12px;color:#888;
-}
-.journal-paper{counter-reset:jpage-counter;}
-
-/* 期刊正文排版 */
-.jpage.markdown-body{font-family:"Songti SC","Noto Serif SC","SimSun",serif;font-size:14px;line-height:1.75;color:#1f2328;}
-.jpage.markdown-body>p{text-align:justify;text-indent:2em;margin:0 0 0.6em;}
-.jpage.markdown-body h1,.jpage.markdown-body h2,.jpage.markdown-body h3{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;column-span:all;text-indent:0;margin:0.8em 0 0.4em;break-after:avoid;}
-.jpage.markdown-body h1{font-size:18px;}
-.jpage.markdown-body h2{font-size:16px;}
-.jpage.markdown-body h3{font-size:15px;}
-.jpage.markdown-body h1:first-child,.jpage.markdown-body h2:first-child{margin-top:0;}
-.jpage.markdown-body ul,.jpage.markdown-body ol{margin:0 0 0.8em;}
-.jpage.markdown-body blockquote{margin:0.4em 0 0.8em;padding:6px 12px;}
-.jpage.markdown-body pre,.jpage.markdown-body .highlight,.jpage.markdown-body table{column-span:all;}
-.jpage.markdown-body pre{max-height:520px;overflow:auto;margin:0.6em 0;}
-.jpage.markdown-body img{max-height:600px;object-fit:contain;}
-.jpage.markdown-body table{display:block;overflow-x:auto;margin:0.6em 0;max-height:560px;}
-.jpage.markdown-body .toc,.jpage.markdown-body hr{column-span:all;}
-.jpage.markdown-body .footnotes{column-span:all;font-size:12px;}
-.jpage.markdown-body .math-renderer, .jpage.markdown-body .katex-display{column-span:all;}
-/* 深色主题下纸面保持纸白、文字深色（读纸刊效果） */
-[data-color-mode="dark"] .jpage{background:#fbfbf8;color:#1a1a1a;}
-[data-color-mode="dark"] .jpage.markdown-body{color:#1a1a1a;}
-[data-color-mode="dark"] .jpage.markdown-body a{color:#0969da;}
-
 #cmButton{height:48px;margin-top:40px;}
 #comments{margin-top:64px;}
 
-/* 文章页解除基础模板的 900px 限制，为横屏双页留出空间 */
-body:has(.journal-paper){max-width:1400px;}
-
-/* 竖屏单页：纸面内部改为单栏 */
-@media (orientation: portrait) {
-    .jpage{column-count:1;column-gap:0;}
-}
-
-/* 横屏宽屏一次显示两张期刊页；窄屏横屏仍保持单页，避免文字过窄 */
-@media (orientation: landscape) and (min-width: 1000px) {
-    .journal-paper{grid-template-columns:repeat(2,minmax(0,1fr));}
-}
-
-/* 移动端：单列自然流动（不分纸页） */
-@media (max-width: 720px) {
-    .journal-paper{max-width:100%;}
-    body{padding:8px;}
-    .journal-title{font-size:20px;}
-}
-
 </style>
+<!-- 共享纸刊样式：显式加载，保证 Task 2 的排版密度/分页安全实际生效 -->
+<link rel="stylesheet" href="https://Senkeller.github.io/Earth/assets/journal-style.css" />
 <link rel='stylesheet' href='/Earth/assets/journal-style.css'>
 
 
-
-<body>
-    <div id="header">
+<body class="journal-site">
+    <div id="header" class="journal-header">
 <div class="title-right">
     <a href="https://Senkeller.github.io/Earth" id="buttonHome" class="btn btn-invisible circle" title="首页">
         <svg class="octicon" width="16" height="16">
@@ -142,7 +69,7 @@ body:has(.journal-paper){max-width:1400px;}
 
 </div>
 </div>
-    <div id="content">
+    <div id="content" class="journal-content">
 <div class="journal-head">
     <h1 class="journal-title">阴离子改性以及阳离子改性</h1>
     <div class="journal-authors">Journal of Earth</div>
@@ -225,7 +152,7 @@ body:has(.journal-paper){max-width:1400px;}
 <div style="font-size:small;margin-top:8px;float:right;">相信美好的事物正在发生</div>
 
 </div>
-    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://Senkeller.github.io/Earth">Journal of Earth</a></div>
+    <div id="footer" class="journal-footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://Senkeller.github.io/Earth">Journal of Earth</a></div>
 <div id="footer2">
     <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
 </div>
@@ -283,123 +210,9 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 
 
 
-/* ================= 期刊纸面分页引擎（滚动模式） ================= */
-(function(){
-    var paper=document.getElementById('journalPaper');
-    var body=document.getElementById('postBody');
-    if(!paper||!body)return;
-
-    /* 去掉与题名重复的首个 h1 */
-    var first=body.firstElementChild;
-    var jt=document.querySelector('.journal-title');
-    if(first&&jt&&first.tagName.toLowerCase()==='h1'){
-        var a=(first.textContent||'').trim().toLowerCase().replace(/\s+/g,'');
-        var b=(jt.textContent||'').trim().toLowerCase().replace(/\s+/g,'');
-        if(a&&(a===b||a.indexOf(b)>=0||b.indexOf(a)>=0))body.removeChild(first);
-    }
-
-    function isTwoPageLayout(){
-        return window.matchMedia('(orientation: landscape) and (min-width: 1000px)').matches;
-    }
-
-    function pageWidth(){
-        var gap=24;
-        return isTwoPageLayout()?Math.floor((paper.clientWidth-gap)/2):paper.clientWidth;
-    }
-
-    function newPage(){
-        var d=document.createElement('div');
-        d.className='jpage markdown-body';
-        paper.appendChild(d);
-        return d;
-    }
-
-    /* 测量容器：按单张纸实际宽度和当前栏数测量 */
-    function newMeasure(){
-        var m=document.createElement('div');
-        var cols=isTwoPageLayout()?2:1;
-        var gap=cols===2?38:0;
-        m.style.cssText='position:absolute;visibility:hidden;top:0;left:0;width:'+pageWidth()+'px;box-sizing:border-box;padding:44px 40px 40px;column-count:'+cols+';column-gap:'+gap+'px;column-fill:auto;font-family:"Songti SC","Noto Serif SC","SimSun",serif;font-size:14px;line-height:1.75;';
-        paper.appendChild(m);
-        return m;
-    }
-
-    function paginate(){
-        /* 清空旧页，元素收回 body */
-        var old=paper.querySelectorAll('.jpage');
-        for(var i=0;i<old.length;i++){
-            while(old[i].firstChild)body.appendChild(old[i].firstChild);
-            paper.removeChild(old[i]);
-        }
-        var measure=newMeasure();
-        var items=[];
-        while(body.firstChild){
-            items.push(body.firstChild);
-            body.removeChild(body.firstChild);
-        }
-        var MEASURE_H=690;   /* 内容区净高略留余量，避免越界被裁剪 */
-        var pages=[];
-        var cur=null;
-        var curItems=[];
-        function commit(){
-            for(var k=0;k<curItems.length;k++)cur.appendChild(curItems[k]);
-            curItems=[];
-        }
-        items.forEach(function(el){
-            measure.appendChild(el);
-            curItems.push(el);
-            if(measure.scrollHeight>MEASURE_H&&curItems.length>1){
-                /* 溢出：最后一个元素移到新页 */
-                measure.removeChild(el);
-                curItems.pop();
-                if(cur)commit();
-                cur=newPage();
-                pages.push(cur);
-                measure.appendChild(el);
-                curItems.push(el);
-                if(measure.scrollHeight>MEASURE_H){
-                    /* 单元素超高（长代码/大图）：限制高度并允许内部滚动 */
-                    el.style.maxHeight=(MEASURE_H-20)+'px';
-                    el.style.overflow='auto';
-                }
-            }
-        });
-        if(cur)commit();
-        if(pages.length===0)newPage();
-        paper.removeChild(measure);
-        return pages;
-    }
-
-    var pages=paginate();
-    var resizeTimer=null;
-    function scheduleRepaginate(){
-        clearTimeout(resizeTimer);
-        resizeTimer=setTimeout(function(){
-            pages=paginate();
-        },200);
-    }
-    window.addEventListener('resize',scheduleRepaginate);
-    window.addEventListener('orientationchange',scheduleRepaginate);
-    if(window.matchMedia){
-        var orientationQuery=window.matchMedia('(orientation: landscape)');
-        if(orientationQuery.addEventListener){
-            orientationQuery.addEventListener('change',scheduleRepaginate);
-        }else if(orientationQuery.addListener){
-            orientationQuery.addListener(scheduleRepaginate);
-        }
-    }
-
-    /* 图片等资源加载完后重新分页（保证高度准确） */
-    var imgs=paper.querySelectorAll('img');
-    var pending=imgs.length;
-    if(pending===0)return;
-    for(var m=0;m<imgs.length;m++){
-        if(imgs[m].complete){if(--pending===0)repage();}
-        else imgs[m].addEventListener('load',function(){if(--pending===0)repage();});
-    }
-    function repage(){pages=paginate();}
-})();
-</script>
+<!-- 纸页分页引擎：已迁移至共享 JS（journal-post.js），
+     显式加载兜底（config 的 script 与这里重复加载时由 JS 内部幂等合并） -->
+<script src="https://Senkeller.github.io/Earth/assets/journal-post.js"></script>
 <script src='/Earth/assets/GmeekTOC.js'></script><script src='/Earth/assets/journal-post.js'></script>
 
 </html>
