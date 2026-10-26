@@ -13,12 +13,12 @@
     "dayTheme": "light",
     "nightTheme": "dark",
     "urlMode": "pinyin",
-    "style": "<link rel='stylesheet' href='./assets/journal-style.css'>",
+    "style": "<link rel='stylesheet' href='/Earth/assets/journal-style.css'>",
     "indexStyle": "",
     "showPostSource": 1,
     "onePageListNum": 20,
-    "script": "<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekTOC.js'></script><script src='./assets/journal-post.js'></script>",
-    "indexScript": "<script src='./assets/yifantheme_index.js'></script>",
-    "allHead": "<script src='./assets/GmeekBSZ.js'></script><script src='./assets/yifantheme.js'></script>",
+    "script": "<script src='/Earth/assets/GmeekTOC.js'></script><script src='/Earth/assets/journal-post.js'></script>",
+    "indexScript": "<script src='/Earth/assets/yifantheme_index.js'></script>",
+    "allHead": "<script src='/Earth/assets/GmeekBSZ.js'></script><script src='/Earth/assets/yifantheme.js'></script>",
     "GMEEK_VERSION": "last"
 }
