@@ -63,6 +63,12 @@
     var paper = postBody.parentElement;
     var body = document.body;
 
+    /* 1.5 剔除正文开头的冗余标题：文章标题已由刊头 .journal-title 呈现，
+          markdown 正文里的首个 h1 是同一标题的重复，分页前移除。 */
+    while (postBody.firstChild && postBody.firstChild.tagName === 'H1') {
+      postBody.removeChild(postBody.firstChild);
+    }
+
     /* 1. 提取顶级块（保留节点引用） */
     var blocks = [];
     while (postBody.firstChild) {
