@@ -128,6 +128,46 @@ body {
 .jkeyword:focus-visible { outline: 2px solid var(--journal-accent, #bc4c00); outline-offset: 2px; }
 
 /* ============ 双栏正文 ============ */
+.jpages {
+  display: block;
+  margin-top: 14px;
+}
+/* 分页纸页：固定页高 + 隐藏溢出，填满即截断到下一页 */
+.jpages .jpage {
+  height: 780px;
+  overflow: hidden;
+  margin-bottom: 28px;
+  page-break-inside: avoid;
+  position: relative;
+  padding-bottom: 34px;   /* 给页脚页码留位 */
+  box-sizing: border-box;
+}
+.jpages .jpage:last-child { margin-bottom: 0; }
+/* 每页底部居中页码 */
+.jpages .jpage::after {
+  counter-increment: jpage-counter;
+  content: counter(jpage-counter);
+  position: absolute;
+  left: 0; right: 0; bottom: 10px;
+  text-align: center;
+  font-family: var(--journal-times);
+  font-size: 12px;
+  color: var(--journal-muted, #766f65);
+}
+.jpages { counter-reset: jpage-counter; }
+/* 续页页眉（页码｜刊名｜期），与设计稿第 2 页一致 */
+.jpages .cont-masthead {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-family: var(--journal-song);
+  border-bottom: 1px solid var(--journal-border, #d8d0c2);
+  padding-bottom: 6px;
+  margin-bottom: 12px;
+}
+.jpages .cont-masthead .mh-side { font-family: var(--journal-times); }
+/* 首页（第1页）不需要续页页眉，有原刊头覆盖 */
+.jpages .jpage:first-child .cont-masthead { display: none; }
 .jpage.markdown-body {
   font-family: var(--journal-song);
   font-size: var(--journal-body-size, 15px);
@@ -137,7 +177,7 @@ body {
   column-gap: 40px;
   text-align: justify;
   text-justify: inter-ideograph;
-  margin-top: 14px;
+  margin-top: 0;
 }
 .jpage.markdown-body > p {
   text-indent: 2em;
