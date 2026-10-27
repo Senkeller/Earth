@@ -1,14 +1,13 @@
 /* =========================================================
    Journal of Earth · 文章分页引擎
    ---------------------------------------------------------
-   职责：把 #postBody 的顶级内容块试排进固定页高的多页纸页，
+   职责：把 #postBody 的顶级内容块按固定页高切分到多页纸页，
    让长文呈现论文式分页（设计稿 design-post-preview.html 形态）。
 
-   算法：「试排-回溯」
-   - 逐页循环：把块依序 append 进当前页容器
-   - 每加一块后测量当前页 scrollHeight 是否超过页高
-   - 若超出，块属于下一页（回退，开新页继续）
-   - 用真实渲染测量，多栏/跨栏/代码块高度都由浏览器精确给出
+   算法：测量 → 分配 → 渲染
+   - 测量：把每块 clone 到隐藏测量容器，读真实 offsetHeight
+   - 分配：buildPages 纯函数贪心分页（块不可跨页拆分）
+   - 渲染：按分配结果把块装进固定页高的双栏纸页
 
    可测接口：
    - buildPages(heights, usableHeight)：给定每块高度，纯函数贪心分页，
@@ -20,13 +19,13 @@
 
   var PAGE = {
     height: 780,        /* 页高 px（与 CSS .jpages .jpage 一致） */
-    paddingTop: 0,      /* 页内顶部（续页页眉占位在块内实现） */
+    headerHeight: 32,   /* 续页页眉（页码|刊名|期）占位 */
     paddingBottom: 34   /* 页脚页码留白 */
   };
 
   function getUsableHeight() {
-    /* 页高减去上下 padding，双栏容器里可容纳内容的实际高度 */
-    return PAGE.height - PAGE.paddingTop - PAGE.paddingBottom;
+    /* 页高减去页眉与页脚页码占位，双栏容器里可容纳内容的实际高度 */
+    return PAGE.height - PAGE.headerHeight - PAGE.paddingBottom;
   }
 
   /* ------------------------------------------------------------------
@@ -69,34 +68,53 @@
       postBody.removeChild(postBody.firstChild);
     }
 
-    /* 1. 提取顶级块（保留节点引用） */
+    /* 1. 提取顶级块（保留节点引用，从容器移出） */
     var blocks = [];
     while (postBody.firstChild) {
       blocks.push(postBody.firstChild);
+      postBody.removeChild(postBody.firstChild);
     }
 
-    /* 2. 准备分页容器 */
+    /* 2. 测量每块高度：clone 进隐藏测量容器（单栏自然流，读 offsetHeight）。
+          测量容器宽度与正文容器一致，字体/行高从 .jpage 继承。 */
+    var measure = document.createElement('div');
+    measure.style.cssText =
+      'position:absolute;visibility:hidden;left:-9999px;top:0;z-index:-1;' +
+      'width:' + postBody.clientWidth + 'px;';
+    var jpageRef = document.querySelector('.jpage.markdown-body');
+    if (jpageRef) {
+      var cs = window.getComputedStyle(jpageRef);
+      measure.style.fontFamily = cs.fontFamily;
+      measure.style.fontSize = cs.fontSize;
+      measure.style.lineHeight = cs.lineHeight;
+    }
+    document.body.appendChild(measure);
+
+    var heights = [];
+    for (var i = 0; i < blocks.length; i++) {
+      var clone = blocks[i].cloneNode(true);
+      measure.appendChild(clone);
+      heights.push(clone.offsetHeight || 20);
+      measure.removeChild(clone);
+    }
+    document.body.removeChild(measure);
+
+    /* 3. 分配页（纯函数，块不可拆分） */
+    var pageAssign = buildPages(heights, getUsableHeight());
+
+    /* 4. 渲染：按分配把块装进固定页高的纸页 */
     var jpages = document.createElement('div');
     jpages.className = 'jpages';
 
-    /* 3. 逐页试排：真实渲染测量，回退溢出块 */
-    var usable = getUsableHeight();
-    var pageIndex = 0;
-    var page = newPage(jpages, pageIndex);
-
-    for (var i = 0; i < blocks.length; i++) {
-      page.appendChild(blocks[i]);
-      var over = page.scrollHeight > getUsableHeight();
-      if (over) {
-        /* 弹出这块（回到原 blocks 顺序由拼接保证），开新页 */
-        var popped = page.removeChild(blocks[i]);
-        pageIndex++;
-        page = newPage(jpages, pageIndex);
-        page.appendChild(popped);
+    for (var p = 0; p < pageAssign.length; p++) {
+      var page = newPage(jpages, p);
+      var assign = pageAssign[p].blocks;
+      for (var b = 0; b < assign.length; b++) {
+        page.appendChild(blocks[assign[b]]);
       }
     }
 
-    /* 4. 替换正文容器 */
+    /* 5. 替换正文容器 */
     paper.insertBefore(jpages, postBody);
     paper.removeChild(postBody);
     postBody.setAttribute('data-paginated', '1');
