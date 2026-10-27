@@ -10,9 +10,11 @@
         let theme = localStorage.getItem("meek_theme") || "light";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
-<meta name="description" content="定义 表面胶合强度是指板表面层的刨花或纤维与下层材料之间(未饰面板)或饰面材料与基材之间(饰面板)的粘接强度或粘接质量,用垂直于板面表面层的最大破坏拉力与试件胶合面积之比表示。">
+<meta name="description" content="# 定义
+表面胶合强度是指板表面层的刨花或纤维与下层材料之间(未饰面板)或饰面材料与基材之间(饰面板)的粘接强度或粘接质量,用垂直于板面表面层的最大破坏拉力与试件胶合面积之比表示。">
 <meta property="og:title" content="人造板表面胶合强度测试-方法一与方法二对比">
-<meta property="og:description" content="定义 表面胶合强度是指板表面层的刨花或纤维与下层材料之间(未饰面板)或饰面材料与基材之间(饰面板)的粘接强度或粘接质量,用垂直于板面表面层的最大破坏拉力与试件胶合面积之比表示。">
+<meta property="og:description" content="# 定义
+表面胶合强度是指板表面层的刨花或纤维与下层材料之间(未饰面板)或饰面材料与基材之间(饰面板)的粘接强度或粘接质量,用垂直于板面表面层的最大破坏拉力与试件胶合面积之比表示。">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://Senkeller.github.io/Earth/post/ren-zao-ban-biao-mian-jiao-he-qiang-du-ce-shi---fang-fa-yi-yu-fang-fa-er-dui-bi.html">
 <meta property="og:image" content="https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590">
@@ -21,32 +23,27 @@
 
 
 </head>
-<!-- 布局样式统一下沉到共享纸刊样式表（assets/journal-style.css），由每个页面显式加载。
-     此处不再写 body/#header/#footer 的硬编码布局：内联的 ID 选择器特异性高于共享 CSS 的
-     类选择器，一旦写入就会在样式顺序上覆盖纸刊视觉（border/margin/line-height 均会冲突）。
-     只保留一个极端兜底，用于未加载共享样式的场景保证可读性。 -->
 <style>
-body{margin:0 auto;padding:45px;font-size:16px;line-height:1.25;}
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
 </style>
 
 <style>
-/* 期刊文章页：此处只保留共享 CSS 之外的差异项。
-   纸页与正文排版统一由共享 CSS（journal-style.css）控制，
-   避免内联的 14px 字号、0.6em 段距与 fixed 高度裁剪等旧规则与新令牌冲突。 */
 .title-right{display:flex;margin:auto 0 0 auto;}
 .title-right .circle{padding:14px 16px;margin-right:8px;}
-.g-emoji{font-size:24px;}
 #cmButton{height:48px;margin-top:40px;}
 #comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
 
 </style>
-<!-- 共享纸刊样式：显式加载，保证 Task 2 的排版密度/分页安全实际生效 -->
-<link rel="stylesheet" href="https://Senkeller.github.io/Earth/assets/journal-style.css" />
+<link rel="stylesheet" href="https://Senkeller.github.io/Earth/assets/journal-style.css">
 <link rel='stylesheet' href='/Earth/assets/journal-style.css'>
 
 
-<body class="journal-site">
-    <div id="header" class="journal-header">
+<body>
+    <div id="header">
 <div class="title-right">
     <a href="https://Senkeller.github.io/Earth" id="buttonHome" class="btn btn-invisible circle" title="首页">
         <svg class="octicon" width="16" height="16">
@@ -66,27 +63,36 @@ body{margin:0 auto;padding:45px;font-size:16px;line-height:1.25;}
             <path id="themeSwitch" fill-rule="evenodd"></path>
         </svg>
     </a>
+</div>
+</div>
+    <div id="content">
+<div id="journalPaper">
+    <header class="journal-masthead">
+        <div class="mh-row">
+            <span class="mh-side">2024年11月</span>
+            <span class="mh-center">Journal of Earth</span>
+            <span class="mh-side">Nov. 2024</span>
+        </div>
+        <div class="mh-row journal-issue">
+            <span class="mh-side"></span>
+            <span class="mh-center"></span>
+            <span class="mh-side">No.11</span>
+        </div>
+    </header>
 
-</div>
-</div>
-    <div id="content" class="journal-content">
-<div class="journal-masthead"><span class="jm-left">2024年11月</span>
-    <span class="jm-center">Journal of Earth</span>
-    <span class="jm-right">Nov 2024</span>
-</div>
+    <section class="journal-head">
+        <h1 class="journal-title">人造板表面胶合强度测试-方法一与方法二对比</h1>
+        <div class="journal-authors">Journal of Earth</div>
+        
+        <div class="journal-abstract">
+            <span class="jlabel">摘&nbsp;&nbsp;要：</span><span class="jtext"># 定义
+表面胶合强度是指板表面层的刨花或纤维与下层材料之间(未饰面板)或饰面材料与基材之间(饰面板)的粘接强度或粘接质量,用垂直于板面表面层的最大破坏拉力与试件胶合面积之比表示。</span>
+        </div>
+        
+    </section>
 
-<div class="journal-head">
-    <h1 class="journal-title">人造板表面胶合强度测试-方法一与方法二对比</h1>
-    <div class="journal-authors">Journal of Earth</div>
-    
-    <div class="journal-abstract">
-        <span class="jlabel">摘要：</span><span class="jtext">定义 表面胶合强度是指板表面层的刨花或纤维与下层材料之间(未饰面板)或饰面材料与基材之间(饰面板)的粘接强度或粘接质量,用垂直于板面表面层的最大破坏拉力与试件胶合面积之比表示。</span>
-    </div>
-    
-</div>
-
-<div class="journal-paper" id="journalPaper">
-    <div id="postBody" class="markdown-body"><h1>定义</h1>
+    <div class="journal-paper">
+        <div id="postBody" class="jpage markdown-body"><h1>定义</h1>
 <p>表面胶合强度是指板表面层的刨花或纤维与下层材料之间(未饰面板)或饰面材料与基材之间(饰面板)的粘接强度或粘接质量,用垂直于板面表面层的最大破坏拉力与试件胶合面积之比表示。</p>
 <h2>方法一 适用于未饰面的刨花板、纤维板、水泥刨花板以及非单板饰面的人造板等产品。</h2>
 <p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/fc701a1a-70b0-4ad9-bfb0-a15ed5b38d66"><img src="https://github.com/user-attachments/assets/fc701a1a-70b0-4ad9-bfb0-a15ed5b38d66" alt="img" width="70%" style="max-width: 100%;"></a></p>
@@ -105,13 +111,14 @@ body{margin:0 auto;padding:45px;font-size:16px;line-height:1.25;}
 </ul>
 <p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/3ddd946f-16ef-4d75-a630-48af6cf8ca21"><img src="https://github.com/user-attachments/assets/3ddd946f-16ef-4d75-a630-48af6cf8ca21" alt="{DB85ED38-5200-4889-8219-82E9FA068E74}" style="max-width: 100%;"></a></p>
 <p><a target="_blank" rel="noopener noreferrer" href=""><img src="" alt="img" width="50%" style="max-width: 100%;"></a></p></div>
+        <div class="journal-received">收稿日期：2024-11-04</div>
+        <div class="journal-pagination" aria-label="Page number">1</div>
+    </div>
 </div>
-
-<div class="journal-received">收稿日期：2024-11-04</div>
 <div style="font-size:small;margin-top:8px;float:right;">相信美好的事物正在发生</div>
 
 </div>
-    <div id="footer" class="journal-footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://Senkeller.github.io/Earth">Journal of Earth</a></div>
+    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://Senkeller.github.io/Earth">Journal of Earth</a></div>
 <div id="footer2">
     <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
 </div>
@@ -169,9 +176,7 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 
 
 
-<!-- 纸页分页引擎：已迁移至共享 JS（journal-post.js），
-     显式加载兜底（config 的 script 与这里重复加载时由 JS 内部幂等合并） -->
-<script src="https://Senkeller.github.io/Earth/assets/journal-post.js"></script>
+</script>
 <script src='/Earth/assets/GmeekTOC.js'></script><script src='/Earth/assets/journal-post.js'></script>
 
 </html>

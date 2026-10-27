@@ -10,9 +10,41 @@
         let theme = localStorage.getItem("meek_theme") || "light";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
-<meta name="description" content="② 软件架构入门：从三层架构到 DDD 零基础也能懂的架构课——用厨房比喻讲清楚所有概念 阅读时间：约 15 分钟 难度：★★☆☆☆（需要耐心，但不需要代码基础） --- 这篇文章是给谁看的？ 你让 AI 写过代码，但出来的东西'浑成一坨'，改一个功能炸三个地方 你听说过'分层架构'、'MVVM'、'DDD'这些词，但不知道它们是什么意思 你希望 AI 生成的代码结构清晰、容易修改，而不是一锅粥 你想知道：不同大小的项目，到底该用什么架构？ 如果你中了任何一条，这篇文章就是给你写的。">
+<meta name="description" content="# ② 软件架构入门：从三层架构到 DDD
+
+> 零基础也能懂的架构课——用厨房比喻讲清楚所有概念
+>
+> 阅读时间：约 15 分钟
+> 难度：★★☆☆☆（需要耐心，但不需要代码基础）
+
+---
+
+## 这篇文章是给谁看的？
+
+- 你让 AI 写过代码，但出来的东西'浑成一坨'，改一个功能炸三个地方
+- 你听说过'分层架构'、'MVVM'、'DDD'这些词，但不知道它们是什么意思
+- 你希望 AI 生成的代码结构清晰、容易修改，而不是一锅粥
+- 你想知道：不同大小的项目，到底该用什么架构？
+
+如果你中了任何一条，这篇文章就是给你写的。">
 <meta property="og:title" content="② 软件架构入门：从三层架构到 DDD">
-<meta property="og:description" content="② 软件架构入门：从三层架构到 DDD 零基础也能懂的架构课——用厨房比喻讲清楚所有概念 阅读时间：约 15 分钟 难度：★★☆☆☆（需要耐心，但不需要代码基础） --- 这篇文章是给谁看的？ 你让 AI 写过代码，但出来的东西'浑成一坨'，改一个功能炸三个地方 你听说过'分层架构'、'MVVM'、'DDD'这些词，但不知道它们是什么意思 你希望 AI 生成的代码结构清晰、容易修改，而不是一锅粥 你想知道：不同大小的项目，到底该用什么架构？ 如果你中了任何一条，这篇文章就是给你写的。">
+<meta property="og:description" content="# ② 软件架构入门：从三层架构到 DDD
+
+> 零基础也能懂的架构课——用厨房比喻讲清楚所有概念
+>
+> 阅读时间：约 15 分钟
+> 难度：★★☆☆☆（需要耐心，但不需要代码基础）
+
+---
+
+## 这篇文章是给谁看的？
+
+- 你让 AI 写过代码，但出来的东西'浑成一坨'，改一个功能炸三个地方
+- 你听说过'分层架构'、'MVVM'、'DDD'这些词，但不知道它们是什么意思
+- 你希望 AI 生成的代码结构清晰、容易修改，而不是一锅粥
+- 你想知道：不同大小的项目，到底该用什么架构？
+
+如果你中了任何一条，这篇文章就是给你写的。">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://Senkeller.github.io/Earth/post/%E2%91%A1%20-ruan-jian-jia-gou-ru-men-%EF%BC%9A-cong-san-ceng-jia-gou-dao-%20DDD.html">
 <meta property="og:image" content="https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590">
@@ -21,32 +53,27 @@
 
 
 </head>
-<!-- 布局样式统一下沉到共享纸刊样式表（assets/journal-style.css），由每个页面显式加载。
-     此处不再写 body/#header/#footer 的硬编码布局：内联的 ID 选择器特异性高于共享 CSS 的
-     类选择器，一旦写入就会在样式顺序上覆盖纸刊视觉（border/margin/line-height 均会冲突）。
-     只保留一个极端兜底，用于未加载共享样式的场景保证可读性。 -->
 <style>
-body{margin:0 auto;padding:45px;font-size:16px;line-height:1.25;}
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
 </style>
 
 <style>
-/* 期刊文章页：此处只保留共享 CSS 之外的差异项。
-   纸页与正文排版统一由共享 CSS（journal-style.css）控制，
-   避免内联的 14px 字号、0.6em 段距与 fixed 高度裁剪等旧规则与新令牌冲突。 */
 .title-right{display:flex;margin:auto 0 0 auto;}
 .title-right .circle{padding:14px 16px;margin-right:8px;}
-.g-emoji{font-size:24px;}
 #cmButton{height:48px;margin-top:40px;}
 #comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
 
 </style>
-<!-- 共享纸刊样式：显式加载，保证 Task 2 的排版密度/分页安全实际生效 -->
-<link rel="stylesheet" href="https://Senkeller.github.io/Earth/assets/journal-style.css" />
+<link rel="stylesheet" href="https://Senkeller.github.io/Earth/assets/journal-style.css">
 <link rel='stylesheet' href='/Earth/assets/journal-style.css'>
 
 
-<body class="journal-site">
-    <div id="header" class="journal-header">
+<body>
+    <div id="header">
 <div class="title-right">
     <a href="https://Senkeller.github.io/Earth" id="buttonHome" class="btn btn-invisible circle" title="首页">
         <svg class="octicon" width="16" height="16">
@@ -66,27 +93,51 @@ body{margin:0 auto;padding:45px;font-size:16px;line-height:1.25;}
             <path id="themeSwitch" fill-rule="evenodd"></path>
         </svg>
     </a>
+</div>
+</div>
+    <div id="content">
+<div id="journalPaper">
+    <header class="journal-masthead">
+        <div class="mh-row">
+            <span class="mh-side">2026年06月</span>
+            <span class="mh-center">Journal of Earth</span>
+            <span class="mh-side">Jun. 2026</span>
+        </div>
+        <div class="mh-row journal-issue">
+            <span class="mh-side"></span>
+            <span class="mh-center"></span>
+            <span class="mh-side">No.6</span>
+        </div>
+    </header>
 
-</div>
-</div>
-    <div id="content" class="journal-content">
-<div class="journal-masthead"><span class="jm-left">2026年06月</span>
-    <span class="jm-center">Journal of Earth</span>
-    <span class="jm-right">Jun 2026</span>
-</div>
+    <section class="journal-head">
+        <h1 class="journal-title">② 软件架构入门：从三层架构到 DDD</h1>
+        <div class="journal-authors">Journal of Earth</div>
+        
+        <div class="journal-abstract">
+            <span class="jlabel">摘&nbsp;&nbsp;要：</span><span class="jtext"># ② 软件架构入门：从三层架构到 DDD
 
-<div class="journal-head">
-    <h1 class="journal-title">② 软件架构入门：从三层架构到 DDD</h1>
-    <div class="journal-authors">Journal of Earth</div>
-    
-    <div class="journal-abstract">
-        <span class="jlabel">摘要：</span><span class="jtext">② 软件架构入门：从三层架构到 DDD 零基础也能懂的架构课——用厨房比喻讲清楚所有概念 阅读时间：约 15 分钟 难度：★★☆☆☆（需要耐心，但不需要代码基础） --- 这篇文章是给谁看的？ 你让 AI 写过代码，但出来的东西'浑成一坨'，改一个功能炸三个地方 你听说过'分层架构'、'MVVM'、'DDD'这些词，但不知道它们是什么意思 你希望 AI 生成的代码结构清晰、容易修改，而不是一锅粥 你想知道：不同大小的项目，到底该用什么架构？ 如果你中了任何一条，这篇文章就是给你写的。</span>
-    </div>
-    
-</div>
+> 零基础也能懂的架构课——用厨房比喻讲清楚所有概念
+>
+> 阅读时间：约 15 分钟
+> 难度：★★☆☆☆（需要耐心，但不需要代码基础）
 
-<div class="journal-paper" id="journalPaper">
-    <div id="postBody" class="markdown-body"><h1>② 软件架构入门：从三层架构到 DDD</h1>
+---
+
+## 这篇文章是给谁看的？
+
+- 你让 AI 写过代码，但出来的东西'浑成一坨'，改一个功能炸三个地方
+- 你听说过'分层架构'、'MVVM'、'DDD'这些词，但不知道它们是什么意思
+- 你希望 AI 生成的代码结构清晰、容易修改，而不是一锅粥
+- 你想知道：不同大小的项目，到底该用什么架构？
+
+如果你中了任何一条，这篇文章就是给你写的。</span>
+        </div>
+        
+    </section>
+
+    <div class="journal-paper">
+        <div id="postBody" class="jpage markdown-body"><h1>② 软件架构入门：从三层架构到 DDD</h1>
 <blockquote>
 <p>零基础也能懂的架构课——用厨房比喻讲清楚所有概念</p>
 <p>阅读时间：约 15 分钟<br>
@@ -362,13 +413,14 @@ DDD = 按商品类别分区的超市
 <p><strong>📌 下篇预告：</strong> 架构选好了，下一步就是让 App 看起来好看。下一篇讲 UI 设计体系——怎么用 Design Token、Stitch、shadcn_flutter 搭出一套统一漂亮的界面，彻底告别"AI 蓝紫色"和"弗兰肯斯坦 UI"。</p>
 <hr>
 <p><em>本系列整理自我的学习记录《从小白学软件开发》。建议按顺序阅读。</em></p></div>
+        <div class="journal-received">收稿日期：2026-06-12</div>
+        <div class="journal-pagination" aria-label="Page number">1</div>
+    </div>
 </div>
-
-<div class="journal-received">收稿日期：2026-06-12</div>
 <div style="font-size:small;margin-top:8px;float:right;">相信美好的事物正在发生</div>
 
 </div>
-    <div id="footer" class="journal-footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://Senkeller.github.io/Earth">Journal of Earth</a></div>
+    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://Senkeller.github.io/Earth">Journal of Earth</a></div>
 <div id="footer2">
     <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
 </div>
@@ -426,9 +478,7 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 
 
 
-<!-- 纸页分页引擎：已迁移至共享 JS（journal-post.js），
-     显式加载兜底（config 的 script 与这里重复加载时由 JS 内部幂等合并） -->
-<script src="https://Senkeller.github.io/Earth/assets/journal-post.js"></script>
+</script>
 <script src='/Earth/assets/GmeekTOC.js'></script><script src='/Earth/assets/journal-post.js'></script>
 
 </html>
