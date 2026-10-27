@@ -1,31 +1,292 @@
-/* Journal of Earth shared journal layout */
-.journal-head{border-bottom:1px solid var(--borderColor-muted,var(--color-border-muted));margin-bottom:24px;padding-bottom:20px;text-align:center}
-.journal-title{margin:0 0 12px;font-size:24px;font-weight:700;line-height:1.5;font-family:var(--fontStack-headings,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif)}
-.journal-authors{margin-bottom:4px;font-size:15px;color:var(--fgColor-default,var(--color-fg-default))}
-.journal-affil{margin-bottom:14px;font-size:13px;color:var(--fgColor-muted,var(--color-fg-muted))}
-.journal-abstract{margin:14px auto 0;max-width:760px;text-align:left;background:var(--bgColor-muted,var(--color-canvas-subtle));border-left:3px solid var(--borderColor-accent-muted,#0969da);padding:10px 14px;font-size:14px;line-height:1.75}
-.journal-abstract .jlabel,.journal-keywords .jlabel{font-weight:600;margin-right:4px}
-.journal-keywords{margin:12px auto 0;max-width:760px;text-align:left;font-size:14px}
-.jkeyword{display:inline-block;margin:2px 6px 2px 0;padding:1px 10px;border-radius:12px;font-size:12px;color:#fff;line-height:1.7}
-.journal-paper{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);gap:24px;align-items:start;counter-reset:jpage-counter}
-.jpage{box-sizing:border-box;background:#fff;color:#1f2328;box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);border-radius:4px;padding:44px 40px 40px;margin-bottom:20px;height:780px;column-count:2;column-gap:38px;column-fill:auto;overflow:hidden;position:relative;font-family:"Songti SC","Noto Serif SC","SimSun",serif;font-size:14px;line-height:1.75}
-.jpage::after{counter-increment:jpage-counter;content:counter(jpage-counter);position:absolute;left:0;right:0;bottom:12px;text-align:center;font-family:Helvetica,Arial,sans-serif;font-size:12px;color:#888}
-.jpage.markdown-body{font-family:"Songti SC","Noto Serif SC","SimSun",serif;font-size:14px;line-height:1.75;color:#1f2328}
-.jpage.markdown-body>p{text-align:justify;text-indent:2em;margin:0 0 .6em}
-.jpage.markdown-body h1,.jpage.markdown-body h2,.jpage.markdown-body h3{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;column-span:all;text-indent:0;margin:.8em 0 .4em;break-after:avoid}
-.jpage.markdown-body h1{font-size:22px;line-height:1.4}.jpage.markdown-body h2{font-size:18px;line-height:1.5;margin-top:1.6em}.jpage.markdown-body h3{font-size:16px;line-height:1.5;margin-top:1.2em}
-.jpage.markdown-body h1:first-child,.jpage.markdown-body h2:first-child{margin-top:0}
-.jpage.markdown-body pre,.jpage.markdown-body .highlight{column-span:all}
-.jpage.markdown-body pre{box-sizing:border-box;max-height:520px;overflow:auto;margin:.9em 0;padding:14px 16px;border:1px solid #d0d7de;border-radius:6px;background:#f6f8fa;color:#24292f;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-size:13px;line-height:1.6;white-space:pre}
-.jpage.markdown-body pre code{font:inherit;white-space:inherit}
-.jpage.markdown-body .snippet-clipboard-content{position:relative}
-.jpage.markdown-body img{max-height:600px;object-fit:contain}
-.jpage.markdown-body table{display:block;overflow-x:auto;margin:.6em 0;max-height:560px}
-.jpage.markdown-body .toc,.jpage.markdown-body hr{column-span:all}.jpage.markdown-body .footnotes{column-span:all;font-size:12px}
-body:has(.journal-paper){max-width:1400px}
-.toc{position:fixed;z-index:20;top:130px;right:24px;left:auto;transform:none;box-sizing:border-box;width:222px;max-width:calc(100vw - 48px);max-height:70vh;overflow-y:auto;border:1px solid #e1e4e8;border-radius:6px;padding:10px;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.1)}
-.toc-title{font-weight:700;text-align:center;border-bottom:1px solid #ddd;padding-bottom:8px}.toc a{display:block;color:var(--color-accent-fg,#0969da);text-decoration:none;padding:5px 0;font-size:14px;line-height:1.5;border-bottom:1px solid #e1e4e8}.toc a:last-child{border-bottom:0}.toc a:hover{background-color:var(--color-select-menu-tap-focus-bg,#ddf4ff)}
-@media (orientation:landscape) and (min-width:1000px){.journal-paper{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:1249px){.toc{position:static;max-width:none;width:auto;transform:none;margin:16px 0 20px;padding:10px;background:#f6f8fa}}
-@media (max-width:720px){body{padding:8px}.journal-paper{max-width:100%}.journal-title{font-size:20px}.jpage{column-count:1;column-gap:0;padding:28px 20px 36px}.jpage.markdown-body pre{font-size:12px;padding:12px;max-width:100%;overflow-x:auto}.jpage.markdown-body h2{font-size:18px}.jpage.markdown-body h3{font-size:16px}}
-@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+/* Journal of Earth shared journal layout
+   文章页期刊排版共享样式表。
+   还原目标：《西北工业大学学报》论文模板（/Users/jason/Downloads/论文模板260909.pdf）。
+   磅值→像素换算：二号22pt→29px、四号14pt→19px、五号10.5pt→15px、小五9pt→12px。
+   只在文章页（post.html）加载：首页/标签页/页脚保持原版 Gmeek 外观。 */
+
+:root {
+  /* 纸刊配色：页面底色、纸张色、墨色、次级文字、描边、强调色 */
+  --journal-page: #f6f3ea;              /* 页面整体底色（米灰） */
+  --journal-paper: #fbf8ef;            /* 纸张（正文区域）底色（米白） */
+  --journal-ink: #2d2a26;              /* 正文墨色（暖黑） */
+  --journal-muted: #766f65;            /* 次级文字（灰褐） */
+  --journal-border: #d8d0c2;           /* 分隔描边（浅陶土） */
+  --journal-accent: #bc4c00;           /* 强调色（赭红） */
+
+  /* 模板字体角色：黑体(标题/标签)、楷体(作者/摘要/关键词内容)、宋体(正文)、Times(西文) */
+  --journal-hei: "Heiti SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --journal-kai: "Kaiti SC", "STKaiti", "KaiTi", "AR PL UKai CN", serif;
+  --journal-song: "Songti SC", "Noto Serif SC", "SimSun", serif;
+  --journal-times: "Times New Roman", "Times", "Songti SC", "Noto Serif SC", serif;
+
+  /* 纸刊排版令牌（模板换算） */
+  --journal-body-size: 15px;           /* 五号：正文、摘要、关键词、二级标题 */
+  --journal-body-leading: 1.7;         /* 正文基准行高 */
+  --journal-title-size: 29px;          /* 二号：文章题目 */
+  --journal-author-size: 19px;         /* 四号：作者、一级标题 */
+  --journal-small-size: 12px;          /* 小五：单位、页眉、图表题、文末信息 */
+}
+
+* { box-sizing: border-box; }
+
+html, body { max-width: none; }
+
+/* 文章页整页纸刊外观：米灰页底，墨色文字，宋体骨架 */
+body {
+  background: var(--journal-page, #f6f3ea);
+  color: var(--journal-ink, #2d2a26);
+  font-family: var(--journal-song);
+  font-size: var(--journal-body-size, 15px);
+  line-height: var(--journal-body-leading, 1.7);
+  padding: 48px 16px 72px;
+}
+
+/* 文章页落在纸页容器内，与页面底色区分 */
+#journalPaper {
+  width: min(100%, 920px);
+  margin: 0 auto;
+  background: var(--journal-paper, #fbf8ef);
+  border: 1px solid var(--journal-border, #d8d0c2);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 10px 28px rgba(60, 50, 30, 0.12);
+  padding: 34px 44px 52px;
+}
+
+/* ============ 页眉刊头（两行） ============ */
+.journal-masthead {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 3px;
+  border-bottom: 1px solid var(--journal-border, #d8d0c2);
+  padding-bottom: 12px;
+  margin-bottom: 26px;
+}
+.journal-masthead .mh-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--journal-times);
+  font-size: var(--journal-small-size, 12px);
+  color: var(--journal-muted, #766f65);
+  letter-spacing: 0.08em;
+}
+.mh-side { white-space: nowrap; }
+.mh-center { letter-spacing: 0.12em; }
+
+/* ============ 题目 / 作者 / 单位（通栏居中） ============ */
+.journal-head {
+  text-align: center;
+  padding-bottom: 18px;
+}
+.journal-title {
+  font-family: var(--journal-hei);
+  font-size: var(--journal-title-size, 29px);
+  font-weight: 700;
+  line-height: 1.45;
+  margin: 0 0 10px;
+}
+.journal-authors {
+  font-family: var(--journal-kai);
+  font-size: var(--journal-author-size, 19px);
+  line-height: 1.5;
+  margin: 0 0 6px;
+}
+.journal-affil {
+  font-family: var(--journal-song);
+  font-size: var(--journal-small-size, 12px);
+  color: var(--journal-muted, #766f65);
+}
+
+/* ============ 摘要 / 关键词（五号，左右缩进 2 字符） ============ */
+.journal-abstract,
+.journal-keywords {
+  font-size: var(--journal-body-size, 15px);
+  line-height: var(--journal-body-leading, 1.7);
+  text-align: justify;
+  padding: 0 2em;
+  margin-bottom: 4px;
+}
+.journal-abstract .jlabel,
+.journal-keywords .jlabel {
+  font-family: var(--journal-hei);
+  font-weight: 600;
+}
+.journal-abstract .jtext,
+.journal-keywords .jkw-text {
+  font-family: var(--journal-kai);
+}
+.journal-keywords .jkw-list {
+  font-family: var(--journal-kai);
+}
+/* 关键词：分号分隔的楷体文字，保留可点击的标签链接 */
+.jkeyword {
+  color: var(--journal-ink, #2d2a26);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.jkeyword:hover { color: var(--journal-accent, #bc4c00); }
+.jkeyword:focus-visible { outline: 2px solid var(--journal-accent, #bc4c00); outline-offset: 2px; }
+
+/* ============ 双栏正文 ============ */
+.jpage.markdown-body {
+  font-family: var(--journal-song);
+  font-size: var(--journal-body-size, 15px);
+  line-height: var(--journal-body-leading, 1.7);
+  color: var(--journal-ink, #2d2a26);
+  column-count: 2;
+  column-gap: 40px;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  margin-top: 14px;
+}
+.jpage.markdown-body > p {
+  text-indent: 2em;
+  margin: 0 0 0.45em;
+}
+/* 一级标题：四号黑体，跨栏 */
+.jpage.markdown-body h1,
+.jpage.markdown-body h2 {
+  font-family: var(--journal-hei);
+  font-size: var(--journal-author-size, 19px);
+  font-weight: 700;
+  line-height: 1.4;
+  column-span: all;
+  margin: 0.8em 0 0.4em;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+/* 二级标题：五号黑体，跨栏 */
+.jpage.markdown-body h3 {
+  font-family: var(--journal-hei);
+  font-size: var(--journal-body-size, 15px);
+  font-weight: 700;
+  line-height: 1.5;
+  column-span: all;
+  margin: 1.2em 0 0.4em;
+}
+/* 三级及以下：同正文（黑体同字重更醒目） */
+.jpage.markdown-body h4,
+.jpage.markdown-body h5,
+.jpage.markdown-body h6 {
+  font-family: var(--journal-hei);
+  font-size: var(--journal-body-size, 15px);
+  font-weight: 600;
+  margin: 0.8em 0 0.3em;
+}
+.jpage.markdown-body h1:first-child,
+.jpage.markdown-body h2:first-child,
+.jpage.markdown-body h3:first-child { margin-top: 0; }
+
+/* 列表 / 引用 / 分隔线：与正文密度一致 */
+.jpage.markdown-body ul,
+.jpage.markdown-body ol { margin: 0 0 0.8em; padding-left: 2em; }
+.jpage.markdown-body li { margin: 0.15em 0; }
+.jpage.markdown-body blockquote {
+  margin: 0.6em 0;
+  padding: 0.4em 1em;
+  border-left: 3px solid var(--journal-border, #d8d0c2);
+  color: var(--journal-muted, #766f65);
+}
+.jpage.markdown-body hr {
+  height: 1px;
+  border: 0;
+  background: var(--journal-border, #d8d0c2);
+  margin: 1.2em 0;
+}
+
+/* 图片 / 表格 / 公式：跨栏展示，自身框内滚动，绝不撑破纸页 */
+.jpage.markdown-body img {
+  display: block;
+  max-width: 100%;
+  max-height: 600px;
+  margin: 0.8em auto;
+  object-fit: contain;
+}
+.jpage.markdown-body figure { margin: 0.9em 0; text-align: center; }
+.jpage.markdown-body figcaption {
+  margin-top: 6px;
+  font-size: var(--journal-small-size, 12px);
+  font-family: var(--journal-song);
+  color: var(--journal-muted, #766f65);
+  text-align: center;
+}
+.jpage.markdown-body table {
+  display: block;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  margin: 0.9em 0;
+  border-collapse: collapse;
+  font-size: var(--journal-body-size, 15px);
+}
+.jpage.markdown-body th,
+.jpage.markdown-body td {
+  border: 1px solid var(--journal-border, #d8d0c2);
+  padding: 4px 10px;
+  text-align: left;
+}
+.jpage.markdown-body thead th { font-family: var(--journal-hei); font-weight: 600; background: rgba(188, 76, 0, 0.05); }
+/* 公式：居中，序号右对齐 */
+.jpage.markdown-body .katex-display,
+.jpage.markdown-body .math-renderer,
+.jpage.markdown-body .MJXc-display {
+  display: block;
+  text-align: center;
+  margin: 0.9em 0;
+  overflow-x: auto;
+}
+
+/* 代码块：独立成块、内部滚动，不撑破纸页 */
+.jpage.markdown-body pre {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  max-height: 520px;
+  overflow: auto;
+  margin: 0.9em 0;
+  padding: 14px 16px;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  background: #f6f8fa;
+  color: #24292f;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.jpage.markdown-body pre code { font: inherit; white-space: inherit; }
+
+/* 深色主题：纸面保持纸白，文字用纸刊墨色 */
+[data-color-mode="dark"] body { background: var(--journal-page, #f6f3ea); }
+[data-color-mode="dark"] #journalPaper { background: var(--journal-paper, #fbf8ef); }
+[data-color-mode="dark"] .jpage.markdown-body { color: var(--journal-ink, #2d2a26); }
+[data-color-mode="dark"] .jpage.markdown-body a { color: #0969da; }
+
+/* ============ 文末收稿日期（小五黑体） ============ */
+.journal-received {
+  margin-top: 24px;
+  padding-top: 12px;
+  border-top: 1px solid var(--journal-border, #d8d0c2);
+  font-family: var(--journal-hei);
+  font-size: var(--journal-small-size, 12px);
+  line-height: 1.9;
+  text-align: right;
+}
+
+/* ============ 页码（页脚居中） ============ */
+.journal-pagination { text-align: center; margin-top: 26px; font-family: var(--journal-times); font-size: var(--journal-small-size, 12px); }
+
+/* ============ 移动端（<=720px）：单栏自然流动，不裁剪 ============ */
+@media (max-width: 720px) {
+  body { padding: 10px 8px; }
+  #journalPaper { width: 100%; padding: 24px 16px 36px; }
+  .journal-title { font-size: 20px; }
+  .journal-abstract,
+  .journal-keywords { padding: 0 0.8em; }
+  .jpage.markdown-body { column-count: 1; column-gap: 0; }
+}
+
+/* 尊重减少动态：一切过渡关停 */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
