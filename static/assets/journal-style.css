@@ -250,6 +250,8 @@ body {
   font-size: var(--journal-body-size, 15px);
   font-weight: 600;
   margin: 0.8em 0 0.3em;
+  /* 三级以下标题也跨栏：任何层级标题都不应被栏线切开 */
+  column-span: all;
 }
 .jpage.markdown-body h1:first-child,
 .jpage.markdown-body h2:first-child,
