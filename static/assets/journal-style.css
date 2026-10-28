@@ -273,7 +273,7 @@ body {
 .jpage.markdown-body .mermaid,
 .jpage.markdown-body table,
 .jpage.markdown-body figure {
-  column-span: all;
+  /* 仅标题跨栏；表格/图留在栏内，避免频繁打断栏流导致左栏填不满 */
   break-inside: avoid;
 }
 .jpage.markdown-body .markdown-alert {
@@ -355,7 +355,7 @@ body {
 /* 代码块：通栏展示（跨双栏），限高内滚动，不独占整页 */
 .jpage.markdown-body pre {
   box-sizing: border-box;
-  column-span: all;
+  /* 代码块留在栏内：跨栏会打断栏流，技术文章代码密集时左栏只填一半 */
   width: 100%;
   min-width: 0;
   max-width: 100%;
