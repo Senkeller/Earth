@@ -145,12 +145,26 @@
     if (index > 0) {
       var cont = document.createElement('div');
       cont.className = 'cont-masthead';
+      /* 期号从模板刊头的 data-issue 读取（第X期 / No.X），与首页刊头保持一致；
+         刊名取主刊头中栏文本。全部用 textContent 写入，避免拼 HTML 造成注入。 */
+      var mastheadEl = document.querySelector('.journal-masthead');
+      var issueName = mastheadEl ? mastheadEl.getAttribute('data-issue') : '';
       var nameEl = document.querySelector('.journal-masthead .mh-center');
       var name = nameEl ? nameEl.textContent : '';
-      cont.innerHTML =
-        '<span class="mh-side">— ' + (index + 1) + ' —</span>' +
-        '<span class="mh-center">' + name + '</span>' +
-        '<span class="mh-side"></span>';
+
+      var pageSpan = document.createElement('span');
+      pageSpan.className = 'mh-side';
+      pageSpan.textContent = '— ' + (index + 1) + ' —';
+      var centerSpan = document.createElement('span');
+      centerSpan.className = 'mh-center';
+      centerSpan.textContent = name;
+      var issueSpan = document.createElement('span');
+      issueSpan.className = 'mh-side';
+      issueSpan.textContent = issueName;
+
+      cont.appendChild(pageSpan);
+      cont.appendChild(centerSpan);
+      cont.appendChild(issueSpan);
       page.appendChild(cont);
     }
     container.appendChild(page);
