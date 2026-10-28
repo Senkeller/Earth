@@ -92,12 +92,24 @@
     blocks = collectBlocks(blocks);
 
     /* 2. 测量每块高度：clone 进隐藏测量容器（单栏自然流，读 offsetHeight）。
-          测量容器宽度与正文容器一致，字体/行高从 .jpage 继承。 */
+          测量宽度必须是「单栏宽度」而非容器全宽：页内正文按双栏排布，
+          每个块实际占用一栏约 (总宽 - 栏间距) / 2。若按全宽测量，高度会
+          被低估一半，所有块误判为塞进一页，随后被 overflow:hidden 静默裁掉。 */
     var measure = document.createElement('div');
+    var jpageRef = document.querySelector('.jpage.markdown-body');
+    /* 栏间距从实际样式读取，避免 CSS 改动后测量宽度与真实栏宽脱节 */
+    var columnGap = 40;
+    if (jpageRef) {
+      var gapValue = parseFloat(window.getComputedStyle(jpageRef).columnGap);
+      if (isFinite(gapValue) && gapValue > 0) columnGap = gapValue;
+    }
+    var singleColumnWidth = Math.max(
+      120,
+      Math.floor((postBody.clientWidth - columnGap) / 2)
+    );
     measure.style.cssText =
       'position:absolute;visibility:hidden;left:-9999px;top:0;z-index:-1;' +
-      'width:' + postBody.clientWidth + 'px;';
-    var jpageRef = document.querySelector('.jpage.markdown-body');
+      'width:' + singleColumnWidth + 'px;';
     if (jpageRef) {
       var cs = window.getComputedStyle(jpageRef);
       measure.style.fontFamily = cs.fontFamily;
