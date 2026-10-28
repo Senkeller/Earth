@@ -17,7 +17,7 @@
     "indexStyle": "",
     "showPostSource": 1,
     "onePageListNum": 20,
-    "script": "<script src='/Earth/assets/GmeekTOC.js'></script><script src='/Earth/assets/journal-post.js'></script><script src='/Earth/assets/journal-paginate.js'></script><script src='/Earth/assets/journal-markdown.js'></script>",
+    "script": "<script src='/Earth/assets/GmeekTOC.js'></script><script src='/Earth/assets/journal-post.js'></script><script src='/Earth/assets/journal-markdown.js'></script>",
     "indexScript": "<script src='/Earth/assets/yifantheme_index.js'></script>",
     "allHead": "<script src='/Earth/assets/GmeekBSZ.js'></script><script src='/Earth/assets/yifantheme.js'></script>",
     "GMEEK_VERSION": "last",
