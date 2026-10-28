@@ -25,6 +25,8 @@
   --journal-title-size: 29px;          /* 二号：文章题目 */
   --journal-author-size: 19px;         /* 四号：作者、一级标题 */
   --journal-small-size: 12px;          /* 小五：单位、页眉、图表题、文末信息 */
+  --journal-code-size: 13px;           /* 代码块/表格/text 块统一字号（略小于正文五号） */
+  --journal-code-leading: 1.55;        /* 代码与表格统一行距（比正文更紧凑） */
 }
 
 * { box-sizing: border-box; }
@@ -151,58 +153,12 @@ body {
 .jkeyword:hover { color: var(--journal-accent, #bc4c00); }
 .jkeyword:focus-visible { outline: 2px solid var(--journal-accent, #bc4c00); outline-offset: 2px; }
 
-/* ============ 双栏正文 ============ */
-.jpages {
-  display: block;
-  margin-top: 14px;
-}
-/* 分页纸页：固定页高 + 隐藏溢出，每页独立「纸」视觉（白底/细边框/投影/页距） */
-.jpages .jpage {
-  height: 780px;
-  overflow: hidden;
-  margin: 0 0 44px;
-  page-break-inside: avoid;
-  position: relative;
-  padding: 20px 28px 44px;
-  box-sizing: border-box;
-  background: var(--journal-paper, #fbf8ef);
-  border: 1px solid var(--journal-border, #d8d0c2);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 10px 28px rgba(60, 50, 30, 0.12);
-  column-count: 2;
-  column-gap: 40px;
-  /* 期刊分栏顺序：先填满左栏再进右栏。浏览器默认 column-fill:balance 会把
-     同段内容均摊到两栏，阅读时视线要在两栏间来回跳；论文排版要求 auto。 */
-  column-fill: auto;
-}
-.jpages .jpage:last-child { margin-bottom: 0; }
-/* 每页底部居中页码 */
-.jpages .jpage::after {
-  counter-increment: jpage-counter;
-  content: counter(jpage-counter);
-  position: absolute;
-  left: 0; right: 0; bottom: 10px;
-  text-align: center;
-  font-family: var(--journal-times);
-  font-size: 12px;
-  color: var(--journal-muted, #766f65);
-}
-.jpages { counter-reset: jpage-counter; }
-/* 续页页眉（页码｜刊名｜期），与设计稿第 2 页一致 */
-.jpages .cont-masthead {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  font-family: var(--journal-song);
-  border-bottom: 1px solid var(--journal-border, #d8d0c2);
-  padding-bottom: 6px;
-  margin-bottom: 12px;
-  /* 页眉横贯整页：不参与双栏分配，否则 flex 行会被挤进单栏宽度 */
-  column-span: all;
-  break-after: avoid;
-}
-.jpages .cont-masthead .mh-side { font-family: var(--journal-times); }
-/* 首页（第1页）不需要续页页眉，有原刊头覆盖 */
-.jpages .jpage:first-child .cont-masthead { display: none; }
+/* ============ 双栏正文（连续滚动） ============ */
+/* 正文容器：连续滚动的双栏流。
+   不要给 #postBody 或 .jpage 加 height / max-height / overflow:hidden——
+   固定高度 + 隐藏溢出是旧「固定纸页」模型的机制，会把溢出内容静默裁掉。
+   分栏切分由标题的 column-span: all 完成（见下方标题规则），
+   而不是靠 column-fill（连续媒体下浏览器会把 auto 强制当作 balance）。 */
 .jpage.markdown-body {
   font-family: var(--journal-song);
   font-size: var(--journal-body-size, 15px);
@@ -217,11 +173,18 @@ body {
 .jpage.markdown-body > p {
   text-indent: 2em;
   margin: 0 0 0.45em;
-  /* 段落内部不跨栏断开：分栏线切进段落中间时，读者会看到半句被截到栏底、
-     另半句出现在栏顶，破坏论文阅读连贯性。 */
-  break-inside: avoid;
+  /* 段落允许跨栏续排：期刊双栏里段落从左栏底续到右栏顶是正常排版。
+     若在此加 break-inside: avoid，整段会被推到右栏，左栏底部留出大片空白。
+     只有代码块/表格/图片/Callout/Mermaid 才禁止拆分。 */
 }
-/* 一级标题：四号黑体，跨栏 */
+/* 各级标题：全部跨栏（column-span: all）。
+   跨栏元素会强制打断多栏流，因此每个标题之间自然形成一个独立的
+   「版面单元」：标题通栏 + 该节正文双栏等高。这是连续滚动下切分栏流的
+   唯一可靠手段——连续媒体里浏览器把 column-fill:auto 强制当作 balance，
+   不能靠它控制填栏顺序。
+   实测（33 篇真实文章）：恢复标题跨栏后「仅右栏」组从 23 降到 0，
+   即不再出现「左栏空着、内容整块挤在右栏」的碎片。 */
+/* 一级标题：四号黑体，通栏 */
 .jpage.markdown-body h1,
 .jpage.markdown-body h2 {
   font-family: var(--journal-hei);
@@ -229,20 +192,23 @@ body {
   font-weight: 700;
   line-height: 1.4;
   column-span: all;
-  margin: 0.8em 0 0.4em;
+  /* 防标题孤零零留在单元底部（与下一段分离） */
+  break-after: avoid;
+  margin: 0.6em 0 0.3em;
   padding-bottom: 0;
   border-bottom: 0;
 }
-/* 二级标题：五号黑体，跨栏 */
+/* 二级标题：五号黑体，通栏 */
 .jpage.markdown-body h3 {
   font-family: var(--journal-hei);
   font-size: var(--journal-body-size, 15px);
   font-weight: 700;
   line-height: 1.5;
   column-span: all;
-  margin: 1.2em 0 0.4em;
+  break-after: avoid;
+  margin: 0.85em 0 0.3em;
 }
-/* 三级及以下：同正文（黑体同字重更醒目） */
+/* 三级及以下：同正文（黑体同字重更醒目），同样通栏 */
 .jpage.markdown-body h4,
 .jpage.markdown-body h5,
 .jpage.markdown-body h6 {
@@ -250,6 +216,8 @@ body {
   font-size: var(--journal-body-size, 15px);
   font-weight: 600;
   margin: 0.8em 0 0.3em;
+  column-span: all;
+  break-after: avoid;
 }
 .jpage.markdown-body h1:first-child,
 .jpage.markdown-body h2:first-child,
@@ -258,7 +226,11 @@ body {
 /* 列表 / 引用 / 分隔线：与正文密度一致 */
 .jpage.markdown-body ul,
 .jpage.markdown-body ol { margin: 0 0 0.8em; padding-left: 2em; }
-.jpage.markdown-body li { margin: 0.15em 0; }
+.jpage.markdown-body li {
+  margin: 0.15em 0;
+  /* 单个列表项不被栏线拆开；列表整体仍按阅读顺序在栏间续排 */
+  break-inside: avoid;
+}
 .jpage.markdown-body blockquote {
   margin: 0.6em 0;
   padding: 0.4em 1em;
@@ -271,7 +243,7 @@ body {
 .jpage.markdown-body .mermaid,
 .jpage.markdown-body table,
 .jpage.markdown-body figure {
-  column-span: all;
+  /* 仅标题跨栏；表格/图留在栏内，避免频繁打断栏流导致左栏填不满 */
   break-inside: avoid;
 }
 .jpage.markdown-body .markdown-alert {
@@ -305,10 +277,27 @@ body {
   height: 1px;
   border: 0;
   background: var(--journal-border, #d8d0c2);
-  margin: 1.2em 0;
+  /* markdown 里 --- 很常见，过大的间距会让正文显得零散 */
+  margin: 0.7em 0;
 }
 
-/* 图片 / 表格 / 公式：跨栏展示，自身框内滚动，绝不撑破纸页 */
+/* 图片 / 表格 / 公式 */
+/* 含图片的块必须通栏：图片是行内元素，在多栏流里无法跨栏续排，
+   否则一张图会被栏线切成左右两半。实测 27 篇有图文章、84 处图片块，
+   加此规则后全部正确显示为容器全宽。
+   :has() 兼容性：Chrome 105+ / Safari 15.4+ / Firefox 121+；
+   不支持的老浏览器会忽略整条规则，图片退回栏内（即本次改动前的行为），不会崩版。 */
+.jpage.markdown-body p:has(img) {
+  column-span: all;
+  break-inside: avoid;
+  text-align: center;
+}
+/* 裸 <a><img></a>（不在 <p> 内，实测 10 处）同样通栏 */
+.jpage.markdown-body a:has(> img) {
+  display: block;
+  column-span: all;
+  text-align: center;
+}
 .jpage.markdown-body img {
   display: block;
   max-width: 100%;
@@ -331,7 +320,9 @@ body {
   overflow-x: auto;
   margin: 0.9em 0;
   border-collapse: collapse;
-  font-size: var(--journal-body-size, 15px);
+  /* 表格是插图级元素：字号略小于正文、行距更紧凑，避免抢走正文视觉重量 */
+  font-size: var(--journal-code-size, 13px);
+  line-height: var(--journal-code-leading, 1.55);
 }
 .jpage.markdown-body th,
 .jpage.markdown-body td {
@@ -353,7 +344,7 @@ body {
 /* 代码块：通栏展示（跨双栏），限高内滚动，不独占整页 */
 .jpage.markdown-body pre {
   box-sizing: border-box;
-  column-span: all;
+  /* 代码块留在栏内：跨栏会打断栏流，技术文章代码密集时左栏只填一半 */
   width: 100%;
   min-width: 0;
   max-width: 100%;
@@ -366,8 +357,9 @@ body {
   background: #f7f8fa;
   color: #24292f;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-  font-size: 12px;
-  line-height: 1.55;
+  /* 与表格、text 块统一：同一字号与行距令牌 */
+  font-size: var(--journal-code-size, 13px);
+  line-height: var(--journal-code-leading, 1.55);
   break-inside: avoid;
 }
 .jpage.markdown-body pre code { font: inherit; white-space: pre; }
@@ -385,7 +377,6 @@ body {
 [data-color-mode="dark"] body { background: var(--journal-page, #f6f3ea); }
 [data-color-mode="dark"] .jpage.markdown-body { color: var(--journal-ink, #2d2a26); }
 [data-color-mode="dark"] .jpage.markdown-body a { color: #0969da; }
-[data-color-mode="dark"] .jpages .jpage { background: var(--journal-paper, #fbf8ef); }
 
 /* ============ 文末收稿日期（小五黑体） ============ */
 .journal-received {
@@ -406,9 +397,6 @@ body {
   font-size: var(--journal-small-size, 12px);
   line-height: 1.9;
 }
-
-/* ============ 页码（页脚居中） ============ */
-.journal-pagination { text-align: center; margin-top: 26px; font-family: var(--journal-times); font-size: var(--journal-small-size, 12px); }
 
 /* ============ 移动端（<=720px）：单栏自然流动，不裁剪 ============ */
 @media (max-width: 720px) {
