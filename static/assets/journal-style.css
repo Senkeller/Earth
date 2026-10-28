@@ -25,6 +25,8 @@
   --journal-title-size: 29px;          /* 二号：文章题目 */
   --journal-author-size: 19px;         /* 四号：作者、一级标题 */
   --journal-small-size: 12px;          /* 小五：单位、页眉、图表题、文末信息 */
+  --journal-code-size: 13px;           /* 代码块/表格/text 块统一字号（略小于正文五号） */
+  --journal-code-leading: 1.55;        /* 代码与表格统一行距（比正文更紧凑） */
 }
 
 * { box-sizing: border-box; }
@@ -221,26 +223,28 @@ body {
      若在此加 break-inside: avoid，整段会被推到右栏，左栏底部留出大片空白。
      只有代码块/表格/图片/Callout/Mermaid 才禁止拆分。 */
 }
-/* 一级标题：四号黑体，跨栏 */
+/* 一级标题：四号黑体，栏内排版 */
 .jpage.markdown-body h1,
 .jpage.markdown-body h2 {
   font-family: var(--journal-hei);
   font-size: var(--journal-author-size, 19px);
   font-weight: 700;
   line-height: 1.4;
-  column-span: all;
-  margin: 0.8em 0 0.4em;
+  /* 标题不跨栏：跨栏会强制结束当前栏，使每页出现「左栏→跨栏标题→右栏」的碎块，
+     破坏「左栏填满再进右栏」的连续阅读。标题多为单行，栏内不会被栏线切开。 */
+  break-after: avoid;
+  margin: 0.6em 0 0.3em;
   padding-bottom: 0;
   border-bottom: 0;
 }
-/* 二级标题：五号黑体，跨栏 */
+/* 二级标题：五号黑体，栏内排版 */
 .jpage.markdown-body h3 {
   font-family: var(--journal-hei);
   font-size: var(--journal-body-size, 15px);
   font-weight: 700;
   line-height: 1.5;
-  column-span: all;
-  margin: 1.2em 0 0.4em;
+  break-after: avoid;
+  margin: 0.85em 0 0.3em;
 }
 /* 三级及以下：同正文（黑体同字重更醒目） */
 .jpage.markdown-body h4,
@@ -250,8 +254,8 @@ body {
   font-size: var(--journal-body-size, 15px);
   font-weight: 600;
   margin: 0.8em 0 0.3em;
-  /* 三级以下标题也跨栏：任何层级标题都不应被栏线切开 */
-  column-span: all;
+  /* 与 h2/h3 一致：栏内排版，避免打断栏流 */
+  break-after: avoid;
 }
 .jpage.markdown-body h1:first-child,
 .jpage.markdown-body h2:first-child,
@@ -260,7 +264,11 @@ body {
 /* 列表 / 引用 / 分隔线：与正文密度一致 */
 .jpage.markdown-body ul,
 .jpage.markdown-body ol { margin: 0 0 0.8em; padding-left: 2em; }
-.jpage.markdown-body li { margin: 0.15em 0; }
+.jpage.markdown-body li {
+  margin: 0.15em 0;
+  /* 单个列表项不被栏线拆开；列表整体仍按阅读顺序在栏间续排 */
+  break-inside: avoid;
+}
 .jpage.markdown-body blockquote {
   margin: 0.6em 0;
   padding: 0.4em 1em;
@@ -307,7 +315,8 @@ body {
   height: 1px;
   border: 0;
   background: var(--journal-border, #d8d0c2);
-  margin: 1.2em 0;
+  /* markdown 里 --- 很常见，过大的间距会让正文显得零散 */
+  margin: 0.7em 0;
 }
 
 /* 图片 / 表格 / 公式：跨栏展示，自身框内滚动，绝不撑破纸页 */
@@ -333,7 +342,9 @@ body {
   overflow-x: auto;
   margin: 0.9em 0;
   border-collapse: collapse;
-  font-size: var(--journal-body-size, 15px);
+  /* 表格是插图级元素：字号略小于正文、行距更紧凑，避免抢走正文视觉重量 */
+  font-size: var(--journal-code-size, 13px);
+  line-height: var(--journal-code-leading, 1.55);
 }
 .jpage.markdown-body th,
 .jpage.markdown-body td {
@@ -368,8 +379,9 @@ body {
   background: #f7f8fa;
   color: #24292f;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-  font-size: 12px;
-  line-height: 1.55;
+  /* 与表格、text 块统一：同一字号与行距令牌 */
+  font-size: var(--journal-code-size, 13px);
+  line-height: var(--journal-code-leading, 1.55);
   break-inside: avoid;
 }
 .jpage.markdown-body pre code { font: inherit; white-space: pre; }
