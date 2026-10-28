@@ -153,12 +153,54 @@ body {
 .jkeyword:hover { color: var(--journal-accent, #bc4c00); }
 .jkeyword:focus-visible { outline: 2px solid var(--journal-accent, #bc4c00); outline-offset: 2px; }
 
-/* ============ 双栏正文（连续滚动） ============ */
-/* 正文容器：连续滚动的双栏流。
-   不要给 #postBody 或 .jpage 加 height / max-height / overflow:hidden——
-   固定高度 + 隐藏溢出是旧「固定纸页」模型的机制，会把溢出内容静默裁掉。
-   分栏切分由标题的 column-span: all 完成（见下方标题规则），
-   而不是靠 column-fill（连续媒体下浏览器会把 auto 强制当作 balance）。 */
+/* ============ 双栏正文（PDF 式多页） ============ */
+/* 纸页容器：由 journal-paginate.js 生成，每一页是一张独立「纸」。
+   页高 1300px / 宽 920px ≈ A4 比例（1:1.414），实测 33 篇真实文章
+   在此页高下内容零丢失，最长文章 5 页。
+   注意：overflow:hidden 是分页的必要机制——每一页只显示落在自己
+   区间内的内容。引擎保证「溢出即移到下一页」，所以不会真的裁掉内容。 */
+.jpages {
+  display: block;
+  margin-top: 14px;
+}
+.jpages .jpage {
+  height: 1300px;
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+  margin: 0 0 44px;
+  padding: 20px 28px 40px;
+  background: var(--journal-paper, #fbf8ef);
+  border: 1px solid var(--journal-border, #d8d0c2);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 10px 28px rgba(60, 50, 30, 0.12);
+  /* 期刊分栏：先填满左栏再进右栏 */
+  column-count: 2;
+  column-gap: 40px;
+  column-fill: auto;
+  font-family: var(--journal-song);
+  font-size: var(--journal-body-size, 15px);
+  line-height: var(--journal-body-leading, 1.7);
+  color: var(--journal-ink, #2d2a26);
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+.jpages .jpage:last-child { margin-bottom: 0; }
+/* 每页底部居中页码（与 PDF 观感一致） */
+.jpages .journal-pgno {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  text-align: center;
+  font-family: var(--journal-times);
+  font-size: var(--journal-small-size, 12px);
+  color: var(--journal-muted, #766f65);
+  column-span: all;
+}
+
+/* #postBody 在分页前是普通容器；分页后由引擎替换为 .jpages。
+   两者共用同一套正文排版规则，见下方 .jpage.markdown-body 与
+   .jpages .jpage 的公共声明。 */
 .jpage.markdown-body {
   font-family: var(--journal-song);
   font-size: var(--journal-body-size, 15px);
