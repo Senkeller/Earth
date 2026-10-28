@@ -73,6 +73,30 @@ body {
 .mh-side { white-space: nowrap; }
 .mh-center { letter-spacing: 0.12em; }
 
+/* 刊头 logo：透明 PNG 居中，宽 400px、等比缩放，始终容纳在纸宽内 */
+.journal-logo-link {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto 12px;
+  line-height: 0;
+}
+.journal-logo {
+  display: block;
+  width: 400px;
+  max-width: min(100%, 420px);
+  height: auto;
+  object-fit: contain;
+}
+/* 键盘焦点可见性：不依赖鼠标 hover */
+.journal-logo-link:focus-visible {
+  outline: 2px solid var(--journal-accent, #bc4c00);
+  outline-offset: 4px;
+}
+/* 期号行：左「第X期」与右 No.X 同为小五号，中栏留空，避免与 logo 争视觉 */
+.journal-issue { font-size: 11px; }
+.journal-issue-prefix { letter-spacing: 0.08em; }
+
 /* ============ 题目 / 作者 / 单位（通栏居中） ============ */
 .journal-head {
   text-align: center;
@@ -146,6 +170,9 @@ body {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 10px 28px rgba(60, 50, 30, 0.12);
   column-count: 2;
   column-gap: 40px;
+  /* 期刊分栏顺序：先填满左栏再进右栏。浏览器默认 column-fill:balance 会把
+     同段内容均摊到两栏，阅读时视线要在两栏间来回跳；论文排版要求 auto。 */
+  column-fill: auto;
 }
 .jpages .jpage:last-child { margin-bottom: 0; }
 /* 每页底部居中页码 */
@@ -169,6 +196,9 @@ body {
   border-bottom: 1px solid var(--journal-border, #d8d0c2);
   padding-bottom: 6px;
   margin-bottom: 12px;
+  /* 页眉横贯整页：不参与双栏分配，否则 flex 行会被挤进单栏宽度 */
+  column-span: all;
+  break-after: avoid;
 }
 .jpages .cont-masthead .mh-side { font-family: var(--journal-times); }
 /* 首页（第1页）不需要续页页眉，有原刊头覆盖 */
@@ -187,6 +217,9 @@ body {
 .jpage.markdown-body > p {
   text-indent: 2em;
   margin: 0 0 0.45em;
+  /* 段落允许跨栏续排：期刊双栏里段落从左栏底续到右栏顶是正常排版。
+     若在此加 break-inside: avoid，整段会被推到右栏，左栏底部留出大片空白。
+     只有代码块/表格/图片/Callout/Mermaid 才禁止拆分。 */
 }
 /* 一级标题：四号黑体，跨栏 */
 .jpage.markdown-body h1,
@@ -217,6 +250,8 @@ body {
   font-size: var(--journal-body-size, 15px);
   font-weight: 600;
   margin: 0.8em 0 0.3em;
+  /* 三级以下标题也跨栏：任何层级标题都不应被栏线切开 */
+  column-span: all;
 }
 .jpage.markdown-body h1:first-child,
 .jpage.markdown-body h2:first-child,
@@ -382,6 +417,8 @@ body {
   body { padding: 10px 8px; }
   #journalPaper { width: 100%; padding: 24px 16px 36px; }
   .journal-title { font-size: 20px; }
+  .journal-logo { width: min(100%, 280px); max-width: 100%; }
+  .journal-logo-link { margin-bottom: 8px; }
   .journal-abstract,
   .journal-keywords { padding: 0 0.8em; }
   .jpage.markdown-body { column-count: 1; column-gap: 0; }
