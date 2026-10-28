@@ -17,10 +17,21 @@
     "indexStyle": "",
     "showPostSource": 1,
     "onePageListNum": 20,
-    "script": "<script src='/Earth/assets/GmeekTOC.js'></script><script src='/Earth/assets/journal-post.js'></script><script src='/Earth/assets/journal-paginate.js'></script>",
+    "script": "<script src='/Earth/assets/GmeekTOC.js'></script><script src='/Earth/assets/journal-post.js'></script><script src='/Earth/assets/journal-paginate.js'></script><script src='/Earth/assets/journal-markdown.js'></script>",
     "indexScript": "<script src='/Earth/assets/yifantheme_index.js'></script>",
     "allHead": "<script src='/Earth/assets/GmeekBSZ.js'></script><script src='/Earth/assets/yifantheme.js'></script>",
     "GMEEK_VERSION": "last",
     "journalAuthor": "郑郑",
-    "journalAffiliation": "（个人博客 · 西安 710072）"
+    "journalAffiliation": "（个人博客 · 西安 710072）",
+    "journalKeywords": [],
+    "journalFund": "",
+    "journalAuthorBio": "",
+    "journalCorrespondingAuthor": "",
+    "journalDefaultAbstract": "",
+    "journalReceivedDateMode": "issue-created",
+    "journalIgnoredLabels": [
+        "draft",
+        "置顶",
+        "singlePage"
+    ]
 }

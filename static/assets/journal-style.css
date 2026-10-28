@@ -41,14 +41,14 @@ body {
   padding: 48px 16px 72px;
 }
 
-/* 文章页落在页纸容器内：外容器是首页纸底（刊头/标题/摘要区域），
-   正文由分页引擎切成独立纸页卡片，浮在纸底上形成「一页一页」感 */
+/* 文章页落在纸页容器内，与页面底色区分 */
 #journalPaper {
   width: min(100%, 920px);
   margin: 0 auto;
   background: var(--journal-paper, #fbf8ef);
-  padding: 34px 44px 52px;
+  border: 1px solid var(--journal-border, #d8d0c2);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 10px 28px rgba(60, 50, 30, 0.12);
+  padding: 34px 44px 52px;
 }
 
 /* ============ 页眉刊头（两行） ============ */
@@ -128,51 +128,6 @@ body {
 .jkeyword:focus-visible { outline: 2px solid var(--journal-accent, #bc4c00); outline-offset: 2px; }
 
 /* ============ 双栏正文 ============ */
-.jpages {
-  display: block;
-  margin-top: 14px;
-}
-/* 分页纸页：固定页高 + 隐藏溢出，每页独立「纸」视觉（白底/细边框/投影/页距） */
-.jpages .jpage {
-  height: 780px;
-  overflow: hidden;
-  margin: 0 0 44px;
-  page-break-inside: avoid;
-  position: relative;
-  padding: 20px 28px 44px;
-  box-sizing: border-box;
-  background: var(--journal-paper, #fbf8ef);
-  border: 1px solid var(--journal-border, #d8d0c2);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 10px 28px rgba(60, 50, 30, 0.12);
-  column-count: 2;
-  column-gap: 40px;
-}
-.jpages .jpage:last-child { margin-bottom: 0; }
-/* 每页底部居中页码 */
-.jpages .jpage::after {
-  counter-increment: jpage-counter;
-  content: counter(jpage-counter);
-  position: absolute;
-  left: 0; right: 0; bottom: 10px;
-  text-align: center;
-  font-family: var(--journal-times);
-  font-size: 12px;
-  color: var(--journal-muted, #766f65);
-}
-.jpages { counter-reset: jpage-counter; }
-/* 续页页眉（页码｜刊名｜期），与设计稿第 2 页一致 */
-.jpages .cont-masthead {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  font-family: var(--journal-song);
-  border-bottom: 1px solid var(--journal-border, #d8d0c2);
-  padding-bottom: 6px;
-  margin-bottom: 12px;
-}
-.jpages .cont-masthead .mh-side { font-family: var(--journal-times); }
-/* 首页（第1页）不需要续页页眉，有原刊头覆盖 */
-.jpages .jpage:first-child .cont-masthead { display: none; }
 .jpage.markdown-body {
   font-family: var(--journal-song);
   font-size: var(--journal-body-size, 15px);
@@ -182,7 +137,7 @@ body {
   column-gap: 40px;
   text-align: justify;
   text-justify: inter-ideograph;
-  margin-top: 0;
+  margin-top: 14px;
 }
 .jpage.markdown-body > p {
   text-indent: 2em;
@@ -231,6 +186,42 @@ body {
   padding: 0.4em 1em;
   border-left: 3px solid var(--journal-border, #d8d0c2);
   color: var(--journal-muted, #766f65);
+}
+/* GitHub Alert、Mermaid 与表格等语义块必须跨双栏且不跨纸页 */
+.jpage.markdown-body .markdown-alert,
+.jpage.markdown-body blockquote.markdown-alert,
+.jpage.markdown-body .mermaid,
+.jpage.markdown-body table,
+.jpage.markdown-body figure {
+  column-span: all;
+  break-inside: avoid;
+}
+.jpage.markdown-body .markdown-alert {
+  margin: 0.8em 0;
+  padding: 0.65em 1em;
+  border-left: 3px solid var(--journal-border, #d8d0c2);
+  background: rgba(118, 111, 101, 0.08);
+}
+.jpage.markdown-body .markdown-alert-title {
+  margin: 0 0 0.35em;
+  font-family: var(--journal-hei);
+  font-weight: 700;
+  font-size: var(--journal-small-size, 12px);
+}
+.jpage.markdown-body .markdown-alert-warning,
+.jpage.markdown-body .markdown-alert-caution {
+  border-left-color: var(--journal-accent, #bc4c00);
+}
+.jpage.markdown-body .mermaid {
+  margin: 0.9em 0;
+  padding: 0.75em;
+  overflow-x: auto;
+  text-align: center;
+  background: rgba(118, 111, 101, 0.04);
+}
+.jpage.markdown-body .mermaid svg {
+  max-width: 100%;
+  height: auto;
 }
 .jpage.markdown-body hr {
   height: 1px;
@@ -281,42 +272,31 @@ body {
   overflow-x: auto;
 }
 
-/* 代码块：通栏展示（跨双栏），限高内滚动，不独占整页 */
+/* 代码块：独立成块、内部滚动，不撑破纸页 */
 .jpage.markdown-body pre {
   box-sizing: border-box;
-  column-span: all;
   width: 100%;
   min-width: 0;
   max-width: 100%;
-  max-height: 320px;   /* 论文中代码是插图级元素，限制高度避免单个代码块占满整页 */
+  max-height: 520px;
   overflow: auto;
-  margin: 0.7em 0;
-  padding: 10px 14px;
+  margin: 0.9em 0;
+  padding: 14px 16px;
   border: 1px solid #d0d7de;
-  border-radius: 4px;
-  background: #f7f8fa;
+  border-radius: 6px;
+  background: #f6f8fa;
   color: #24292f;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-  font-size: 12px;
-  line-height: 1.55;
-  break-inside: avoid;
+  font-size: 13px;
+  line-height: 1.6;
 }
-.jpage.markdown-body pre code { font: inherit; white-space: pre; }
-/* 行内代码：灰色衬底小号，与正文一致 */
-.jpage.markdown-body code:not(pre code) {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-  font-size: 0.88em;
-  background: rgba(118, 111, 101, 0.12);
-  border-radius: 3px;
-  padding: 0.1em 0.3em;
-  color: var(--journal-ink, #2d2a26);
-}
+.jpage.markdown-body pre code { font: inherit; white-space: inherit; }
 
 /* 深色主题：纸面保持纸白，文字用纸刊墨色 */
 [data-color-mode="dark"] body { background: var(--journal-page, #f6f3ea); }
+[data-color-mode="dark"] #journalPaper { background: var(--journal-paper, #fbf8ef); }
 [data-color-mode="dark"] .jpage.markdown-body { color: var(--journal-ink, #2d2a26); }
 [data-color-mode="dark"] .jpage.markdown-body a { color: #0969da; }
-[data-color-mode="dark"] .jpages .jpage { background: var(--journal-paper, #fbf8ef); }
 
 /* ============ 文末收稿日期（小五黑体） ============ */
 .journal-received {
@@ -327,6 +307,15 @@ body {
   font-size: var(--journal-small-size, 12px);
   line-height: 1.9;
   text-align: right;
+}
+/* 文章元信息页脚：只渲染有值的行，保持小五号黑体 */
+.journal-meta-foot {
+  margin-top: 24px;
+  padding-top: 12px;
+  border-top: 1px solid var(--journal-border, #d8d0c2);
+  font-family: var(--journal-hei);
+  font-size: var(--journal-small-size, 12px);
+  line-height: 1.9;
 }
 
 /* ============ 页码（页脚居中） ============ */

@@ -50,6 +50,21 @@
     return pages;
   }
 
+  function isPageSafe(node) {
+    if (!node || node.nodeType !== 1) return false;
+    return /^(PRE|TABLE|FIGURE)$/.test(node.tagName) ||
+      node.matches('.markdown-alert, .mermaid');
+  }
+
+  function collectBlocks(nodes) {
+    return nodes.map(function (node) {
+      if (isPageSafe(node)) {
+        node.style.breakInside = 'avoid';
+      }
+      return node;
+    });
+  }
+
   /* ==================================================================
      主流程
      ================================================================== */
@@ -74,6 +89,7 @@
       blocks.push(postBody.firstChild);
       postBody.removeChild(postBody.firstChild);
     }
+    blocks = collectBlocks(blocks);
 
     /* 2. 测量每块高度：clone 进隐藏测量容器（单栏自然流，读 offsetHeight）。
           测量容器宽度与正文容器一致，字体/行高从 .jpage 继承。 */
