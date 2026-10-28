@@ -19,13 +19,22 @@
 
   var PAGE = {
     height: 780,        /* 页高 px（与 CSS .jpages .jpage 一致） */
+    columns: 2,         /* 每页栏数：块高按单栏测，容量需乘以栏数 */
     headerHeight: 32,   /* 续页页眉（页码|刊名|期）占位 */
     paddingBottom: 34   /* 页脚页码留白 */
   };
 
-  function getUsableHeight() {
-    /* 页高减去页眉与页脚页码占位，双栏容器里可容纳内容的实际高度 */
+  function getSingleColumnHeight() {
+    /* 单栏可视高度：页高减去页眉与页脚页码占位 */
     return PAGE.height - PAGE.headerHeight - PAGE.paddingBottom;
+  }
+
+  function getUsableHeight() {
+    /* 每页可容纳的内容总量 = 单栏高度 × 栏数。
+       块高是按单栏宽度测的，而每页内部由 CSS 分成多栏排版；
+       只按单栏高度分配会让每页仅装半页内容，左栏填不满就溢到右栏。 */
+    var columns = PAGE.columns || 2;
+    return getSingleColumnHeight() * columns;
   }
 
   /* ------------------------------------------------------------------
