@@ -34,7 +34,7 @@
        块高是按单栏宽度测的，而每页内部由 CSS 分成多栏排版；
        只按单栏高度分配会让每页仅装半页内容，左栏填不满就溢到右栏。 */
     var columns = PAGE.columns || 2;
-    return getSingleColumnHeight() * columns * 0.92;
+    return getSingleColumnHeight() * columns;
   }
 
   /* ------------------------------------------------------------------
@@ -151,10 +151,55 @@
       }
     }
 
-    /* 5. 替换正文容器 */
+    /* 5. 先挂进文档流，否则 scrollHeight 读不到真实布局 */
     paper.insertBefore(jpages, postBody);
     paper.removeChild(postBody);
     postBody.setAttribute('data-paginated', '1');
+
+    /* 5.5 溢出校正：估算容量与真实双栏渲染有误差，逐页把溢出的块移到下一页。
+           必须在挂载后测量，脱文档的节点 scrollHeight 恒为 0。 */
+    balanceOverflow(jpages);
+  }
+
+  /* 把超出页高的块移到下一页；若无下一页则新建。
+     只在真实 DOM 上测量，保证不裁掉任何内容。 */
+  function balanceOverflow(jpages) {
+    var idx = 0;
+    while (idx < jpages.children.length) {
+      var page = jpages.children[idx];
+      /* 从后往前找第一个溢出的块，移走它 */
+      var moved = false;
+      var kids = Array.prototype.slice.call(page.children);
+      for (var i = kids.length - 1; i >= 0; i--) {
+        var el = kids[i];
+        if (el.classList.contains('cont-masthead')) continue;
+        if (page.scrollHeight > page.clientHeight &&
+            el.getBoundingClientRect().bottom > page.getBoundingClientRect().bottom + 1) {
+          var next = jpages.children[idx + 1];
+          if (!next) {
+            next = newPage(jpages, jpages.children.length);
+          }
+          /* 插到下一页的最前面（页眉之后） */
+          var head = next.querySelector('.cont-masthead');
+          if (head && head.nextSibling) next.insertBefore(el, head.nextSibling);
+          else if (head) next.appendChild(el);
+          else next.insertBefore(el, next.firstChild);
+          moved = true;
+          break;          /* 每次只移一块，重新测量本页 */
+        }
+      }
+      if (!moved) idx++;
+    }
+    /* 移除尾部空页 */
+    while (jpages.children.length > 1) {
+      var last = jpages.children[jpages.children.length - 1];
+      var hasContent = false;
+      Array.prototype.forEach.call(last.children, function (c) {
+        if (!c.classList.contains('cont-masthead')) hasContent = true;
+      });
+      if (hasContent) break;
+      jpages.removeChild(last);
+    }
   }
 
   function newPage(container, index) {
