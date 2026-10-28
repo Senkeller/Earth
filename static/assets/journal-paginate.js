@@ -34,7 +34,7 @@
        块高是按单栏宽度测的，而每页内部由 CSS 分成多栏排版；
        只按单栏高度分配会让每页仅装半页内容，左栏填不满就溢到右栏。 */
     var columns = PAGE.columns || 2;
-    return getSingleColumnHeight() * columns;
+    return getSingleColumnHeight() * columns * 0.92;
   }
 
   /* ------------------------------------------------------------------
