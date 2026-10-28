@@ -217,9 +217,9 @@ body {
 .jpage.markdown-body > p {
   text-indent: 2em;
   margin: 0 0 0.45em;
-  /* 段落内部不跨栏断开：分栏线切进段落中间时，读者会看到半句被截到栏底、
-     另半句出现在栏顶，破坏论文阅读连贯性。 */
-  break-inside: avoid;
+  /* 段落允许跨栏续排：期刊双栏里段落从左栏底续到右栏顶是正常排版。
+     若在此加 break-inside: avoid，整段会被推到右栏，左栏底部留出大片空白。
+     只有代码块/表格/图片/Callout/Mermaid 才禁止拆分。 */
 }
 /* 一级标题：四号黑体，跨栏 */
 .jpage.markdown-body h1,

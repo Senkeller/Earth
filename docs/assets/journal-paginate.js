@@ -92,24 +92,12 @@
     blocks = collectBlocks(blocks);
 
     /* 2. 测量每块高度：clone 进隐藏测量容器（单栏自然流，读 offsetHeight）。
-          测量宽度必须是「单栏宽度」而非容器全宽：页内正文按双栏排布，
-          每个块实际占用一栏约 (总宽 - 栏间距) / 2。若按全宽测量，高度会
-          被低估一半，所有块误判为塞进一页，随后被 overflow:hidden 静默裁掉。 */
+          测量容器宽度与正文容器一致，字体/行高从 .jpage 继承。 */
     var measure = document.createElement('div');
-    var jpageRef = document.querySelector('.jpage.markdown-body');
-    /* 栏间距从实际样式读取，避免 CSS 改动后测量宽度与真实栏宽脱节 */
-    var columnGap = 40;
-    if (jpageRef) {
-      var gapValue = parseFloat(window.getComputedStyle(jpageRef).columnGap);
-      if (isFinite(gapValue) && gapValue > 0) columnGap = gapValue;
-    }
-    var singleColumnWidth = Math.max(
-      120,
-      Math.floor((postBody.clientWidth - columnGap) / 2)
-    );
     measure.style.cssText =
       'position:absolute;visibility:hidden;left:-9999px;top:0;z-index:-1;' +
-      'width:' + singleColumnWidth + 'px;';
+      'width:' + postBody.clientWidth + 'px;';
+    var jpageRef = document.querySelector('.jpage.markdown-body');
     if (jpageRef) {
       var cs = window.getComputedStyle(jpageRef);
       measure.style.fontFamily = cs.fontFamily;
@@ -157,26 +145,12 @@
     if (index > 0) {
       var cont = document.createElement('div');
       cont.className = 'cont-masthead';
-      /* 期号从模板刊头的 data-issue 读取（第X期 / No.X），与首页刊头保持一致；
-         刊名取主刊头中栏文本。全部用 textContent 写入，避免拼 HTML 造成注入。 */
-      var mastheadEl = document.querySelector('.journal-masthead');
-      var issueName = mastheadEl ? mastheadEl.getAttribute('data-issue') : '';
       var nameEl = document.querySelector('.journal-masthead .mh-center');
       var name = nameEl ? nameEl.textContent : '';
-
-      var pageSpan = document.createElement('span');
-      pageSpan.className = 'mh-side';
-      pageSpan.textContent = '— ' + (index + 1) + ' —';
-      var centerSpan = document.createElement('span');
-      centerSpan.className = 'mh-center';
-      centerSpan.textContent = name;
-      var issueSpan = document.createElement('span');
-      issueSpan.className = 'mh-side';
-      issueSpan.textContent = issueName;
-
-      cont.appendChild(pageSpan);
-      cont.appendChild(centerSpan);
-      cont.appendChild(issueSpan);
+      cont.innerHTML =
+        '<span class="mh-side">— ' + (index + 1) + ' —</span>' +
+        '<span class="mh-center">' + name + '</span>' +
+        '<span class="mh-side"></span>';
       page.appendChild(cont);
     }
     container.appendChild(page);
