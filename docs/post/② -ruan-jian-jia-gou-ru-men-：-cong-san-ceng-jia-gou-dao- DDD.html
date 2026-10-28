@@ -140,38 +140,38 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     </section>
 
     <div class="journal-paper">
-        <div id="postBody" class="jpage markdown-body"><h1>② 软件架构入门：从三层架构到 DDD</h1>
+        <div id="postBody" class="jpage markdown-body"><h1 dir="auto">② 软件架构入门：从三层架构到 DDD</h1>
 <blockquote>
-<p>零基础也能懂的架构课——用厨房比喻讲清楚所有概念</p>
-<p>阅读时间：约 15 分钟<br>
+<p dir="auto">零基础也能懂的架构课——用厨房比喻讲清楚所有概念</p>
+<p dir="auto">阅读时间：约 15 分钟<br>
 难度：★★☆☆☆（需要耐心，但不需要代码基础）</p>
 </blockquote>
 <hr>
-<h2>这篇文章是给谁看的？</h2>
-<ul>
+<h2 dir="auto">这篇文章是给谁看的？</h2>
+<ul dir="auto">
 <li>你让 AI 写过代码，但出来的东西"浑成一坨"，改一个功能炸三个地方</li>
 <li>你听说过"分层架构"、"MVVM"、"DDD"这些词，但不知道它们是什么意思</li>
 <li>你希望 AI 生成的代码结构清晰、容易修改，而不是一锅粥</li>
 <li>你想知道：不同大小的项目，到底该用什么架构？</li>
 </ul>
-<p>如果你中了任何一条，这篇文章就是给你写的。</p>
+<p dir="auto">如果你中了任何一条，这篇文章就是给你写的。</p>
 <hr>
-<h2>引子：为什么需要架构？</h2>
-<p>先说一个真实场景。</p>
-<p>你有天让 AI "帮我做个报销 App，能提交报销、审批、查看历史"。AI 很听话，刷刷刷写出来了。</p>
-<p>看起来功能都有。但过了几天你想改一个东西——"报销上限从 10000 改成 5000"。</p>
-<p>然后你发现：</p>
+<h2 dir="auto">引子：为什么需要架构？</h2>
+<p dir="auto">先说一个真实场景。</p>
+<p dir="auto">你有天让 AI "帮我做个报销 App，能提交报销、审批、查看历史"。AI 很听话，刷刷刷写出来了。</p>
+<p dir="auto">看起来功能都有。但过了几天你想改一个东西——"报销上限从 10000 改成 5000"。</p>
+<p dir="auto">然后你发现：</p>
 <pre lang="text" class="notranslate"><code class="notranslate">改一个数字 → 炸了三个页面
 提交页面的上限改了 → 审批页面的没改 → 历史页面的也没改
 因为 AI 把"上限 10000"这个数字写在了 5 个不同的文件里
 </code></pre>
-<p>这就是<strong>没有架构</strong>的后果。</p>
-<p>架构的作用，就是确保<strong>改一个东西，只改一个地方</strong>。</p>
+<p dir="auto">这就是<strong>没有架构</strong>的后果。</p>
+<p dir="auto">架构的作用，就是确保<strong>改一个东西，只改一个地方</strong>。</p>
 <hr>
-<h2>第一章：三问定需求——写代码前先问自己</h2>
-<p>很多小白犯的第一个错误：拿到需求直接让 AI 开写。</p>
-<p>在写任何代码之前，先问自己三个问题。这比看懂代码更重要。</p>
-<h3>第一问：价值锚点——做这个东西到底是为了什么？</h3>
+<h2 dir="auto">第一章：三问定需求——写代码前先问自己</h2>
+<p dir="auto">很多小白犯的第一个错误：拿到需求直接让 AI 开写。</p>
+<p dir="auto">在写任何代码之前，先问自己三个问题。这比看懂代码更重要。</p>
+<h3 dir="auto">第一问：价值锚点——做这个东西到底是为了什么？</h3>
 <pre lang="text" class="notranslate"><code class="notranslate">❌ 模糊说法："让用户更好地社交"
 ✅ 合格说法：针对新用户，解决不知如何开口的孤立感，
    在注册后3分钟内自动引导至兴趣匹配群聊
@@ -180,28 +180,28 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 ✅ 合格说法：让员工 30 秒内提交报销单，
    审批人手机上 10 秒完成审批
 </code></pre>
-<p>如果无法清晰定义核心价值，这个需求大概率是个"功能废墟"。</p>
-<h3>第二问：第一动作——用户进来第一件事做什么？</h3>
-<p>找到用户进入产品后最核心的<strong>唯一路径</strong>：</p>
+<p dir="auto">如果无法清晰定义核心价值，这个需求大概率是个"功能废墟"。</p>
+<h3 dir="auto">第二问：第一动作——用户进来第一件事做什么？</h3>
+<p dir="auto">找到用户进入产品后最核心的<strong>唯一路径</strong>：</p>
 <pre lang="text" class="notranslate"><code class="notranslate">❌ 用户进来看到一堆东西：好友列表、群聊广场、个人设置、动态发现
 ✅ 用户进来只看到一条路：登录 → 找人 → 发消息
 
 ❌ 报销 App 用户进来：看到统计图表、待办列表、历史记录、个人信息
 ✅ 报销 App 用户进来：打开 → 拍照上传小票 → 填写金额 → 提交
 </code></pre>
-<p>用户如果停顿一秒想"我该点哪"，设计就是次品。</p>
-<h3>第三问：Not-To-Do——明确不做清单</h3>
-<p>这可能是三个问题里最重要的一个。</p>
-<p>大多数项目死掉，不是因为做得太少，而是因为做得太多。</p>
+<p dir="auto">用户如果停顿一秒想"我该点哪"，设计就是次品。</p>
+<h3 dir="auto">第三问：Not-To-Do——明确不做清单</h3>
+<p dir="auto">这可能是三个问题里最重要的一个。</p>
+<p dir="auto">大多数项目死掉，不是因为做得太少，而是因为做得太多。</p>
 <pre lang="text" class="notranslate"><code class="notranslate">✅ 先列清楚哪些功能当前版本绝对不做
 ✅ 每个"顺便做一下"都会让代码复杂度翻倍
 ✅ AI 不会拒绝你——你让它加功能，它就加，哪怕代码已经快炸了
 </code></pre>
-<p><strong>这三个问题的质量，决定了代码的寿命。</strong></p>
+<p dir="auto"><strong>这三个问题的质量，决定了代码的寿命。</strong></p>
 <hr>
-<h2>第二章：三层架构——所有架构的基础</h2>
-<h3>厨房比喻</h3>
-<p>想象你开了一家餐厅：</p>
+<h2 dir="auto">第二章：三层架构——所有架构的基础</h2>
+<h3 dir="auto">厨房比喻</h3>
+<p dir="auto">想象你开了一家餐厅：</p>
 <pre lang="text" class="notranslate"><code class="notranslate">不分层（Vibecoding 默认产物）：
   一个人干所有事：买菜→洗菜→切菜→炒菜→洗碗→收银→招呼客人
   要换菜单——得把这个人从头到脚换一遍
@@ -213,8 +213,8 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 
   换菜单只改前台，换供应商只改仓库
 </code></pre>
-<h3>三层架构在 Flutter 中的映射</h3>
-<p>你用 Flutter 开发 App，代码分三个文件夹：</p>
+<h3 dir="auto">三层架构在 Flutter 中的映射</h3>
+<p dir="auto">你用 Flutter 开发 App，代码分三个文件夹：</p>
 <pre lang="text" class="notranslate"><code class="notranslate">lib/
 ├── data/              ← 🟢 数据层：只管增删改查
 │   ├── models/        ←   数据长什么样
@@ -227,19 +227,19 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     ├── pages/         ←   页面
     └── widgets/       ←   可复用组件
 </code></pre>
-<h3>三层架构的核心规则：只准单向依赖</h3>
+<h3 dir="auto">三层架构的核心规则：只准单向依赖</h3>
 <pre lang="text" class="notranslate"><code class="notranslate">UI层 → 调 → 业务层 → 调 → 数据层
 数据层 → 不知道 (不能调) → 业务层 → 不知道 (不能调) → UI层
                     ↑ 内层绝对不能知道外层的存在
 </code></pre>
-<p>这就像餐厅后厨：</p>
-<ul>
+<p dir="auto">这就像餐厅后厨：</p>
+<ul dir="auto">
 <li>前台可以对接后厨（"客人点了一份红烧肉"）</li>
 <li>后厨可以去仓库拿食材（"猪肉不够了，去冷库拿"）</li>
 <li>但后厨不能直接跑出去跟客人聊天（业务层不知道 UI 的存在）</li>
 </ul>
-<h3>怎么判断代码写得好不好？（不用看懂代码）</h3>
-<p>只需要问三个问题：</p>
+<h3 dir="auto">怎么判断代码写得好不好？（不用看懂代码）</h3>
+<p dir="auto">只需要问三个问题：</p>
 <pre lang="text" class="notranslate"><code class="notranslate">① 新功能改了几个文件？
    → 理想情况：加新文件，不动旧文件（说明结构好）
    → 坏情况：改 5 个旧文件才能加一个新功能（说明耦合严重）
@@ -252,28 +252,28 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
    → 理想情况：只去 domain/ 层的一个文件
    → 坏情况：搜一下发现有 5 个地方都写了"10000"
 </code></pre>
-<p><strong>这三个问题，比看懂代码更重要。</strong></p>
+<p dir="auto"><strong>这三个问题，比看懂代码更重要。</strong></p>
 <hr>
-<h2>第三章：MVVM——UI 层内部怎么组织</h2>
-<h3>又一个厨房比喻</h3>
+<h2 dir="auto">第三章：MVVM——UI 层内部怎么组织</h2>
+<h3 dir="auto">又一个厨房比喻</h3>
 <pre lang="text" class="notranslate"><code class="notranslate">🍽️ View（界面层）     = 摆盘 → 菜长什么样，顾客直接看到
 📋 ViewModel（中间层） = 配菜师 → 把食材加工成适合摆盘的状态
 🧊 Model（数据层）     = 食材 → 原始数据，怎么存的不重要
 </code></pre>
-<h3>MVVM 和三层的区别</h3>
-<p>很多初学者搞混这两个概念，一句话说清楚：</p>
+<h3 dir="auto">MVVM 和三层的区别</h3>
+<p dir="auto">很多初学者搞混这两个概念，一句话说清楚：</p>
 <pre lang="text" class="notranslate"><code class="notranslate">三层架构是"大格局"——整个 App 怎么分三个大区
 MVVM 是"小模式"——专门管 UI 层内部怎么和业务层交互
 
 它们不冲突，是搭配使用的。
 </code></pre>
-<p>具体长这样：</p>
+<p dir="auto">具体长这样：</p>
 <pre lang="text" class="notranslate"><code class="notranslate">三层的大框架：
     presentation/  ← 这里用 MVVM：View = Widget, ViewModel = Provider
     domain/        ← 纯业务逻辑，不知道 UI
     data/          ← 只管数据读写
 </code></pre>
-<h3>什么时候需要 MVVM？</h3>
+<h3 dir="auto">什么时候需要 MVVM？</h3>
 <markdown-accessiblity-table><table role="table">
 <thead>
 <tr>
@@ -301,17 +301,17 @@ MVVM 是"小模式"——专门管 UI 层内部怎么和业务层交互
 </tbody>
 </table></markdown-accessiblity-table>
 <hr>
-<h2>第四章：DDD（领域驱动设计）——大项目的分而治之</h2>
-<h3>什么是"领域"？</h3>
+<h2 dir="auto">第四章：DDD（领域驱动设计）——大项目的分而治之</h2>
+<h3 dir="auto">什么是"领域"？</h3>
 <pre lang="text" class="notranslate"><code class="notranslate">做报销 App → "报销"就是你的领域
 做外卖 App → "外卖"就是你的领域
 做记账 App → "账单"就是你的领域
 </code></pre>
-<p>DDD 的核心思想只有一句话：</p>
+<p dir="auto">DDD 的核心思想只有一句话：</p>
 <blockquote>
-<p><strong>代码的结构，应该和业务的结构保持一致。</strong></p>
+<p dir="auto"><strong>代码的结构，应该和业务的结构保持一致。</strong></p>
 </blockquote>
-<h3>用超市类比理解</h3>
+<h3 dir="auto">用超市类比理解</h3>
 <pre lang="text" class="notranslate"><code class="notranslate">三层架构 = 按职能分区的超市
   一个仓库区管所有货
   一个收银区管所有收银
@@ -321,9 +321,9 @@ DDD = 按商品类别分区的超市
   生鲜区有：自己的冷库 + 自己的收银 + 自己的货架
   日用品区有：自己的仓库 + 自己的收银 + 自己的货架
 </code></pre>
-<p>每个区都是一个<strong>独立的小超市</strong>，各管各的，互不干扰。改生鲜区的规则不会影响到日用品区。</p>
-<h3>那到底该用什么架构？</h3>
-<p>这个表格直接照着选就行：</p>
+<p dir="auto">每个区都是一个<strong>独立的小超市</strong>，各管各的，互不干扰。改生鲜区的规则不会影响到日用品区。</p>
+<h3 dir="auto">那到底该用什么架构？</h3>
+<p dir="auto">这个表格直接照着选就行：</p>
 <markdown-accessiblity-table><table role="table">
 <thead>
 <tr>
@@ -360,7 +360,7 @@ DDD = 按商品类别分区的超市
 </tr>
 </tbody>
 </table></markdown-accessiblity-table>
-<h3>三步快速选型法</h3>
+<h3 dir="auto">三步快速选型法</h3>
 <pre lang="text" class="notranslate"><code class="notranslate">第1步：数页面数量
    1-3页 → 微型方案，别折腾
    3页以上 → 继续往下看
@@ -373,7 +373,7 @@ DDD = 按商品类别分区的超市
    简单增删改查 → 三层架构足够
    多角色、多流程、多规则 → 引入 DDD 思想
 </code></pre>
-<h3>给报销 App 做个诊断</h3>
+<h3 dir="auto">给报销 App 做个诊断</h3>
 <markdown-accessiblity-table><table role="table">
 <thead>
 <tr>
@@ -400,10 +400,10 @@ DDD = 按商品类别分区的超市
 </tr>
 </tbody>
 </table></markdown-accessiblity-table>
-<p><strong>建议：三层架构 + MVVM（Riverpod）</strong></p>
-<p>初创期用三层 + MVVM 打好骨架，增长期用 DDD 思想分疆而治。</p>
+<p dir="auto"><strong>建议：三层架构 + MVVM（Riverpod）</strong></p>
+<p dir="auto">初创期用三层 + MVVM 打好骨架，增长期用 DDD 思想分疆而治。</p>
 <hr>
-<h2>这篇的核心收获</h2>
+<h2 dir="auto">这篇的核心收获</h2>
 <pre lang="text" class="notranslate"><code class="notranslate">① 写代码前先三问：价值锚点？第一动作？Not-To-Do？
 ② 三层架构 = UI / 业务 / 数据，各管各的
 ③ 核心规则：只准外层调内层，内层不知道外层的存在
@@ -413,12 +413,18 @@ DDD = 按商品类别分区的超市
 ⑦ 小白判断代码好坏：看"改一个功能要动几个文件"就够了
 </code></pre>
 <hr>
-<p><strong>📌 下篇预告：</strong> 架构选好了，下一步就是让 App 看起来好看。下一篇讲 UI 设计体系——怎么用 Design Token、Stitch、shadcn_flutter 搭出一套统一漂亮的界面，彻底告别"AI 蓝紫色"和"弗兰肯斯坦 UI"。</p>
+<p dir="auto"><strong>📌 下篇预告：</strong> 架构选好了，下一步就是让 App 看起来好看。下一篇讲 UI 设计体系——怎么用 Design Token、Stitch、shadcn_flutter 搭出一套统一漂亮的界面，彻底告别"AI 蓝紫色"和"弗兰肯斯坦 UI"。</p>
 <hr>
-<p><em>本系列整理自我的学习记录《从小白学软件开发》。建议按顺序阅读。</em></p></div>
-        <div class="journal-received">收稿日期：2026-06-12</div>
+<p dir="auto"><em>本系列整理自我的学习记录《从小白学软件开发》。建议按顺序阅读。</em></p></div>
         <div class="journal-pagination" aria-label="Page number">1</div>
     </div>
+
+    <footer class="journal-meta-foot">
+        <div class="journal-received">收稿日期：2026-06-12</div>
+        
+        
+        
+    </footer>
 </div>
 <div style="font-size:small;margin-top:8px;float:right;">相信美好的事物正在发生</div>
 
@@ -472,8 +478,13 @@ if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
 console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.12.2/dist/mermaid.min.js"></script>
+<script src="https://Senkeller.github.io/Earth/assets/journal-markdown.js"></script>
 <script>
 document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+if (window.JournalMarkdownAdapter) {
+    window.JournalMarkdownAdapter.init(document.getElementById("postBody"));
+}
 document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 
 
@@ -482,6 +493,6 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 
 
 </script>
-<script src='/Earth/assets/GmeekTOC.js'></script><script src='/Earth/assets/journal-post.js'></script><script src='/Earth/assets/journal-paginate.js'></script>
+<script src='/Earth/assets/GmeekTOC.js'></script><script src='/Earth/assets/journal-post.js'></script><script src='/Earth/assets/journal-paginate.js'></script><script src='/Earth/assets/journal-markdown.js'></script>
 
 </html>

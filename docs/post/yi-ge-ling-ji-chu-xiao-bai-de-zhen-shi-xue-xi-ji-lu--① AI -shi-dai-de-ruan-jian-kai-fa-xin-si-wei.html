@@ -157,70 +157,70 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     </section>
 
     <div class="journal-paper">
-        <div id="postBody" class="jpage markdown-body"><h1>① AI 时代的软件开发新思维</h1>
+        <div id="postBody" class="jpage markdown-body"><h1 dir="auto">① AI 时代的软件开发新思维</h1>
 <blockquote>
-<p>一个零基础小白的真实学习记录</p>
-<p>阅读时间：约 12 分钟<br>
+<p dir="auto">一个零基础小白的真实学习记录</p>
+<p dir="auto">阅读时间：约 12 分钟<br>
 难度：★☆☆☆☆（完全零基础友好）</p>
 </blockquote>
 <hr>
-<h2>写在前面：这篇文章是给谁看的？</h2>
-<p>如果你符合以下任意一条，这篇文章就是为你写的：</p>
-<ul>
+<h2 dir="auto">写在前面：这篇文章是给谁看的？</h2>
+<p dir="auto">如果你符合以下任意一条，这篇文章就是为你写的：</p>
+<ul dir="auto">
 <li>你完全没学过编程，但想自己做一个 App</li>
 <li>你用过 ChatGPT 写代码，但出来的东西总是"能用但不好用"</li>
 <li>你听说过 Vibecoding（用 AI 哼着歌就把代码写了），但试了几次发现代码越改越乱</li>
 <li>你想知道 AI 时代学软件开发，到底该学什么、怎么学</li>
 </ul>
-<p>这篇文章整理自我和 AI 助手的真实对话记录。我不是程序员，没有技术背景，就是一个"想知道 App 怎么做出来的"普通人。</p>
-<p>下面记录的是我在学习过程中问过的问题、踩过的坑、和 AI 给我的回答。</p>
+<p dir="auto">这篇文章整理自我和 AI 助手的真实对话记录。我不是程序员，没有技术背景，就是一个"想知道 App 怎么做出来的"普通人。</p>
+<p dir="auto">下面记录的是我在学习过程中问过的问题、踩过的坑、和 AI 给我的回答。</p>
 <hr>
-<h2>第一篇：软件开发的底牌变了</h2>
-<p>在开始学任何具体技术之前，有一件事你必须先想清楚——</p>
-<p><strong>AI 时代，学软件开发和十年前完全不一样了。</strong></p>
-<p>十年前：</p>
+<h2 dir="auto">第一篇：软件开发的底牌变了</h2>
+<p dir="auto">在开始学任何具体技术之前，有一件事你必须先想清楚——</p>
+<p dir="auto"><strong>AI 时代，学软件开发和十年前完全不一样了。</strong></p>
+<p dir="auto">十年前：</p>
 <pre lang="text" class="notranslate"><code class="notranslate">你要学编程语言 → 学语法 → 学框架 → 学工具 → 学部署
 每个环节都要自己亲手做
 学一年才能做出一个"能看"的东西
 </code></pre>
-<p>现在：</p>
+<p dir="auto">现在：</p>
 <pre lang="text" class="notranslate"><code class="notranslate">你只需要学会"怎么跟 AI 描述你要什么"
 AI 帮你写 90% 的代码
 你的价值在于：知道要做什么、知道什么不该做、知道怎么验收
 </code></pre>
-<p>这不是夸张。下面我就用我自己的经历告诉你，一个零基础的人是怎么在 AI 帮助下，理解整个软件开发流程的。</p>
+<p dir="auto">这不是夸张。下面我就用我自己的经历告诉你，一个零基础的人是怎么在 AI 帮助下，理解整个软件开发流程的。</p>
 <hr>
-<h2>第一篇核心：三个必须知道的概念</h2>
-<h3>概念一：什么是 Skills（技能）？</h3>
-<p>如果你用过 ChatGPT，你肯定遇到过这种情况——同一个问题，它有时候回答得很好，有时候胡说八道。</p>
-<p>Skills 就是为了解决这个问题而生的。</p>
-<p><strong>Skills = 给 AI 看的"操作手册"</strong></p>
-<p>比如，你让 AI 帮你做一道菜：</p>
-<ul>
+<h2 dir="auto">第一篇核心：三个必须知道的概念</h2>
+<h3 dir="auto">概念一：什么是 Skills（技能）？</h3>
+<p dir="auto">如果你用过 ChatGPT，你肯定遇到过这种情况——同一个问题，它有时候回答得很好，有时候胡说八道。</p>
+<p dir="auto">Skills 就是为了解决这个问题而生的。</p>
+<p dir="auto"><strong>Skills = 给 AI 看的"操作手册"</strong></p>
+<p dir="auto">比如，你让 AI 帮你做一道菜：</p>
+<ul dir="auto">
 <li>没有 Skill：AI 凭自己的"常识"乱做，可能做成黑暗料理</li>
 <li>有 Skill：AI 按食谱做，每一步都有明确指引</li>
 </ul>
-<p>在实际开发中，Skills 长这样：</p>
-<div class="highlight highlight-source-yaml"><pre class="notranslate"><span class="pl-ent">name</span>: <span class="pl-s">github-pr-workflow</span>
+<p dir="auto">在实际开发中，Skills 长这样：</p>
+<div class="highlight highlight-source-yaml" dir="auto"><pre class="notranslate"><span class="pl-ent">name</span>: <span class="pl-s">github-pr-workflow</span>
 <span class="pl-ent">description</span>: <span class="pl-s"><span class="pl-pds">"</span>Use when creating or reviewing a GitHub Pull Request<span class="pl-pds">"</span></span>
 <span class="pl-ent">steps</span>:
   <span class="pl-s">1. git checkout -b feature/xxx</span>
   <span class="pl-s">2. 写代码</span>
   <span class="pl-ent">3. git commit -m "feat</span>: <span class="pl-s">xxx"</span>
   <span class="pl-s">4. gh pr create --fill</span></pre></div>
-<p>当你告诉 AI "创建个 PR"，它加载这个 Skill，就知道该按什么步骤做。</p>
-<p><strong>Skills 的核心理念：</strong> 不是让 AI 自由发挥，而是让 AI 按你的成熟流程执行。</p>
+<p dir="auto">当你告诉 AI "创建个 PR"，它加载这个 Skill，就知道该按什么步骤做。</p>
+<p dir="auto"><strong>Skills 的核心理念：</strong> 不是让 AI 自由发挥，而是让 AI 按你的成熟流程执行。</p>
 <hr>
-<h3>概念二：什么是 Agent 开发？</h3>
-<p>你可能听说过"Agent"这个词，感觉很高大上。其实很简单。</p>
-<p><strong>传统程序和 Agent 的区别：</strong></p>
+<h3 dir="auto">概念二：什么是 Agent 开发？</h3>
+<p dir="auto">你可能听说过"Agent"这个词，感觉很高大上。其实很简单。</p>
+<p dir="auto"><strong>传统程序和 Agent 的区别：</strong></p>
 <pre lang="text" class="notranslate"><code class="notranslate">传统程序：输入 → [固定的 if/else 逻辑] → 输出
   就像一台自动售货机——投币、选商品、出货，过程是固定的
 
 Agent：   输入 → [大模型 + 工具 + 记忆 + 规划] → 决策 + 行动
   像一个有脑子的助手——你说"帮我订个外卖"，它自己查餐厅、比价格、下单
 </code></pre>
-<p>一个 Agent 有三个核心零件：</p>
+<p dir="auto">一个 Agent 有三个核心零件：</p>
 <markdown-accessiblity-table><table role="table">
 <thead>
 <tr>
@@ -247,8 +247,8 @@ Agent：   输入 → [大模型 + 工具 + 记忆 + 规划] → 决策 + 行动
 </tr>
 </tbody>
 </table></markdown-accessiblity-table>
-<p><strong>一个最简 Agent 的核心逻辑，其实就这么几行（不用看懂，感受一下）：</strong></p>
-<div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-v">SimpleAgent</span>:
+<p dir="auto"><strong>一个最简 Agent 的核心逻辑，其实就这么几行（不用看懂，感受一下）：</strong></p>
+<div class="highlight highlight-source-python" dir="auto"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-v">SimpleAgent</span>:
     <span class="pl-k">def</span> <span class="pl-en">__init__</span>(<span class="pl-s1">self</span>, <span class="pl-s1">llm_client</span>, <span class="pl-s1">tools</span>):
         <span class="pl-s1">self</span>.<span class="pl-c1">llm</span> <span class="pl-c1">=</span> <span class="pl-s1">llm_client</span>
         <span class="pl-s1">self</span>.<span class="pl-c1">tools</span> <span class="pl-c1">=</span> <span class="pl-s1">tools</span>
@@ -261,13 +261,13 @@ Agent：   输入 → [大模型 + 工具 + 记忆 + 规划] → 决策 + 行动
             <span class="pl-s1">result</span> <span class="pl-c1">=</span> <span class="pl-s1">self</span>.<span class="pl-c1">execute_tool</span>(<span class="pl-s1">response</span>.<span class="pl-c1">tool_call</span>)
             <span class="pl-k">return</span> <span class="pl-s1">self</span>.<span class="pl-c1">run</span>(<span class="pl-s1">result</span>)  <span class="pl-c"># 递归——做完一步接着做下一步</span>
         <span class="pl-k">return</span> <span class="pl-s1">response</span>.<span class="pl-c1">text</span></pre></div>
-<p>关键在最后一行的<strong>递归调用</strong>——Agent 做一步、看结果、再做下一步，而不是一次输出完就没下文了。</p>
-<p>这就是为什么 Agent 能"自主完成一个任务"，而普通 AI 只能"回答一个问题"。</p>
+<p dir="auto">关键在最后一行的<strong>递归调用</strong>——Agent 做一步、看结果、再做下一步，而不是一次输出完就没下文了。</p>
+<p dir="auto">这就是为什么 Agent 能"自主完成一个任务"，而普通 AI 只能"回答一个问题"。</p>
 <hr>
-<h3>概念三：Vibecoding 的三大陷阱</h3>
-<p>Vibecoding（用 AI 哼着歌写代码）听起来很美好——你说"帮我做个 App"，AI 一口气给你全写出来。</p>
-<p>但你试过就知道，这样出来的东西，最初看起来很惊艳，用起来全是坑。</p>
-<h4>陷阱 1：逻辑稀释</h4>
+<h3 dir="auto">概念三：Vibecoding 的三大陷阱</h3>
+<p dir="auto">Vibecoding（用 AI 哼着歌写代码）听起来很美好——你说"帮我做个 App"，AI 一口气给你全写出来。</p>
+<p dir="auto">但你试过就知道，这样出来的东西，最初看起来很惊艳，用起来全是坑。</p>
+<h4 dir="auto">陷阱 1：逻辑稀释</h4>
 <pre lang="text" class="notranslate"><code class="notranslate">你让 AI 做一个"报销 App"：
 → AI 把 50% 的精力花在按钮颜色、圆角大小、页面动画上
 → 剩下 50% 才用在核心功能（提交报销、审批流程）
@@ -278,57 +278,57 @@ Agent：   输入 → [大模型 + 工具 + 记忆 + 规划] → 决策 + 行动
 → 主菜随便炒了炒
 → 端上来好看，但不好吃
 </code></pre>
-<p><strong>AI 的注意力是有限的。</strong> 你让它一次做太多，它就照顾不过来。</p>
-<h4>陷阱 2：技术债堆积——弗兰肯斯坦困境</h4>
-<p>这是 Vibecoding 最大的坑。</p>
+<p dir="auto"><strong>AI 的注意力是有限的。</strong> 你让它一次做太多，它就照顾不过来。</p>
+<h4 dir="auto">陷阱 2：技术债堆积——弗兰肯斯坦困境</h4>
+<p dir="auto">这是 Vibecoding 最大的坑。</p>
 <pre lang="text" class="notranslate"><code class="notranslate">第1次：AI 用 TableView 做列表 ✅ 看起来不错
 第2次：你说"加个搜索" → AI 改成 SearchBar + ListView
 第3次：你说"加筛选" → AI 改成 CustomScrollView
 第4次：你说"加个编辑功能" → AI 用 BottomSheet，和之前的风格完全不搭
 </code></pre>
-<p>结果就是一个 App 里，每个控件都有自己的"脾气"——这个页面圆角 8px，那个页面圆角 16px；这个页面用蓝色按钮，那个页面用灰色按钮。看起来像<strong>弗兰肯斯坦</strong>——用不同尸体的零件拼出来的怪物。</p>
-<p><strong>根本原因：AI 没有"全局设计系统"的概念。</strong> 它每次只看你当前的要求，不知道前面做了什么选择。</p>
-<h4>陷阱 3：反馈断裂</h4>
-<p>Vibecoding 的精髓是"快速生成 → 即时反馈"——写一段、看效果、再改。</p>
-<p>但你让 AI "一次写完所有功能"：</p>
+<p dir="auto">结果就是一个 App 里，每个控件都有自己的"脾气"——这个页面圆角 8px，那个页面圆角 16px；这个页面用蓝色按钮，那个页面用灰色按钮。看起来像<strong>弗兰肯斯坦</strong>——用不同尸体的零件拼出来的怪物。</p>
+<p dir="auto"><strong>根本原因：AI 没有"全局设计系统"的概念。</strong> 它每次只看你当前的要求，不知道前面做了什么选择。</p>
+<h4 dir="auto">陷阱 3：反馈断裂</h4>
+<p dir="auto">Vibecoding 的精髓是"快速生成 → 即时反馈"——写一段、看效果、再改。</p>
+<p dir="auto">但你让 AI "一次写完所有功能"：</p>
 <pre lang="text" class="notranslate"><code class="notranslate">→ AI 埋头写了 2000 行代码
 → 你一看——完全不是你要的样子
 → 想改——不知道从哪改起
 → 重来——又浪费几十分钟
 </code></pre>
-<p><strong>核心原因：AI 的"智力"有上下文边界。</strong> 项目越大，AI 要处理的关系越复杂，一旦超过临界点，AI 就开始"幻觉"——你以为它在写代码，其实它在编造不存在的逻辑。</p>
+<p dir="auto"><strong>核心原因：AI 的"智力"有上下文边界。</strong> 项目越大，AI 要处理的关系越复杂，一旦超过临界点，AI 就开始"幻觉"——你以为它在写代码，其实它在编造不存在的逻辑。</p>
 <hr>
-<h2>解决思路：三个方法</h2>
-<h3>方法一：做减法——什么是 MVP</h3>
-<p>MVP（Minimum Viable Product，最小可行产品）是解决上面所有问题的钥匙。</p>
+<h2 dir="auto">解决思路：三个方法</h2>
+<h3 dir="auto">方法一：做减法——什么是 MVP</h3>
+<p dir="auto">MVP（Minimum Viable Product，最小可行产品）是解决上面所有问题的钥匙。</p>
 <pre lang="text" class="notranslate"><code class="notranslate">不是"这个功能也加上吧"
 而是"这个功能能砍掉吗？"
 
 不是"让 AI 一次性做完"
 而是"先让 AI 做一个能跑的最小版本"
 </code></pre>
-<p><strong>每加一个功能前先问自己：</strong></p>
-<ol>
+<p dir="auto"><strong>每加一个功能前先问自己：</strong></p>
+<ol dir="auto">
 <li>没有这个功能，用户能不能完成核心任务？</li>
 <li>这个功能能不能放到 V2？</li>
 <li>这个"顺便做一下"会不会增加 3 倍的复杂度？</li>
 </ol>
-<h3>方法二：定规矩——DESIGN_SYSTEM.md</h3>
-<p>不要让 AI 自由发挥样式。在项目里放一个设计规范文件，每次开发前告诉 AI "先读这个文件"。</p>
-<div class="highlight highlight-text-md"><pre class="notranslate"><span class="pl-mh"># <span class="pl-en">DESIGN_SYSTEM.md</span></span>
+<h3 dir="auto">方法二：定规矩——DESIGN_SYSTEM.md</h3>
+<p dir="auto">不要让 AI 自由发挥样式。在项目里放一个设计规范文件，每次开发前告诉 AI "先读这个文件"。</p>
+<div class="highlight highlight-text-md" dir="auto"><pre class="notranslate"><span class="pl-mh"># <span class="pl-en">DESIGN_SYSTEM.md</span></span>
 
 本项目 UI 规范：
 🎨 颜色：暖棕 #D4A574 / 米白 #F5E6D3 / 暖白底 #FFF8F0
 📐 圆角：卡片 20px / 按钮 30px（胶囊形）/ 输入框 16px
 🖋️ 字号：标题 18px Bold / 正文 14px / 辅助 12px
 📏 间距：卡片内边距 24px / 卡片间距 16px / 页面边距 20px</pre></div>
-<h3>方法三：用好 Git 后悔药</h3>
-<p>每次 AI 改完代码，确认没问题了再 <code class="notranslate">git commit</code>。改坏了直接 <code class="notranslate">git revert</code> 恢复。</p>
-<p><strong>不需要懂 Git 原理</strong>，只需要记住这个流程：</p>
-<div class="highlight highlight-source-shell"><pre class="notranslate">AI 写代码 → 你检查 → 没问题 → git commit
+<h3 dir="auto">方法三：用好 Git 后悔药</h3>
+<p dir="auto">每次 AI 改完代码，确认没问题了再 <code class="notranslate">git commit</code>。改坏了直接 <code class="notranslate">git revert</code> 恢复。</p>
+<p dir="auto"><strong>不需要懂 Git 原理</strong>，只需要记住这个流程：</p>
+<div class="highlight highlight-source-shell" dir="auto"><pre class="notranslate">AI 写代码 → 你检查 → 没问题 → git commit
                    → 有问题 → git revert → 重来</pre></div>
 <hr>
-<h2>这篇的核心收获</h2>
+<h2 dir="auto">这篇的核心收获</h2>
 <pre class="notranslate"><code class="notranslate">① Skills = 给 AI 看的操作手册，让 AI 按你的流程走
 ② Agent = 有大脑+工具+规则的自主执行者，不是简单的问答机器
 ③ Vibecoding 有三大陷阱（逻辑稀释、技术债、反馈断裂）
@@ -337,12 +337,18 @@ Agent：   输入 → [大模型 + 工具 + 记忆 + 规划] → 决策 + 行动
 ⑥ Git 是后悔药，AI 时代更不能缺
 </code></pre>
 <hr>
-<p><strong>📌 下篇预告：</strong> 当你知道了" AI 会犯什么错"，下一步就是学会"怎么让 AI 不犯错"——这就是软件架构要做的事。下一篇我们将用一个厨房的比喻，把三层架构、MVVM、DDD 这些听起来吓人的概念，一次讲清楚。</p>
+<p dir="auto"><strong>📌 下篇预告：</strong> 当你知道了" AI 会犯什么错"，下一步就是学会"怎么让 AI 不犯错"——这就是软件架构要做的事。下一篇我们将用一个厨房的比喻，把三层架构、MVVM、DDD 这些听起来吓人的概念，一次讲清楚。</p>
 <hr>
-<p><em>本系列文章整理自我的学习记录《从小白学软件开发》。如果你是从零开始、想用 AI 辅助开发的人，建议按顺序阅读。</em></p></div>
-        <div class="journal-received">收稿日期：2026-06-12</div>
+<p dir="auto"><em>本系列文章整理自我的学习记录《从小白学软件开发》。如果你是从零开始、想用 AI 辅助开发的人，建议按顺序阅读。</em></p></div>
         <div class="journal-pagination" aria-label="Page number">1</div>
     </div>
+
+    <footer class="journal-meta-foot">
+        <div class="journal-received">收稿日期：2026-06-12</div>
+        
+        
+        
+    </footer>
 </div>
 <div style="font-size:small;margin-top:8px;float:right;">相信美好的事物正在发生</div>
 
@@ -396,8 +402,13 @@ if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
 console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.12.2/dist/mermaid.min.js"></script>
+<script src="https://Senkeller.github.io/Earth/assets/journal-markdown.js"></script>
 <script>
 document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+if (window.JournalMarkdownAdapter) {
+    window.JournalMarkdownAdapter.init(document.getElementById("postBody"));
+}
 document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 
 
@@ -469,6 +480,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
-<script src='/Earth/assets/GmeekTOC.js'></script><script src='/Earth/assets/journal-post.js'></script><script src='/Earth/assets/journal-paginate.js'></script>
+<script src='/Earth/assets/GmeekTOC.js'></script><script src='/Earth/assets/journal-post.js'></script><script src='/Earth/assets/journal-paginate.js'></script><script src='/Earth/assets/journal-markdown.js'></script>
 
 </html>

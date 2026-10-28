@@ -151,64 +151,64 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     </section>
 
     <div class="journal-paper">
-        <div id="postBody" class="jpage markdown-body"><h1>③ UI 设计体系实战：从 Design Token 到组件库</h1>
+        <div id="postBody" class="jpage markdown-body"><h1 dir="auto">③ UI 设计体系实战：从 Design Token 到组件库</h1>
 <blockquote>
-<p>AI 生成的 UI 为什么总是"蓝紫色 + 奇怪图标"？怎么让它看起来像一个真正的产品？</p>
-<p>阅读时间：约 14 分钟<br>
+<p dir="auto">AI 生成的 UI 为什么总是"蓝紫色 + 奇怪图标"？怎么让它看起来像一个真正的产品？</p>
+<p dir="auto">阅读时间：约 14 分钟<br>
 难度：★★☆☆☆（没经验也能看懂，但需要耐心）</p>
 </blockquote>
 <hr>
-<h2>这篇文章是给谁看的？</h2>
-<ul>
+<h2 dir="auto">这篇文章是给谁看的？</h2>
+<ul dir="auto">
 <li>AI 给你写的界面总是"一眼 AI"——蓝紫色调、奇怪图标、到处都是边框线</li>
 <li>你翻来覆去跟 AI 说"好看一点"，但它就是改不好</li>
 <li>同一个 App 里，A 页面圆角 8px、B 页面圆角 16px，看起来不像同一个产品</li>
 <li>你想知道专业的 UI 设计师是怎么保证所有页面风格统一的</li>
 </ul>
-<p>恭喜你，你说的所有问题，都有一个共同的解法——<strong>UI 设计体系</strong>。</p>
+<p dir="auto">恭喜你，你说的所有问题，都有一个共同的解法——<strong>UI 设计体系</strong>。</p>
 <hr>
-<h2>引子：为什么 AI 写的 UI 总是丑？</h2>
-<p>先看一个真实场景。</p>
-<p>你让 AI "帮我做一个报销列表页面"。AI 刷刷刷生成了——你觉得还行。然后你说"再加一个审批页面"——也还行。</p>
-<p>但把两个页面放一起：</p>
+<h2 dir="auto">引子：为什么 AI 写的 UI 总是丑？</h2>
+<p dir="auto">先看一个真实场景。</p>
+<p dir="auto">你让 AI "帮我做一个报销列表页面"。AI 刷刷刷生成了——你觉得还行。然后你说"再加一个审批页面"——也还行。</p>
+<p dir="auto">但把两个页面放一起：</p>
 <pre lang="text" class="notranslate"><code class="notranslate">列表页：蓝色主调、直角卡片、粗体标题
 审批页：紫色主调、圆角卡片、细体标题
 
 这两个页面看起来像两个不同的人做的两个不同 App
 </code></pre>
-<p><strong>不是 AI 不努力，是 AI 每次都在重新发明轮子。</strong></p>
-<p>AI 没有"刚才那页用了什么颜色"的记忆，它每次都是"从零开始设计"。所以同一个项目的不同页面，风格总是不统一。</p>
-<p>解法就是——<strong>给 AI 一套"积木"，让它只能拼积木，不能自己造积木。</strong></p>
+<p dir="auto"><strong>不是 AI 不努力，是 AI 每次都在重新发明轮子。</strong></p>
+<p dir="auto">AI 没有"刚才那页用了什么颜色"的记忆，它每次都是"从零开始设计"。所以同一个项目的不同页面，风格总是不统一。</p>
+<p dir="auto">解法就是——<strong>给 AI 一套"积木"，让它只能拼积木，不能自己造积木。</strong></p>
 <hr>
-<h2>第一章：.UI 设计的三个底层原则</h2>
-<p>在开始搭积木之前，先理解三条<strong>不可破坏的规则</strong>。</p>
-<h3>原则一：留白——防止 AI 把界面塞满</h3>
-<p>AI 的默认倾向：只要有空间就继续塞内容。</p>
+<h2 dir="auto">第一章：.UI 设计的三个底层原则</h2>
+<p dir="auto">在开始搭积木之前，先理解三条<strong>不可破坏的规则</strong>。</p>
+<h3 dir="auto">原则一：留白——防止 AI 把界面塞满</h3>
+<p dir="auto">AI 的默认倾向：只要有空间就继续塞内容。</p>
 <pre lang="text" class="notranslate"><code class="notranslate">❌ "看起来宽松一点"（模糊描述 → AI 不会改）
 ✅ "卡片内边距统一 24px，卡片之间间距 16px，页面左右边距不小于 20px"
    （精确数字 → AI 执行到位）
 </code></pre>
-<p><strong>留白不是浪费空间，是给用户的眼睛喘息的机会。</strong></p>
-<h3>原则二：一致性——所有页面看起来像同一个 App</h3>
-<p>AI 最容易犯的错：A 页面按钮圆角 8px，B 页面变成 12px。</p>
+<p dir="auto"><strong>留白不是浪费空间，是给用户的眼睛喘息的机会。</strong></p>
+<h3 dir="auto">原则二：一致性——所有页面看起来像同一个 App</h3>
+<p dir="auto">AI 最容易犯的错：A 页面按钮圆角 8px，B 页面变成 12px。</p>
 <pre lang="text" class="notranslate"><code class="notranslate">✅ 同一类元素在任何地方看起来都一样
 ✅ 圆角值固定、阴影层级固定、边框有无固定
 ✅ 图标风格不混用
 ✅ 直接告诉 AI："所有按钮使用同一套样式，不允许在不同页面自行变化"
 </code></pre>
-<p><strong>这一条能砍掉 70% 的"AI 味"。</strong></p>
-<h3>原则三：层级——不用边框也能分清主次</h3>
-<p>"AI 味"界面最明显的特征：<strong>到处都是边框线</strong>。</p>
+<p dir="auto"><strong>这一条能砍掉 70% 的"AI 味"。</strong></p>
+<h3 dir="auto">原则三：层级——不用边框也能分清主次</h3>
+<p dir="auto">"AI 味"界面最明显的特征：<strong>到处都是边框线</strong>。</p>
 <pre lang="text" class="notranslate"><code class="notranslate">✅ 用阴影区分"浮起来"的元素
 ✅ 用背景明度差（深/浅）区分区域，而不是画线
 ✅ 用字号和字重区分标题/正文/说明
 </code></pre>
-<p>专业的界面不用框框，用"视觉重量"来区分主次。</p>
+<p dir="auto">专业的界面不用框框，用"视觉重量"来区分主次。</p>
 <hr>
-<h2>第二章：Design Token——设计规范的"原子"</h2>
-<p>Design Token 是个听起来高大上、其实很简单的概念。</p>
-<p><strong>Design Token = 把颜色、圆角、间距、字号这些"视觉属性"存成有名字的变量。</strong></p>
-<h3>举个例子</h3>
+<h2 dir="auto">第二章：Design Token——设计规范的"原子"</h2>
+<p dir="auto">Design Token 是个听起来高大上、其实很简单的概念。</p>
+<p dir="auto"><strong>Design Token = 把颜色、圆角、间距、字号这些"视觉属性"存成有名字的变量。</strong></p>
+<h3 dir="auto">举个例子</h3>
 <pre lang="text" class="notranslate"><code class="notranslate">❌ 没有 Token：
   每个页面各自写 #D4A574
   想换主色 → 搜遍所有文件 → 改几百处
@@ -218,8 +218,8 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
   所有页面引用 colorPrimary
   想换主色 → 改这一行 → 所有页面自动变
 </code></pre>
-<h3>一个完整的 Token 体系长这样</h3>
-<div class="highlight highlight-source-yaml"><pre class="notranslate"><span class="pl-c"><span class="pl-c">#</span> 颜色</span>
+<h3 dir="auto">一个完整的 Token 体系长这样</h3>
+<div class="highlight highlight-source-yaml" dir="auto"><pre class="notranslate"><span class="pl-c"><span class="pl-c">#</span> 颜色</span>
 <span class="pl-ent">colorPrimary</span>: <span class="pl-s"><span class="pl-pds">"</span>#D4A574<span class="pl-pds">"</span></span>     <span class="pl-c"><span class="pl-c">#</span> 主色（暖棕）</span>
 <span class="pl-ent">colorBackground</span>: <span class="pl-s"><span class="pl-pds">"</span>#FFF8F0<span class="pl-pds">"</span></span>  <span class="pl-c"><span class="pl-c">#</span> 背景（暖白）</span>
 <span class="pl-ent">colorSurface</span>: <span class="pl-s"><span class="pl-pds">"</span>#F5E6D3<span class="pl-pds">"</span></span>     <span class="pl-c"><span class="pl-c">#</span> 卡片底色（米白）</span>
@@ -239,27 +239,27 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <span class="pl-ent">fontTitle</span>: <span class="pl-s">18px             </span><span class="pl-c"><span class="pl-c">#</span> 标题</span>
 <span class="pl-ent">fontBody</span>: <span class="pl-s">14px              </span><span class="pl-c"><span class="pl-c">#</span> 正文</span>
 <span class="pl-ent">fontCaption</span>: <span class="pl-s">12px           </span><span class="pl-c"><span class="pl-c">#</span> 辅助文字</span></pre></div>
-<h3>什么时候提取 Design Token？</h3>
-<p>最佳时机：<strong>AI 生成了一个你满意的页面之后。</strong></p>
+<h3 dir="auto">什么时候提取 Design Token？</h3>
+<p dir="auto">最佳时机：<strong>AI 生成了一个你满意的页面之后。</strong></p>
 <pre lang="text" class="notranslate"><code class="notranslate">你让 AI 做一个登录页面 → AI 生成 → 你觉得"这个配色好看"
 → 让 AI 提取 Design Token："基于你刚才生成的页面，提取所有设计令牌"
 → 得到 Token 文件 → 后续所有页面引用这个文件
 → 保证后续所有页面和这个页面风格一致
 </code></pre>
-<p>这种方法确保你拿到的 Token 源自你已经认可的效果，而不是凭空想象的参数。</p>
+<p dir="auto">这种方法确保你拿到的 Token 源自你已经认可的效果，而不是凭空想象的参数。</p>
 <hr>
-<h2>第三章：shadcn_flutter——别人的组件库，你的参考书</h2>
-<h3>传统组件库 vs shadcn 的区别</h3>
-<p>传统组件库（像 Material UI、Ant Design）：</p>
+<h2 dir="auto">第三章：shadcn_flutter——别人的组件库，你的参考书</h2>
+<h3 dir="auto">传统组件库 vs shadcn 的区别</h3>
+<p dir="auto">传统组件库（像 Material UI、Ant Design）：</p>
 <pre lang="text" class="notranslate"><code class="notranslate">npm install @mui/material → 引入别人做好的组件 → 几乎不能改样式
 </code></pre>
-<p>shadcn 的哲学：</p>
+<p dir="auto">shadcn 的哲学：</p>
 <pre lang="text" class="notranslate"><code class="notranslate">npx shadcn add button → 把按钮源码复制到你的项目 → 你完全拥有它
                        → 你想改成什么样就改成什么样
 </code></pre>
-<p><strong>核心哲学：你不是在使用别人的组件，你是在拥有自己的组件。</strong></p>
-<h3>shadcn_flutter 在 Flutter 中的用法</h3>
-<p>两个层次：</p>
+<p dir="auto"><strong>核心哲学：你不是在使用别人的组件，你是在拥有自己的组件。</strong></p>
+<h3 dir="auto">shadcn_flutter 在 Flutter 中的用法</h3>
+<p dir="auto">两个层次：</p>
 <pre lang="text" class="notranslate"><code class="notranslate">方式一：当普通包用（最快上手）
   在 pubspec.yaml 添加 shadcn_flutter 依赖
   import 直接用，和你用 Material 组件一样
@@ -269,12 +269,12 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
   自己照着写一套"你的组件库"
   完全控制样式和行为
 </code></pre>
-<p><strong>方式二才是 shadcn 的真精神</strong>——不依赖别人，自己做一套拥有完整所有权的组件库。</p>
+<p dir="auto"><strong>方式二才是 shadcn 的真精神</strong>——不依赖别人，自己做一套拥有完整所有权的组件库。</p>
 <hr>
-<h2>第四章：Stitch——用 AI 做 UI 预览</h2>
-<p>Stitch（stitch.withgoogle.com）是 Google 出的一个 AI 设计工具。</p>
-<p><strong>核心能力：你描述一个界面，它直接生成 Flutter 代码 + 预览效果。</strong></p>
-<h3>在开发流程中的位置</h3>
+<h2 dir="auto">第四章：Stitch——用 AI 做 UI 预览</h2>
+<p dir="auto">Stitch（stitch.withgoogle.com）是 Google 出的一个 AI 设计工具。</p>
+<p dir="auto"><strong>核心能力：你描述一个界面，它直接生成 Flutter 代码 + 预览效果。</strong></p>
+<h3 dir="auto">在开发流程中的位置</h3>
 <pre lang="text" class="notranslate"><code class="notranslate">你的完整 UI 设计体系：
 
 ① 定规矩 —— DESIGN_SYSTEM.md
@@ -292,7 +292,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
    ↓ 所有页面只用组件库里的零件
    ↓ 不再给 AI 自由发挥样式的机会
 </code></pre>
-<h3>Stitch 的精确用法</h3>
+<h3 dir="auto">Stitch 的精确用法</h3>
 <pre lang="text" class="notranslate"><code class="notranslate">Stitch 不是"代码生成器"，是"设计探索工具"。
 
 ✅ 用它看"好不好看"、"怎么布局"
@@ -306,8 +306,8 @@ Step 4 → AI 只能调用 AppButton / AppCard / AppTextField
          不能自己发明新样式
 </code></pre>
 <hr>
-<h2>第五章：完整实施路线</h2>
-<h3>4 周上手路线</h3>
+<h2 dir="auto">第五章：完整实施路线</h2>
+<h3 dir="auto">4 周上手路线</h3>
 <pre lang="text" class="notranslate"><code class="notranslate">第1周：搭好 Design Token + 3 个核心组件
   AppButton（胶囊形按钮）
   AppCard（暖棕+米白卡片）
@@ -327,7 +327,7 @@ Step 4 → AI 只能调用 AppButton / AppCard / AppTextField
   所有新页面 = 从核心组件库里"拼"出来
   不再让 AI 自由发挥控件样式
 </code></pre>
-<h3>项目文件结构</h3>
+<h3 dir="auto">项目文件结构</h3>
 <pre lang="text" class="notranslate"><code class="notranslate">lib/
 ├── core/
 │   ├── theme/              ← Design Token 集中营
@@ -345,7 +345,7 @@ Step 4 → AI 只能调用 AppButton / AppCard / AppTextField
 └── presentation/           ← 页面层（只用组件库拼）
 </code></pre>
 <hr>
-<h2>这篇的核心收获</h2>
+<h2 dir="auto">这篇的核心收获</h2>
 <pre lang="text" class="notranslate"><code class="notranslate">① 三个原则：留白、一致性、层级
 ② Design Token = 把颜色/圆角/间距存成有名字的变量
 ③ shadcn 哲学 = 拥有自己的组件，而不是依赖别人的
@@ -355,12 +355,18 @@ Step 4 → AI 只能调用 AppButton / AppCard / AppTextField
 ⑦ AI 没有自由发挥样式的机会，UI 自然统一
 </code></pre>
 <hr>
-<p><strong>📌 下篇预告：</strong> 架构有了、UI 规范有了，下一步是理解 Flutter 的具体概念。下一篇讲依赖注入、状态管理、路由、存储——不用看懂代码，用白话说清楚每个概念是干什么用的。</p>
+<p dir="auto"><strong>📌 下篇预告：</strong> 架构有了、UI 规范有了，下一步是理解 Flutter 的具体概念。下一篇讲依赖注入、状态管理、路由、存储——不用看懂代码，用白话说清楚每个概念是干什么用的。</p>
 <hr>
-<p><em>本系列整理自我的学习记录《从小白学软件开发》。建议按顺序阅读。</em></p></div>
-        <div class="journal-received">收稿日期：2026-06-12</div>
+<p dir="auto"><em>本系列整理自我的学习记录《从小白学软件开发》。建议按顺序阅读。</em></p></div>
         <div class="journal-pagination" aria-label="Page number">1</div>
     </div>
+
+    <footer class="journal-meta-foot">
+        <div class="journal-received">收稿日期：2026-06-12</div>
+        
+        
+        
+    </footer>
 </div>
 <div style="font-size:small;margin-top:8px;float:right;">相信美好的事物正在发生</div>
 
@@ -414,8 +420,13 @@ if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
 console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.12.2/dist/mermaid.min.js"></script>
+<script src="https://Senkeller.github.io/Earth/assets/journal-markdown.js"></script>
 <script>
 document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+if (window.JournalMarkdownAdapter) {
+    window.JournalMarkdownAdapter.init(document.getElementById("postBody"));
+}
 document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 
 
@@ -487,6 +498,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
-<script src='/Earth/assets/GmeekTOC.js'></script><script src='/Earth/assets/journal-post.js'></script><script src='/Earth/assets/journal-paginate.js'></script>
+<script src='/Earth/assets/GmeekTOC.js'></script><script src='/Earth/assets/journal-post.js'></script><script src='/Earth/assets/journal-paginate.js'></script><script src='/Earth/assets/journal-markdown.js'></script>
 
 </html>

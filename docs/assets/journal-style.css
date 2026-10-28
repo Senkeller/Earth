@@ -232,6 +232,42 @@ body {
   border-left: 3px solid var(--journal-border, #d8d0c2);
   color: var(--journal-muted, #766f65);
 }
+/* GitHub Alert、Mermaid 与表格等语义块必须跨双栏且不跨纸页 */
+.jpage.markdown-body .markdown-alert,
+.jpage.markdown-body blockquote.markdown-alert,
+.jpage.markdown-body .mermaid,
+.jpage.markdown-body table,
+.jpage.markdown-body figure {
+  column-span: all;
+  break-inside: avoid;
+}
+.jpage.markdown-body .markdown-alert {
+  margin: 0.8em 0;
+  padding: 0.65em 1em;
+  border-left: 3px solid var(--journal-border, #d8d0c2);
+  background: rgba(118, 111, 101, 0.08);
+}
+.jpage.markdown-body .markdown-alert-title {
+  margin: 0 0 0.35em;
+  font-family: var(--journal-hei);
+  font-weight: 700;
+  font-size: var(--journal-small-size, 12px);
+}
+.jpage.markdown-body .markdown-alert-warning,
+.jpage.markdown-body .markdown-alert-caution {
+  border-left-color: var(--journal-accent, #bc4c00);
+}
+.jpage.markdown-body .mermaid {
+  margin: 0.9em 0;
+  padding: 0.75em;
+  overflow-x: auto;
+  text-align: center;
+  background: rgba(118, 111, 101, 0.04);
+}
+.jpage.markdown-body .mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
 .jpage.markdown-body hr {
   height: 1px;
   border: 0;
@@ -327,6 +363,15 @@ body {
   font-size: var(--journal-small-size, 12px);
   line-height: 1.9;
   text-align: right;
+}
+/* 文章元信息页脚：只渲染有值的行，保持小五号黑体 */
+.journal-meta-foot {
+  margin-top: 24px;
+  padding-top: 12px;
+  border-top: 1px solid var(--journal-border, #d8d0c2);
+  font-family: var(--journal-hei);
+  font-size: var(--journal-small-size, 12px);
+  line-height: 1.9;
 }
 
 /* ============ 页码（页脚居中） ============ */

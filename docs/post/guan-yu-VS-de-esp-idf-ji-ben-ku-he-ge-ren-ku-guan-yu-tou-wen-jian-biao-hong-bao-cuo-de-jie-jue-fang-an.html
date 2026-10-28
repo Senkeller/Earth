@@ -103,13 +103,13 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     </section>
 
     <div class="journal-paper">
-        <div id="postBody" class="jpage markdown-body"><p>初学者经常遇到的找不到头文件路径的问题。<br>
+        <div id="postBody" class="jpage markdown-body"><p dir="auto">初学者经常遇到的找不到头文件路径的问题。<br>
 这里我用一个乐鑫的示例工程作为演示。<br>
 解决步骤<br>
 1.打开一个乐鑫的工程示例，这里用“Hello world”示例演示。<br>
 <a target="_blank" rel="noopener noreferrer" href=""><img src="" alt="img" width="50%" style="max-width: 100%;"></a><br>
 编译完成后就不报错了。</p>
-<p>2.添加自己创建的库<br>
+<p dir="auto">2.添加自己创建的库<br>
 在实际过程中，我们要对工程进行模块化，所以就必须要学会创建添加自己的库。<br>
 <a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/6a2fd44c1d52d8626ba85dc458e60421d4eb09f4105d7bdc303fef169ec24e0d/68747470733a2f2f692d626c6f672e6373646e696d672e636e2f626c6f675f6d6967726174652f65613932376538653338316436636139616236616337336266633766613736322e6a706567"><img src="https://camo.githubusercontent.com/6a2fd44c1d52d8626ba85dc458e60421d4eb09f4105d7bdc303fef169ec24e0d/68747470733a2f2f692d626c6f672e6373646e696d672e636e2f626c6f675f6d6967726174652f65613932376538653338316436636139616236616337336266633766613736322e6a706567" alt="img" data-canonical-src="https://i-blog.csdnimg.cn/blog_migrate/ea927e8e381d6ca9ab6ac73bfc7fa762.jpeg" style="max-width: 100%;"></a><br>
 首先  ，创建一个组件文件夹，名字是组件（components），其他名字应该也可以但是为了防止各种问题，就使用components。</p>
@@ -119,7 +119,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 
     之前在网上看到各种手动添加的方法，但实际效果甚微，这里讲一下一键添加的方法。
 </code></pre>
-<p>我先创建一个自己的.c和.h文件，之后再引用到main中就是找不到路径，如图</p>
+<p dir="auto">我先创建一个自己的.c和.h文件，之后再引用到main中就是找不到路径，如图</p>
 <pre class="notranslate"><code class="notranslate">    这时候我们右击刚刚创建的CMakeLists.txt ，点击CMakeLists.txt文本编辑器：
 
 
@@ -150,9 +150,9 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 
     然后再点击编译，可以看到问题解决了。
 </code></pre>
-<p>3.添加esp-idf基本库报错解决方案<br>
+<p dir="auto">3.添加esp-idf基本库报错解决方案<br>
 刚刚上边说的是自己库该怎么添加，但是在我们自己库中引用官方库的时候也找不到路径，这里顺便说一下。</p>
-<p>如果我们在自己的库中直接添加基本库，就会出现和上面一样的问题，找不到路径，如图：</p>
+<p dir="auto">如果我们在自己的库中直接添加基本库，就会出现和上面一样的问题，找不到路径，如图：</p>
 <pre class="notranslate"><code class="notranslate">    这里提示了一个头文件找不到路径，事实上这三个都找不见，这时候我们右击创建的CMakeLists.txt ，点击CMakeLists.txt文本编辑器：
 
 
@@ -163,11 +163,17 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 
     然后再添加esp_timer，就是我们要添加的基本库文件的文件名
 </code></pre>
-<p>来源; <a href="https://blog.csdn.net/hexiaoze175/article/details/136100035" rel="nofollow">https://blog.csdn.net/hexiaoze175/article/details/136100035</a><br>
+<p dir="auto">来源; <a href="https://blog.csdn.net/hexiaoze175/article/details/136100035" rel="nofollow">https://blog.csdn.net/hexiaoze175/article/details/136100035</a><br>
 小结</p></div>
-        <div class="journal-received">收稿日期：2024-11-03</div>
         <div class="journal-pagination" aria-label="Page number">1</div>
     </div>
+
+    <footer class="journal-meta-foot">
+        <div class="journal-received">收稿日期：2024-11-03</div>
+        
+        
+        
+    </footer>
 </div>
 <div style="font-size:small;margin-top:8px;float:right;">相信美好的事物正在发生</div>
 
@@ -221,8 +227,13 @@ if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
 console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.12.2/dist/mermaid.min.js"></script>
+<script src="https://Senkeller.github.io/Earth/assets/journal-markdown.js"></script>
 <script>
 document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+if (window.JournalMarkdownAdapter) {
+    window.JournalMarkdownAdapter.init(document.getElementById("postBody"));
+}
 document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 
 
@@ -294,6 +305,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
-<script src='/Earth/assets/GmeekTOC.js'></script><script src='/Earth/assets/journal-post.js'></script><script src='/Earth/assets/journal-paginate.js'></script>
+<script src='/Earth/assets/GmeekTOC.js'></script><script src='/Earth/assets/journal-post.js'></script><script src='/Earth/assets/journal-paginate.js'></script><script src='/Earth/assets/journal-markdown.js'></script>
 
 </html>
