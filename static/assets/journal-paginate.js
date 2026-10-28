@@ -65,8 +65,14 @@
 
   function isWideBlock(node) {
     if (!node || node.nodeType !== 1) return false;
-    if (!/^(PRE|TABLE)$/.test(node.tagName)) return false;
-    var text = node.textContent || '';
+    /* 代码块可能已被 journal-post.js 包进 div.snippet-clipboard-content，
+       此时直接子元素是 DIV 而非 PRE，需向下找实际的代码块元素。 */
+    var target = node;
+    if (!/^(PRE|TABLE)$/.test(node.tagName)) {
+      target = node.querySelector ? node.querySelector('pre, table') : null;
+      if (!target) return false;
+    }
+    var text = target.textContent || '';
     var lines = text.split('\n');
     var longest = 0;
     for (var i = 0; i < lines.length; i++) {
