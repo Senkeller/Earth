@@ -59,6 +59,36 @@
     return pages;
   }
 
+  /* 宽内容块：ASCII 图、树形结构、对比表等靠字符对齐表意的块。
+     单栏宽度会破坏其缩进结构，必须跨栏显示。 */
+  var WIDE_LINE_THRESHOLD = 24;
+
+  function isWideBlock(node) {
+    if (!node || node.nodeType !== 1) return false;
+    if (!/^(PRE|TABLE)$/.test(node.tagName)) return false;
+    var text = node.textContent || '';
+    var lines = text.split('\n');
+    var longest = 0;
+    for (var i = 0; i < lines.length; i++) {
+      /* 中文字符按 2 个宽度计 */
+      var w = 0;
+      for (var j = 0; j < lines[i].length; j++) {
+        w += lines[i].charCodeAt(j) > 255 ? 2 : 1;
+      }
+      if (w > longest) longest = w;
+    }
+    return longest > WIDE_LINE_THRESHOLD;
+  }
+
+  function applyWideSpan(nodes) {
+    nodes.forEach(function (node) {
+      if (isWideBlock(node)) {
+        node.style.columnSpan = 'all';
+        node.style.breakInside = 'avoid';
+      }
+    });
+  }
+
   function isPageSafe(node) {
     if (!node || node.nodeType !== 1) return false;
     return /^(PRE|TABLE|FIGURE)$/.test(node.tagName) ||
@@ -99,6 +129,8 @@
       postBody.removeChild(postBody.firstChild);
     }
     blocks = collectBlocks(blocks);
+    /* 宽内容块改回跨栏：树形结构/ASCII 图在单栏里会被换行挤坏 */
+    applyWideSpan(blocks);
 
     /* 2. 测量每块高度：clone 进隐藏测量容器（单栏自然流，读 offsetHeight）。
           测量宽度必须是「单栏宽度」而非容器全宽：页内正文按双栏排布，
