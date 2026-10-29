@@ -21,7 +21,7 @@
 
   /* 纸刊排版令牌（模板换算） */
   --journal-body-size: 15px;           /* 五号：正文、摘要、关键词、二级标题 */
-  --journal-body-leading: 1.7;         /* 正文基准行高 */
+  --journal-body-leading: 1.37;        /* 正文基准行高：对齐论文模板实测值（字号10.4pt/行距14.2pt） */
   --journal-title-size: 29px;          /* 二号：文章题目 */
   --journal-author-size: 19px;         /* 四号：作者、一级标题 */
   --journal-small-size: 12px;          /* 小五：单位、页眉、图表题、文末信息 */
