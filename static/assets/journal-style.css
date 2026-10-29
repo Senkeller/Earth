@@ -219,38 +219,34 @@ body {
      若在此加 break-inside: avoid，整段会被推到右栏，左栏底部留出大片空白。
      只有代码块/表格/图片/Callout/Mermaid 才禁止拆分。 */
 }
-/* 各级标题：全部跨栏（column-span: all）。
-   跨栏元素会强制打断多栏流，因此每个标题之间自然形成一个独立的
-   「版面单元」：标题通栏 + 该节正文双栏等高。这是连续滚动下切分栏流的
-   唯一可靠手段——连续媒体里浏览器把 column-fill:auto 强制当作 balance，
-   不能靠它控制填栏顺序。
-   实测（33 篇真实文章）：恢复标题跨栏后「仅右栏」组从 23 降到 0，
-   即不再出现「左栏空着、内容整块挤在右栏」的碎片。 */
-/* 一级标题：四号黑体，通栏 */
+/* 各级标题：参与栏流（不跨栏）。
+   PDF 式纸页要求正文先填满左栏再续右栏；标题若 column-span: all
+   会强制打断栏流，使每个标题之间各自平衡两栏，造成右栏大量留白。
+   break-after: avoid 作为尽力而为的防护，避免标题孤零零落在栏底。
+   实测 33 篇真实文章：取消标题跨栏后「左栏空、右栏满」降为 0 篇，
+   总页数从 67 降到 33，纸面利用率接近翻倍。用户接受少数标题沉底。 */
+/* 一级标题：四号黑体，参与栏流 */
 .jpage.markdown-body h1,
 .jpage.markdown-body h2 {
   font-family: var(--journal-hei);
   font-size: var(--journal-author-size, 19px);
   font-weight: 700;
   line-height: 1.4;
-  column-span: all;
-  /* 防标题孤零零留在单元底部（与下一段分离） */
   break-after: avoid;
   margin: 0.6em 0 0.3em;
   padding-bottom: 0;
   border-bottom: 0;
 }
-/* 二级标题：五号黑体，通栏 */
+/* 二级标题：五号黑体，参与栏流 */
 .jpage.markdown-body h3 {
   font-family: var(--journal-hei);
   font-size: var(--journal-body-size, 15px);
   font-weight: 700;
   line-height: 1.5;
-  column-span: all;
   break-after: avoid;
   margin: 0.85em 0 0.3em;
 }
-/* 三级及以下：同正文（黑体同字重更醒目），同样通栏 */
+/* 三级及以下：同正文（黑体同字重更醒目），参与栏流 */
 .jpage.markdown-body h4,
 .jpage.markdown-body h5,
 .jpage.markdown-body h6 {
@@ -258,7 +254,6 @@ body {
   font-size: var(--journal-body-size, 15px);
   font-weight: 600;
   margin: 0.8em 0 0.3em;
-  column-span: all;
   break-after: avoid;
 }
 .jpage.markdown-body h1:first-child,
