@@ -186,16 +186,20 @@ body {
 }
 .jpages .jpage:last-child { margin-bottom: 0; }
 /* 每页底部居中页码（与 PDF 观感一致） */
+/* 每页底部居中页码（与 PDF 观感一致）。
+   position:absolute 已使其脱离文档流，不参与分栏计算。
+   左右各留 28px 与页面 padding 对齐——若用 left:0;right:0，
+   绝对定位元素会撑大容器的 scrollWidth，造成横向溢出误判。
+   也不加 column-span: all（会让它在多栏容器里占整行宽度）。 */
 .jpages .journal-pgno {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 28px;
+  right: 28px;
   bottom: 12px;
   text-align: center;
   font-family: var(--journal-times);
   font-size: var(--journal-small-size, 12px);
   color: var(--journal-muted, #766f65);
-  column-span: all;
 }
 
 /* #postBody 在分页前是普通容器；分页后由引擎替换为 .jpages。
