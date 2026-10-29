@@ -22,7 +22,8 @@
   /* 页面几何：与 CSS .jpages .jpage 保持一致 */
   var GEOMETRY = {
     height: 1300,      /* 页高 px（A4 比例：920 宽 × 1300 高 ≈ 1:1.414） */
-    paddingBottom: 40  /* 页脚页码留白，内容不得侵入 */
+    paddingBottom: 40, /* 页脚页码留白，内容不得侵入 */
+    paddingSide: 28    /* 左右内边距（CSS: padding: 20px 28px 40px） */
   };
 
   /* 窄屏不分页：小屏上固定页高会造成频繁翻页，体验反而更差 */
@@ -30,19 +31,46 @@
 
   /* ------------------------------------------------------------------
      溢出检测
-     返回第一个底部超出页面内容区的元素；无溢出返回 null。
-     必须用 getBoundingClientRect 的真实几何，不能用 scrollHeight：
-     在 overflow:hidden 的容器里 scrollHeight 不可靠（旧引擎踩过这个坑）。
+     返回第一个溢出页面可视区的元素；无溢出返回 null。
+
+     关键：多栏容器（column-count: 2）装不下内容时，浏览器不是向下溢出，
+     而是向右继续开新的「虚拟栏」。此时 scrollHeight 恒等于页高，
+     只有 scrollWidth 会变大。因此必须优先检测横向溢出，
+     否则引擎会误判「一页就装完了」，把大部分内容留在被
+     overflow:hidden 裁掉的虚拟栏里——读者只能看到第一栏。
+
+     实测：一篇 9339 字符的文章曾因此只生成 1 页，
+     该页 scrollWidth=3272px、clientWidth=830px，横向溢出 2442px。
      ------------------------------------------------------------------ */
   function findOverflow(page) {
     var rect = page.getBoundingClientRect();
     var limit = rect.top + (GEOMETRY.height - GEOMETRY.paddingBottom);
     var kids = page.children;
-    for (var i = kids.length - 1; i >= 0; i--) {
-      var el = kids[i];
+
+    /* 横向溢出：内容被挤到页面右边界之外的虚拟栏 */
+    if (page.scrollWidth > page.clientWidth + 2) {
+      /* 页面右边界 = 内容区右边界（扣除 padding） */
+      var contentRight = rect.right - GEOMETRY.paddingSide;
+      for (var i = 0; i < kids.length; i++) {
+        var el = kids[i];
+        if (el.classList.contains('journal-pgno')) continue;
+        /* 起点落在内容右边界之外的块，就是被挤进虚拟栏的第一块 */
+        if (el.getBoundingClientRect().left >= contentRight - 2) return el;
+      }
+      /* 兜底：找任何右边越界的块 */
+      for (var j = kids.length - 1; j >= 0; j--) {
+        var e = kids[j];
+        if (e.classList.contains('journal-pgno')) continue;
+        if (e.getBoundingClientRect().right > contentRight + 2) return e;
+      }
+    }
+
+    /* 纵向溢出：底边超过页面内容底边 */
+    for (var k = kids.length - 1; k >= 0; k--) {
+      var node = kids[k];
       /* 页码是绝对定位的装饰元素，不参与溢出判断 */
-      if (el.classList.contains('journal-pgno')) continue;
-      if (el.getBoundingClientRect().bottom > limit + 1) return el;
+      if (node.classList.contains('journal-pgno')) continue;
+      if (node.getBoundingClientRect().bottom > limit + 1) return node;
     }
     return null;
   }
