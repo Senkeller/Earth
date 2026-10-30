@@ -347,12 +347,29 @@ body {
   object-fit: contain;
 }
 .jpage.markdown-body figure { margin: 0.9em 0; text-align: center; }
+/* 图注 / 表题（由 journal-markdown.js 把
+   「**图 1　说明**」升级为 <figcaption class="fig-caption">）。
+   论文规范：图注在图下方、宋体小五居中；表题在表上方、黑体小五居中。 */
 .jpage.markdown-body figcaption {
   margin-top: 6px;
   font-size: var(--journal-small-size, 12px);
   font-family: var(--journal-song);
   color: var(--journal-muted, #766f65);
   text-align: center;
+  /* 题注不拆分、不被栏线切开 */
+  break-inside: avoid;
+}
+/* 表题：黑体，出现在表格上方，故上间距小、下间距留白 */
+.jpage.markdown-body figcaption.fig-caption-table {
+  font-family: var(--journal-hei);
+  font-weight: 600;
+  color: var(--journal-ink, #2d2a26);
+  margin-top: 0.9em;
+  margin-bottom: 4px;
+}
+/* 表题紧跟的表格不再叠加顶部间距 */
+.jpage.markdown-body figcaption.fig-caption-table + table {
+  margin-top: 0;
 }
 .jpage.markdown-body table {
   display: block;
