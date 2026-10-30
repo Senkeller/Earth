@@ -109,6 +109,20 @@
 
     var paper = postBody.parentElement;
 
+    /* 0. 移除正文开头的冗余标题。
+       文章标题已由刊头 .journal-title 呈现；模板允许作者在正文首行再写一次
+       「# 文章标题」（便于在编辑器里阅读），这里是同一标题的重复。
+       只移除开头连续的 h1（以及与刊头标题文本完全相同的首个 h1），
+       正文中间的 h1 一律保留——那通常是作者刻意使用的章节分隔。 */
+    var titleEl = document.querySelector('.journal-title');
+    var mastheadTitle = titleEl ? (titleEl.textContent || '').trim() : '';
+    while (postBody.firstElementChild && postBody.firstElementChild.tagName === 'H1') {
+      var h1Text = (postBody.firstElementChild.textContent || '').trim();
+      /* 若刊头标题存在且与正文首个 h1 不同，说明作者用了别的标题，保留之 */
+      if (mastheadTitle && h1Text && h1Text !== mastheadTitle) break;
+      postBody.removeChild(postBody.firstElementChild);
+    }
+
     /* 1. 取出所有顶层块，保留节点引用（之后直接搬运，不 clone，避免状态丢失） */
     var blocks = [];
     while (postBody.firstChild) {
