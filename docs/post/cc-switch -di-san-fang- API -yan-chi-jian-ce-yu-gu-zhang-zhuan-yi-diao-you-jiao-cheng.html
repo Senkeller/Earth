@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
+    <script src='/Earth/assets/GmeekBSZ.js'></script><script src='/Earth/assets/yifantheme.js'></script>
+    <link rel="icon" href="https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="> 用 cc-switch 把 Claude Code 接到第三方中转站之前，先学会科学测延迟（TTFT / 总耗时）、避开并发 429，并把故障转移 / 重试 / 超时 / 熔断器填对。">
+<meta property="og:title" content="cc-switch 第三方 API 延迟检测与故障转移调优教程">
+<meta property="og:description" content="> 用 cc-switch 把 Claude Code 接到第三方中转站之前，先学会科学测延迟（TTFT / 总耗时）、避开并发 429，并把故障转移 / 重试 / 超时 / 熔断器填对。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://Senkeller.github.io/Earth/post/cc-switch%20-di-san-fang-%20API%20-yan-chi-jian-ce-yu-gu-zhang-zhuan-yi-diao-you-jiao-cheng.html">
+<meta property="og:image" content="https://github.com/user-attachments/assets/2d046a80-cbc8-4d9e-8293-3a6e18a7d590">
+<title>cc-switch 第三方 API 延迟检测与故障转移调优教程</title>
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
+
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding:14px 16px;margin-right:8px;}
+#cmButton{height:48px;margin-top:40px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+.copy-feedback {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    color: var(--color-fg-on-emphasis);
+    background-color: var(--color-fg-muted);
+    border-radius: 3px;
+    padding: 5px 8px;
+    font-size: 12px;
+}
+
+</style>
+<link rel="stylesheet" href="https://Senkeller.github.io/Earth/assets/journal-style.css">
+
+
+
+<body>
+    <div id="header">
+<div class="title-right">
+    <a href="https://Senkeller.github.io/Earth" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/Senkeller/Earth/issues/45" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+</div>
+</div>
+    <div id="content">
+<div id="journalPaper">
+    <header class="journal-masthead" data-issue="第11期 / No.11">
+        <a class="journal-logo-link" href="https://Senkeller.github.io/Earth" aria-label="Journal of Earth">
+            <img class="journal-logo" src="https://Senkeller.github.io/Earth/assets/journal-logo.png" alt="Journal of Earth" width="400" height="96">
+        </a>
+        <div class="mh-row">
+            <span class="mh-side">2026年11月</span>
+            <span class="mh-center">Journal of Earth</span>
+            <span class="mh-side">Nov. 2026</span>
+        </div>
+        <div class="mh-row journal-issue">
+            <span class="mh-side journal-issue-prefix">第11期</span>
+            <span class="mh-center"></span>
+            <span class="mh-side">No.11</span>
+        </div>
+    </header>
+
+    <section class="journal-head">
+        <h1 class="journal-title">cc-switch 第三方 API 延迟检测与故障转移调优教程</h1>
+        <div class="journal-authors">郑郑</div>
+        <div class="journal-affil">（个人博客 · 西安 710072）</div>
+        <div class="journal-abstract">
+            <span class="jlabel">摘&nbsp;&nbsp;要：</span><span class="jtext">第三方中转站延迟波动的根因在后端排队而非网络，单次测量没有意义。本文面向用 cc-switch 接入 OpenAI 兼容中转站（goaichat / kimitk 系）的用户，先分清 RTT、TTFT、总耗时三个常被混为一谈的概念，给出端点连通性探测与多端点并发比测的方法，并附一个可复用的延迟探测脚本；再用一次 6 端点 × 19 模型的实测说明：连通性判断可以一锤定音，快慢排名必须多次采样取中位。据此给出 cc-switch 故障转移、重试、超时、熔断器各参数的建议值，解释为什么 8 并发必 429、同源端点互切无效的架构真相，最后提供本机三步定位法用于区分是你的问题还是中转站的问题。</span>
+        </div>
+        <div class="journal-keywords">
+            <span class="jlabel">关键词：</span>
+            <span class="jkw-list"><a class="jkeyword" href="https://Senkeller.github.io/Earth/tag.html#cc-switch">cc-switch</a>；<a class="jkeyword" href="https://Senkeller.github.io/Earth/tag.html#API%20%E5%BB%B6%E8%BF%9F%E6%A3%80%E6%B5%8B">API 延迟检测</a>；<a class="jkeyword" href="https://Senkeller.github.io/Earth/tag.html#%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB">故障转移</a>；<a class="jkeyword" href="https://Senkeller.github.io/Earth/tag.html#%E7%86%94%E6%96%AD%E5%99%A8">熔断器</a></span>
+        </div>
+    </section>
+
+    <div class="journal-paper">
+        <div id="postBody" class="jpage markdown-body"><blockquote>
+<p dir="auto">用 cc-switch 把 Claude Code 接到第三方中转站之前，先学会科学测延迟（TTFT / 总耗时）、避开并发 429，并把故障转移 / 重试 / 超时 / 熔断器填对。本文给出完整方法、一次 6 端点实测数据，以及可直接照抄的配置值。</p>
+</blockquote>
+<h2 dir="auto">1. 先搞清三个概念</h2>
+<p dir="auto">测「中转站快不快」之前，先分清三个完全不同、经常被混为一谈的数字：</p>
+<p dir="auto"><strong>表 1　三个核心概念</strong></p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>概念</th>
+<th>是什么</th>
+<th>受什么影响</th>
+<th>怎么测</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>网络往返 (RTT)</strong></td>
+<td>TCP+TLS 握手耗时</td>
+<td>你的宽带、CDN、DNS</td>
+<td>连 <code class="notranslate">host:443</code> 握手，取中位数</td>
+</tr>
+<tr>
+<td><strong>首字节 (TTFT)</strong></td>
+<td>请求发出 → 收到第一个 token</td>
+<td><strong>中转站后端排队</strong>（主导）+ 网络</td>
+<td>流式请求，记首个 chunk 到达时间</td>
+</tr>
+<tr>
+<td><strong>总耗时</strong></td>
+<td>请求发出 → 收到 <code class="notranslate">[DONE]</code></td>
+<td>TTFT + 生成速度 + token 数</td>
+<td>同上，全程计时</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto"><strong>核心认知：中转站的延迟瓶颈 95% 在「后端排队」，不在网络。</strong></p>
+<p dir="auto">同一端点同一模型重复测，TTFT 可以从 2.5s 跳到 38s，相差十几倍——这不是端点不稳定，而是后端在按 key / 并发限流、请求在队列里排队。所以：</p>
+<ul dir="auto">
+<li><strong>单次测量没有意义</strong>，至少测 3 次取<strong>中位数</strong>；</li>
+<li><strong>端点之间的网络差距（0.11s vs 0.16s）被后端排队噪声完全淹没</strong>，别用单次结果下「谁快谁慢」的结论。</li>
+</ul>
+<div class="markdown-alert markdown-alert-note" dir="auto"><p class="markdown-alert-title" dir="auto"><svg data-component="Octicon" class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p><p dir="auto">记住一句话：能一锤定音的是「通不通」，不能一锤定音的是「快不快」。全文的探测方法都围绕这两件事展开。</p>
+</div>
+<hr>
+<h2 dir="auto">2. 检测哪些端点 / 怎么拿到模型列表</h2>
+<h3 dir="auto">2.1 探测端点连通性（先淘汰连不上的）</h3>
+<div class="highlight highlight-source-shell" dir="auto"><pre class="notranslate">KEY=<span class="pl-s"><span class="pl-pds">"</span>sk-你的key<span class="pl-pds">"</span></span>
+<span class="pl-k">for</span> <span class="pl-smi">base</span> <span class="pl-k">in</span> \
+  <span class="pl-s"><span class="pl-pds">"</span>https://llm.goaichat.top/v1<span class="pl-pds">"</span></span> \
+  <span class="pl-s"><span class="pl-pds">"</span>https://ai.goaichat.top/v1<span class="pl-pds">"</span></span> \
+  <span class="pl-s"><span class="pl-pds">"</span>https://ciyuan.glmtk.top/v1<span class="pl-pds">"</span></span> \
+  <span class="pl-s"><span class="pl-pds">"</span>https://model.kimitk.top/v1<span class="pl-pds">"</span></span> \
+  <span class="pl-s"><span class="pl-pds">"</span>https://model.goaichat.top/v1<span class="pl-pds">"</span></span> \
+  <span class="pl-s"><span class="pl-pds">"</span>https://vibe.kimitk.top/v1<span class="pl-pds">"</span></span><span class="pl-k">;</span> <span class="pl-k">do</span>
+  R=<span class="pl-s"><span class="pl-pds">$(</span>curl -s -m 5 -o /dev/null -w <span class="pl-s"><span class="pl-pds">"</span>%{http_code}|%{time_total}<span class="pl-pds">"</span></span> \</span>
+<span class="pl-s">       -H <span class="pl-s"><span class="pl-pds">"</span>Authorization: Bearer <span class="pl-smi">$KEY</span><span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-smi">${base}</span>/models<span class="pl-pds">"</span></span><span class="pl-pds">)</span></span>
+  <span class="pl-c1">echo</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-smi">$base</span> -&gt; <span class="pl-smi">$R</span><span class="pl-pds">"</span></span>
+<span class="pl-k">done</span></pre></div>
+<p dir="auto"><code class="notranslate">HTTP 200</code> = 可用；<code class="notranslate">timeout / SSL 错误</code> = 直接淘汰。本例中 <code class="notranslate">model.goaichat.top</code> 握手超时、<code class="notranslate">vibe.kimitk.top</code> 返回 TLS 内部错误，属于稳定坏，可放心淘汰。</p>
+<h3 dir="auto">2.2 列出该端点有哪些模型</h3>
+<div class="highlight highlight-source-shell" dir="auto"><pre class="notranslate">curl -s -H <span class="pl-s"><span class="pl-pds">"</span>Authorization: Bearer <span class="pl-smi">$KEY</span><span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>https://ai.goaichat.top/v1/models<span class="pl-pds">"</span></span> \
+  <span class="pl-k">|</span> python3 -m json.tool</pre></div>
+<p dir="auto">返回 <code class="notranslate">data[].id</code> 就是可用模型 ID。中转站通常固定一批模型，换端点不换列表（本例 4 个可用端点共用同一套 19 个模型）。</p>
+<hr>
+<h2 dir="auto">3. 测延迟：TTFT 和总耗时</h2>
+<h3 dir="auto">3.1 一次性脚本（推荐，脚本全文见附录 A）</h3>
+<p dir="auto">把附录 A 保存为 <code class="notranslate">api_latency_probe.py</code> 后运行：</p>
+<div class="highlight highlight-source-shell" dir="auto"><pre class="notranslate">python3 api_latency_probe.py \
+  --key <span class="pl-s"><span class="pl-pds">"</span>sk-你的key<span class="pl-pds">"</span></span> \
+  --base <span class="pl-s"><span class="pl-pds">"</span>https://ai.goaichat.top/v1<span class="pl-pds">"</span></span> \
+  --model <span class="pl-s"><span class="pl-pds">"</span>glm-5.3-flash<span class="pl-pds">"</span></span> \
+  --rounds 3 \
+  --concurrent 1</pre></div>
+<p dir="auto">输出示例：</p>
+<pre class="notranslate"><code class="notranslate">  round 1/3 ...
+  round 2/3 ...
+  round 3/3 ...
+=== https://ai.goaichat.top/v1 / glm-5.3-flash  (3/3 成功) ===
+TTFT  中位=2.537s  最小=2.1s  最大=4.0s
+总耗时 中位=2.6s   最小=2.2s  最大=4.1s
+</code></pre>
+<p dir="auto"><code class="notranslate">--rounds</code> 建议 3~5（越多越稳）；<code class="notranslate">--concurrent</code> 平时用 1，<strong>不要 &gt;5</strong>（原因见第 5 节）。</p>
+<h3 dir="auto">3.2 多端点并发比测（快速横向对比）</h3>
+<p dir="auto">想同时比 4 个端点，用 Python 线程并发，但每个端点内部<strong>串行</strong>测 3 次再取中位：</p>
+<div class="highlight highlight-source-python" dir="auto"><pre class="notranslate"><span class="pl-k">import</span> <span class="pl-s1">urllib</span>.<span class="pl-s1">request</span>, <span class="pl-s1">json</span>, <span class="pl-s1">time</span>, <span class="pl-s1">ssl</span>, <span class="pl-s1">statistics</span>
+<span class="pl-k">from</span> <span class="pl-s1">concurrent</span>.<span class="pl-s1">futures</span> <span class="pl-k">import</span> <span class="pl-v">ThreadPoolExecutor</span>
+
+<span class="pl-c1">KEY</span> <span class="pl-c1">=</span> <span class="pl-s">"sk-你的key"</span>
+<span class="pl-c1">BASES</span> <span class="pl-c1">=</span> [<span class="pl-s">"https://llm.goaichat.top/v1"</span>, <span class="pl-s">"https://ai.goaichat.top/v1"</span>,
+         <span class="pl-s">"https://ciyuan.glmtk.top/v1"</span>, <span class="pl-s">"https://model.kimitk.top/v1"</span>]
+<span class="pl-c1">MODEL</span> <span class="pl-c1">=</span> <span class="pl-s">"glm-5.3-flash"</span>
+<span class="pl-s1">ctx</span> <span class="pl-c1">=</span> <span class="pl-s1">ssl</span>.<span class="pl-c1">create_default_context</span>()
+
+<span class="pl-k">def</span> <span class="pl-en">one</span>(<span class="pl-s1">base</span>, <span class="pl-s1">m</span>, <span class="pl-s1">timeout</span><span class="pl-c1">=</span><span class="pl-c1">60</span>):
+    <span class="pl-s1">t0</span> <span class="pl-c1">=</span> <span class="pl-s1">time</span>.<span class="pl-c1">time</span>()
+    <span class="pl-s1">body</span> <span class="pl-c1">=</span> <span class="pl-s1">json</span>.<span class="pl-c1">dumps</span>({<span class="pl-s">"model"</span>: <span class="pl-s1">m</span>, <span class="pl-s">"messages"</span>: [{<span class="pl-s">"role"</span>: <span class="pl-s">"user"</span>, <span class="pl-s">"content"</span>: <span class="pl-s">"说一个字：好"</span>}],
+                       <span class="pl-s">"stream"</span>: <span class="pl-c1">True</span>, <span class="pl-s">"max_tokens"</span>: <span class="pl-c1">16</span>}).<span class="pl-c1">encode</span>()
+    <span class="pl-s1">req</span> <span class="pl-c1">=</span> <span class="pl-s1">urllib</span>.<span class="pl-c1">request</span>.<span class="pl-c1">Request</span>(<span class="pl-s">f"<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">base</span><span class="pl-kos">}</span></span>/chat/completions"</span>, <span class="pl-s1">data</span><span class="pl-c1">=</span><span class="pl-s1">body</span>,
+        <span class="pl-s1">headers</span><span class="pl-c1">=</span>{<span class="pl-s">"Authorization"</span>: <span class="pl-s">f"Bearer <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-c1">KEY</span><span class="pl-kos">}</span></span>"</span>, <span class="pl-s">"Content-Type"</span>: <span class="pl-s">"application/json"</span>})
+    <span class="pl-s1">ttft</span> <span class="pl-c1">=</span> <span class="pl-c1">None</span>
+    <span class="pl-k">try</span>:
+        <span class="pl-k">with</span> <span class="pl-s1">urllib</span>.<span class="pl-c1">request</span>.<span class="pl-c1">urlopen</span>(<span class="pl-s1">req</span>, <span class="pl-s1">timeout</span><span class="pl-c1">=</span><span class="pl-s1">timeout</span>, <span class="pl-s1">context</span><span class="pl-c1">=</span><span class="pl-s1">ctx</span>) <span class="pl-k">as</span> <span class="pl-s1">r</span>:
+            <span class="pl-s1">buf</span> <span class="pl-c1">=</span> <span class="pl-s">b""</span>
+            <span class="pl-k">while</span> <span class="pl-c1">True</span>:
+                <span class="pl-s1">chunk</span> <span class="pl-c1">=</span> <span class="pl-s1">r</span>.<span class="pl-c1">read</span>(<span class="pl-c1">4096</span>)
+                <span class="pl-k">if</span> <span class="pl-c1">not</span> <span class="pl-s1">chunk</span>: <span class="pl-k">break</span>
+                <span class="pl-k">if</span> <span class="pl-s1">ttft</span> <span class="pl-c1">is</span> <span class="pl-c1">None</span>: <span class="pl-s1">ttft</span> <span class="pl-c1">=</span> <span class="pl-s1">time</span>.<span class="pl-c1">time</span>() <span class="pl-c1">-</span> <span class="pl-s1">t0</span>  <span class="pl-c"># 首个 chunk 到达 = 首字节时间</span>
+                <span class="pl-s1">buf</span> <span class="pl-c1">+=</span> <span class="pl-s1">chunk</span>
+                <span class="pl-k">if</span> <span class="pl-s">b"[DONE]"</span> <span class="pl-c1">in</span> <span class="pl-s1">buf</span>: <span class="pl-k">break</span>
+        <span class="pl-k">return</span> <span class="pl-s1">ttft</span>, <span class="pl-s1">time</span>.<span class="pl-c1">time</span>() <span class="pl-c1">-</span> <span class="pl-s1">t0</span>, <span class="pl-s">"OK"</span>
+    <span class="pl-k">except</span> <span class="pl-v">Exception</span> <span class="pl-k">as</span> <span class="pl-s1">e</span>:
+        <span class="pl-k">return</span> <span class="pl-s1">ttft</span>, <span class="pl-s1">time</span>.<span class="pl-c1">time</span>() <span class="pl-c1">-</span> <span class="pl-s1">t0</span>, <span class="pl-en">str</span>(<span class="pl-s1">e</span>)[:<span class="pl-c1">40</span>]
+
+<span class="pl-k">def</span> <span class="pl-en">worker</span>(<span class="pl-s1">base</span>):
+    <span class="pl-s1">ttfts</span>, <span class="pl-s1">totals</span> <span class="pl-c1">=</span> [], []
+    <span class="pl-k">for</span> <span class="pl-s1">_</span> <span class="pl-c1">in</span> <span class="pl-en">range</span>(<span class="pl-c1">3</span>):
+        <span class="pl-s1">ttft</span>, <span class="pl-s1">total</span>, <span class="pl-s1">st</span> <span class="pl-c1">=</span> <span class="pl-en">one</span>(<span class="pl-s1">base</span>, <span class="pl-c1">MODEL</span>)
+        <span class="pl-k">if</span> <span class="pl-s1">st</span> <span class="pl-c1">==</span> <span class="pl-s">"OK"</span>:
+            <span class="pl-s1">ttfts</span>.<span class="pl-c1">append</span>(<span class="pl-s1">ttft</span>); <span class="pl-s1">totals</span>.<span class="pl-c1">append</span>(<span class="pl-s1">total</span>)
+        <span class="pl-s1">time</span>.<span class="pl-c1">sleep</span>(<span class="pl-c1">1.5</span>)
+    <span class="pl-k">return</span> <span class="pl-s1">base</span>, (<span class="pl-s1">statistics</span>.<span class="pl-c1">median</span>(<span class="pl-s1">ttfts</span>), <span class="pl-s1">statistics</span>.<span class="pl-c1">median</span>(<span class="pl-s1">totals</span>))
+
+<span class="pl-k">with</span> <span class="pl-en">ThreadPoolExecutor</span>(<span class="pl-s1">max_workers</span><span class="pl-c1">=</span><span class="pl-c1">4</span>) <span class="pl-k">as</span> <span class="pl-s1">ex</span>:
+    <span class="pl-k">for</span> <span class="pl-s1">base</span>, (<span class="pl-s1">t1</span>, <span class="pl-s1">t2</span>) <span class="pl-c1">in</span> <span class="pl-s1">ex</span>.<span class="pl-c1">map</span>(<span class="pl-s1">worker</span>, <span class="pl-c1">BASES</span>):
+        <span class="pl-en">print</span>(<span class="pl-s">f"<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">base</span>:40s<span class="pl-kos">}</span></span> TTFT中位=<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">t1</span>:.3f<span class="pl-kos">}</span></span>s  总耗时中位=<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">t2</span>:.3f<span class="pl-kos">}</span></span>s"</span>)</pre></div>
+<div class="markdown-alert markdown-alert-warning" dir="auto"><p class="markdown-alert-title" dir="auto"><svg data-component="Octicon" class="octicon octicon-alert mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</p><p dir="auto"><strong>4 个端点并行测、每个端点内部串行</strong>，这是安全姿势。若「端点 × 模型」全并发（如一次 8 个并发），会撞中转站并发墙拿回一堆 429，数据全废。</p>
+</div>
+<hr>
+<h2 dir="auto">4. 实测结论速查表</h2>
+<p dir="auto">本例（6 个端点、共用 19 个模型、并发 ≤5、每端点测 3 次取中位，2026-10-30）：</p>
+<p dir="auto"><strong>表 2　端点实测结果</strong></p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>排名</th>
+<th>端点</th>
+<th>状态</th>
+<th>纯网络 RTT</th>
+<th>TTFT 中位</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>🥇</td>
+<td><code class="notranslate">ai.goaichat.top/v1</code></td>
+<td>✅</td>
+<td>0.111s</td>
+<td><strong>2.5s</strong></td>
+<td><strong>主用</strong>，网络+推理双快</td>
+</tr>
+<tr>
+<td>🥈</td>
+<td><code class="notranslate">model.kimitk.top/v1</code></td>
+<td>✅</td>
+<td>0.153s</td>
+<td>5.7s</td>
+<td>备用</td>
+</tr>
+<tr>
+<td>🥉</td>
+<td><code class="notranslate">llm.goaichat.top/v1</code></td>
+<td>✅</td>
+<td>0.131s</td>
+<td>6.6s</td>
+<td>备用（原默认）</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code class="notranslate">ciyuan.glmtk.top/v1</code></td>
+<td>✅</td>
+<td>0.160s</td>
+<td>13.2s</td>
+<td>排队重，慎用</td>
+</tr>
+<tr>
+<td>❌</td>
+<td><code class="notranslate">model.goaichat.top/v1</code></td>
+<td>🚫</td>
+<td>握手超时</td>
+<td>—</td>
+<td>淘汰</td>
+</tr>
+<tr>
+<td>❌</td>
+<td><code class="notranslate">vibe.kimitk.top/v1</code></td>
+<td>🚫</td>
+<td>TLS 内部错误</td>
+<td>—</td>
+<td>淘汰</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto"><strong>模型</strong>：<code class="notranslate">deepseek-v4-flash</code> 最快最省流；要强推理用 <code class="notranslate">glm-5.3-flash</code> / <code class="notranslate">kimi-k3</code>。</p>
+<div class="markdown-alert markdown-alert-important" dir="auto"><p class="markdown-alert-title" dir="auto"><svg data-component="Octicon" class="octicon octicon-report mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p><p dir="auto">诚实声明：TTFT 波动大，这张表只代表「测量那一刻」的相对快慢。若接入生产，建议连续观察几天或用多端点负载均衡，别迷信单次排名。</p>
+</div>
+<h3 dir="auto">4.1 复测对比（同日二次测量）</h3>
+<p dir="auto">同一批 6 端点，数小时后复测（流式 TTFT，<code class="notranslate">deepseek-v4-flash</code>，单次快测）：</p>
+<p dir="auto"><strong>表 3　两次测量对比</strong></p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>端点</th>
+<th>第一次 TTFT</th>
+<th>复测 TTFT</th>
+<th>变化</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code class="notranslate">llm.goaichat.top/v1</code></td>
+<td>6.6s</td>
+<td><strong>2.47s</strong></td>
+<td>↑ 变快</td>
+<td>复测最快</td>
+</tr>
+<tr>
+<td><code class="notranslate">ai.goaichat.top/v1</code></td>
+<td><strong>2.5s</strong></td>
+<td>5.05s</td>
+<td>↓ 变慢</td>
+<td>第一次最快，复测退居中游</td>
+</tr>
+<tr>
+<td><code class="notranslate">ciyuan.glmtk.top/v1</code></td>
+<td>13.2s</td>
+<td>5.09s</td>
+<td>↑ 变快</td>
+<td>波动极大</td>
+</tr>
+<tr>
+<td><code class="notranslate">model.kimitk.top/v1</code></td>
+<td>5.7s</td>
+<td>5.66s</td>
+<td>≈ 持平</td>
+<td>最稳定</td>
+</tr>
+<tr>
+<td><code class="notranslate">model.goaichat.top/v1</code></td>
+<td>超时</td>
+<td>超时</td>
+<td>—</td>
+<td>稳定坏</td>
+</tr>
+<tr>
+<td><code class="notranslate">vibe.kimitk.top/v1</code></td>
+<td>TLS 错</td>
+<td>TLS 错</td>
+<td>—</td>
+<td>稳定坏</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">复测揭示的关键点：</p>
+<ul dir="auto">
+<li><strong>连通性结论完全不变</strong>：4 可用、2 稳定坏（<code class="notranslate">model.goaichat</code>、<code class="notranslate">vibe.kimitk</code> 两次都连不上，可放心淘汰）。</li>
+<li><strong>TTFT 排名两次完全不同</strong>（第一次 <code class="notranslate">ai</code> 第一、复测 <code class="notranslate">llm</code> 第一）——单次排名毫无意义，再次证实瓶颈是后端排队噪声。</li>
+<li><strong><code class="notranslate">model.kimitk.top</code> 两次都 5.7s 左右</strong>，是相对最稳的节点。</li>
+</ul>
+<div class="markdown-alert markdown-alert-note" dir="auto"><p class="markdown-alert-title" dir="auto"><svg data-component="Octicon" class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p><p dir="auto">判断端点好坏（通 / 不通）是稳定的，可以一锤定音；判断「谁更快」需要多次采样取中位，单次测量会误导。</p>
+</div>
+<hr>
+<h2 dir="auto">5. 并发限制：为什么 8 并发会全 429</h2>
+<p dir="auto"><strong>本例中转站的并发硬限制是 5。</strong> 一旦同时发起 &gt;5 个请求，超出的立刻返回：</p>
+<pre class="notranslate"><code class="notranslate">HTTP Error 429: Too Many Requests
+</code></pre>
+<p dir="auto">而且<strong>重试越多越糟</strong>：6 次重试 = 6 个并发请求同时撞墙，后端拒绝速度比重试到达速度还快，等于火上浇油。实测中，8 并发测 4 端点 × 3 模型，几乎全部 429。</p>
+<p dir="auto"><strong>规则</strong>：</p>
+<ul dir="auto">
+<li>生产 / 脚本并发 <strong>≤5</strong>，安全起见留 1 余量 → 实际跑 <strong>4</strong>；</li>
+<li>别把并发开满去「压测」，这中转站不靠吞吐，靠排队；</li>
+<li>429 出现时<strong>降并发或降速</strong>，不要盲目加 <code class="notranslate">max_retries</code>。</li>
+</ul>
+<hr>
+<h2 dir="auto">6. cc-switch 里的故障转移 / 重试 / 超时 / 熔断器怎么填</h2>
+<p dir="auto">配置存在 <code class="notranslate">~/.cc-switch/cc-switch.db</code> 的 <code class="notranslate">proxy_config</code> 表（每 app 一行：<code class="notranslate">claude</code> / <code class="notranslate">codex</code> / <code class="notranslate">gemini</code> / <code class="notranslate">grokbuild</code>）。claude 路由相关字段当前值与建议值对照：</p>
+<p dir="auto"><strong>表 4　claude 路由参数建议值</strong></p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>参数</th>
+<th>当前</th>
+<th><strong>建议</strong></th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code class="notranslate">auto_failover_enabled</code></td>
+<td>0（关）</td>
+<td><strong>1</strong></td>
+<td>必须先开，否则一切熔断重试都白搭</td>
+</tr>
+<tr>
+<td><code class="notranslate">max_retries</code></td>
+<td>6</td>
+<td><strong>2</strong></td>
+<td>并发 5 下 6 重试 = 6 并发撞墙，越重试越糟</td>
+</tr>
+<tr>
+<td><code class="notranslate">streaming_first_byte_timeout</code></td>
+<td>20s</td>
+<td><strong>45s</strong></td>
+<td>实测 TTFT 峰值 38s，20s 会误杀正常排队</td>
+</tr>
+<tr>
+<td><code class="notranslate">streaming_idle_timeout</code></td>
+<td>30s</td>
+<td><strong>60s</strong></td>
+<td>长生成留余量</td>
+</tr>
+<tr>
+<td><code class="notranslate">non_streaming_timeout</code></td>
+<td>60s</td>
+<td><strong>120s</strong></td>
+<td>classifier 侧查（~140KB prompt）最易超时</td>
+</tr>
+<tr>
+<td><code class="notranslate">circuit_failure_threshold</code></td>
+<td>8</td>
+<td><strong>5</strong></td>
+<td>5 连败 = 一次满并发全灭，该熔断</td>
+</tr>
+<tr>
+<td><code class="notranslate">circuit_success_threshold</code></td>
+<td>2</td>
+<td><strong>2</strong></td>
+<td>半开后 2 连胜即恢复</td>
+</tr>
+<tr>
+<td><code class="notranslate">circuit_timeout_seconds</code></td>
+<td>30s</td>
+<td><strong>30s</strong></td>
+<td>30s 后探测一次，别 &lt;20（探测太勤加重限流）</td>
+</tr>
+<tr>
+<td><code class="notranslate">circuit_error_rate_threshold</code></td>
+<td>0.7</td>
+<td><strong>0.6</strong></td>
+<td>60% 错误率熔断，比 0.7 敏感但不误伤偶发 429</td>
+</tr>
+<tr>
+<td><code class="notranslate">circuit_min_requests</code></td>
+<td>15</td>
+<td><strong>10</strong></td>
+<td>= 并发 5 × 2 轮，尽早进入熔断评估</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<div class="markdown-alert markdown-alert-warning" dir="auto"><p class="markdown-alert-title" dir="auto"><svg data-component="Octicon" class="octicon octicon-alert mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</p><p dir="auto"><strong>UI 里 Error Rate 是百分比，不是小数</strong>：数据库存 <code class="notranslate">0.6</code>，但设置面板里要填 <strong>60</strong>。填成 <code class="notranslate">0.6</code> 会被当成 <code class="notranslate">0.6%</code>，等于永不熔断。</p>
+</div>
+<hr>
+<h2 dir="auto">7. 熔断器四参数逐个解释</h2>
+<p dir="auto">UI 面板「Circuit Breaker Settings」四个框对应关系：</p>
+<p dir="auto"><strong>表 5　熔断器四参数</strong></p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>UI 标签</th>
+<th>数据库字段</th>
+<th>建议填</th>
+<th>一句话解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Recovery Success Threshold</strong></td>
+<td><code class="notranslate">circuit_success_threshold</code></td>
+<td><strong>2</strong></td>
+<td>熔断后进入「半开」试探态，连成 2 次就彻底恢复。太大 → 恢复期正常请求被反复拒</td>
+</tr>
+<tr>
+<td><strong>Recovery Wait Time (seconds)</strong></td>
+<td><code class="notranslate">circuit_timeout_seconds</code></td>
+<td><strong>30</strong></td>
+<td>熔断后等 30s 才发第一个探测请求。太短探测太勤，反而加重限流</td>
+</tr>
+<tr>
+<td><strong>Error Rate Threshold (%)</strong></td>
+<td><code class="notranslate">circuit_error_rate_threshold</code></td>
+<td><strong>60</strong></td>
+<td>错误率超过 60% 就熔断。本网关正常有零星 429，60% 能熔真故障、不误伤偶发限流</td>
+</tr>
+<tr>
+<td><strong>Minimum Requests</strong></td>
+<td><code class="notranslate">circuit_min_requests</code></td>
+<td><strong>10</strong></td>
+<td>攒够 10 个请求才算错误率（避免开头 1~2 个失败就误熔断）。= 并发 5 × 2 轮</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">熔断器工作逻辑：统计窗口内错误率超过阈值且请求数达标且连续失败达到阈值 → 熔断打开 → 拒绝所有新请求 → 等恢复等待时间 → 半开放少量探测 → 连续成功达到恢复阈值 → 闭合恢复。</p>
+<p dir="auto"><strong>图 1　熔断器状态机</strong></p>
+<section class="js-render-needs-enrichment render-needs-enrichment position-relative" data-identity="cfc70d1d-6279-40fd-a431-3e4d36990bf3" data-host="https://viewscreen.githubusercontent.com" data-src="https://viewscreen.githubusercontent.com/markdown/mermaid?docs_host=https%3A%2F%2Fdocs.github.com" data-type="mermaid" aria-label="mermaid rendered output container">
+  <div class="js-render-enrichment-target" data-json="{&quot;data&quot;:&quot;stateDiagram-v2\n    [*] --&gt; 闭合\n    闭合 --&gt; 打开: 错误率超阈值 且 连续失败达标\n    打开 --&gt; 半开: 恢复等待超时，放行少量探测\n    半开 --&gt; 闭合: 连续成功达恢复阈值\n    半开 --&gt; 打开: 探测失败\n    打开 --&gt; 打开: 拒绝新请求\n&quot;}" data-plain="stateDiagram-v2
+    [*] --&gt; 闭合
+    闭合 --&gt; 打开: 错误率超阈值 且 连续失败达标
+    打开 --&gt; 半开: 恢复等待超时，放行少量探测
+    半开 --&gt; 闭合: 连续成功达恢复阈值
+    半开 --&gt; 打开: 探测失败
+    打开 --&gt; 打开: 拒绝新请求
+" dir="auto">
+    <div class="render-plaintext-hidden" dir="auto">
+      <pre lang="mermaid" aria-label="Raw mermaid code" class="notranslate">stateDiagram-v2
+    [*] --&gt; 闭合
+    闭合 --&gt; 打开: 错误率超阈值 且 连续失败达标
+    打开 --&gt; 半开: 恢复等待超时，放行少量探测
+    半开 --&gt; 闭合: 连续成功达恢复阈值
+    半开 --&gt; 打开: 探测失败
+    打开 --&gt; 打开: 拒绝新请求
+</pre>
+    </div>
+  </div>
+  <span class="js-render-enrichment-loader d-flex flex-justify-center flex-items-center width-full" style="min-height:100px" role="presentation">
+    <span data-view-component="true">
+  <svg style="box-sizing: content-box; color: var(--color-icon-primary);" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" data-view-component="true" class="octospinner mx-auto tmp-mx-auto anim-rotate">
+    <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke" fill="none"></circle>
+    <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+</svg>    <span class="sr-only">Loading</span>
+</span>
+  </span>
+</section>
+
+<hr>
+<h2 dir="auto">8. 常见坑</h2>
+<ol dir="auto">
+<li><strong>单次测量下结论</strong> — TTFT 波动十几倍，至少 3 次取中位，否则结论是噪声。</li>
+<li><strong>并发 &gt;5</strong> — 必 429；且 429 时别加 <code class="notranslate">max_retries</code>，要<strong>降并发</strong>。</li>
+<li><strong>UI 的 Error Rate 填小数</strong> — 填 <code class="notranslate">60</code>，不是 <code class="notranslate">0.6</code>（填 0.6 = 永不熔断）。</li>
+<li><strong>只开熔断器不开总开关</strong> — <code class="notranslate">auto_failover_enabled</code> 是总闸，它关着，熔断 / 重试配置都不生效。</li>
+<li><strong><code class="notranslate">streaming_first_byte_timeout</code> 太小</strong> — 中转站排队动辄 20~38s，设 20s 会把「慢但正常」的请求当失败重试，重试又叠加并发 → 雪崩。</li>
+<li><strong>改完库不重启</strong> — cc-switch 运行中直接改 SQL 会被 UI 覆盖；改完要重启 cc-switch 和 Claude Code 才生效。</li>
+</ol>
+<hr>
+<h2 dir="auto">9. 为什么中转站容易出现这些问题</h2>
+<p dir="auto">中转站（如 goaichat / kimitk 这类第三方聚合网关）的<strong>核心商业模式</strong>决定了它天然容易出问题——不是它「做得差」，而是架构如此。</p>
+<h3 dir="auto">9.1 它是「二道贩子」，不是服务商</h3>
+<p dir="auto">中转站<strong>自己不跑模型</strong>。它拿一个上游 API key（官方 / 大渠道），开个反向代理，把你的请求<strong>转发给上游</strong>，中间赚差价。所以你的延迟 = 你的网络 + 中转站排队 + <strong>上游排队</strong> + 上游生成时间。</p>
+<p dir="auto"><strong>图 2　请求链路</strong></p>
+<section class="js-render-needs-enrichment render-needs-enrichment position-relative" data-identity="40b1f3e6-89b7-4f26-941a-3d4187b98cde" data-host="https://viewscreen.githubusercontent.com" data-src="https://viewscreen.githubusercontent.com/markdown/mermaid?docs_host=https%3A%2F%2Fdocs.github.com" data-type="mermaid" aria-label="mermaid rendered output container">
+  <div class="js-render-enrichment-target" data-json="{&quot;data&quot;:&quot;flowchart LR\n    A[你的电脑 + cc-switch] --&gt; B[中转站 排队/限流]\n    B --&gt; C[上游真实模型服务 队列/限流]\n    C --&gt; D[生成 token]\n&quot;}" data-plain="flowchart LR
+    A[你的电脑 + cc-switch] --&gt; B[中转站 排队/限流]
+    B --&gt; C[上游真实模型服务 队列/限流]
+    C --&gt; D[生成 token]
+" dir="auto">
+    <div class="render-plaintext-hidden" dir="auto">
+      <pre lang="mermaid" aria-label="Raw mermaid code" class="notranslate">flowchart LR
+    A[你的电脑 + cc-switch] --&gt; B[中转站 排队/限流]
+    B --&gt; C[上游真实模型服务 队列/限流]
+    C --&gt; D[生成 token]
+</pre>
+    </div>
+  </div>
+  <span class="js-render-enrichment-loader d-flex flex-justify-center flex-items-center width-full" style="min-height:100px" role="presentation">
+    <span data-view-component="true">
+  <svg style="box-sizing: content-box; color: var(--color-icon-primary);" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" data-view-component="true" class="octospinner mx-auto tmp-mx-auto anim-rotate">
+    <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke" fill="none"></circle>
+    <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+</svg>    <span class="sr-only">Loading</span>
+</span>
+  </span>
+</section>
+
+<p dir="auto">任何一环排队，都会体现在 TTFT 上。</p>
+<h3 dir="auto">9.2 共享 key = 共享配额，别人挤你</h3>
+<p dir="auto">中转站为了省钱，<strong>一个上游 key 服务成百上千用户</strong>。你遇到的大部分 429 / 延迟，不是你的问题，是<strong>别人的流量挤占了共享配额</strong>。所以：</p>
+<ul dir="auto">
+<li>同一个中转站，<strong>白天比晚上慢</strong>（高峰期排队）；</li>
+<li>你测的时候快，下一秒就慢（别人突然涌进来）；</li>
+<li><strong>换个端点往往没用</strong>——因为多个端点背后是同一个上游 key（见第 11 节，同名同源）。</li>
+</ul>
+<h3 dir="auto">9.3 按并发限流，不是按带宽</h3>
+<p dir="auto">中转站限的是<strong>并发请求数</strong>（本例 = 5），不是总流量。因为上游 key 有并发上限，中转站必须卡住。这是为什么：</p>
+<ul dir="auto">
+<li><strong>并发 &gt;5 立刻 429</strong>；</li>
+<li><strong>重试越多越糟</strong>（重试 = 新并发请求 = 继续撞墙）。</li>
+</ul>
+<h3 dir="auto">9.4 中转站自身的脆弱点</h3>
+<p dir="auto"><strong>表 6　中转站常见脆弱点</strong></p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>脆弱点</th>
+<th>表现</th>
+<th>根因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>单点故障</td>
+<td>整个站全挂 / 超时</td>
+<td>一个后端进程扛所有用户，没冗余</td>
+</tr>
+<tr>
+<td>上游被拉黑</td>
+<td>突然大面积 429 / 限流</td>
+<td>上游检测到 key 异常使用，封了</td>
+</tr>
+<tr>
+<td>额度被刷爆</td>
+<td>「额度已用尽」</td>
+<td>共享 key 被人薅羊毛</td>
+</tr>
+<tr>
+<td>恶意刷量</td>
+<td>你正常用也 429</td>
+<td>有人用你同一 key 并发轰炸</td>
+</tr>
+<tr>
+<td>节点劣化</td>
+<td>特定端点握手超时 / TLS 错</td>
+<td>某个 CDN / 机房节点坏了（本例 <code class="notranslate">model.goaichat</code>、<code class="notranslate">vibe.kimitk</code> 稳定坏）</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<h3 dir="auto">9.5 一句话总结</h3>
+<div class="markdown-alert markdown-alert-tip" dir="auto"><p class="markdown-alert-title" dir="auto"><svg data-component="Octicon" class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p><p dir="auto"><strong>中转站的问题不是「质量差」，而是「共享」</strong>——共享 key、共享配额、共享并发、单点无冗余。你付的钱买的不是「稳」，是「便宜 + 能用」。所以延迟波动、偶发 429、个别端点挂掉，是<strong>这类服务的常态</strong>，不是配置错误。</p>
+</div>
+<h3 dir="auto">9.6 怎么判断是你的问题还是中转站的问题</h3>
+<p dir="auto"><strong>表 7　问题归属判断</strong></p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>现象</th>
+<th>更可能是</th>
+<th>验证方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>偶发 429</td>
+<td>中转站共享配额</td>
+<td>降并发重试，若仍偶发 429 就是共享拥挤</td>
+</tr>
+<tr>
+<td>特定端点连不上</td>
+<td>节点坏了</td>
+<td>换端点测，通 = 不是你的问题</td>
+</tr>
+<tr>
+<td>所有端点都慢</td>
+<td>高峰期 / 上游排队</td>
+<td>错峰再测（深夜），若变快 = 排队</td>
+</tr>
+<tr>
+<td>只有你的 key 429</td>
+<td>额度用尽</td>
+<td>查 provider_health / 余额</td>
+</tr>
+<tr>
+<td>网络层慢（curl 直连也慢）</td>
+<td>你的网络 / 代理</td>
+<td>见第 10 节检查本机</td>
+</tr>
+<tr>
+<td>直连快、走 cc-switch 慢</td>
+<td>cc-switch 转发问题</td>
+<td>见第 10 节</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<hr>
+<h2 dir="auto">10. 如何检查本机系统（三步定位法）</h2>
+<p dir="auto">怀疑「是本地问题」时，按下面顺序排查，从外到内快速定位。</p>
+<h3 dir="auto">10.1 第一步：绕开一切，直接测上游（排除本地代理干扰）</h3>
+<div class="highlight highlight-source-shell" dir="auto"><pre class="notranslate"><span class="pl-c"><span class="pl-c">#</span> 直连测（不经 cc-switch、不经 Clash），看基础网络是否健康</span>
+curl -s -m 10 -o /dev/null -w <span class="pl-s"><span class="pl-pds">"</span>HTTP=%{http_code} 连接=%{time_connect}s 首字节=%{time_starttransfer}s 总耗时=%{time_total}s\n<span class="pl-pds">"</span></span> \
+  -H <span class="pl-s"><span class="pl-pds">"</span>Authorization: Bearer ***<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>https://ai.goaichat.top/v1/models<span class="pl-pds">"</span></span></pre></div>
+<ul dir="auto">
+<li><strong>能通且快</strong> → 本地链路健康，问题在 cc-switch 或 Claude Code。</li>
+<li><strong>超时 / 慢</strong> → 你的网络或该端点节点问题，继续 10.2。</li>
+</ul>
+<h3 dir="auto">10.2 第二步：检查系统代理和 Clash 是否劫持了流量</h3>
+<div class="highlight highlight-source-shell" dir="auto"><pre class="notranslate"><span class="pl-c"><span class="pl-c">#</span> 看系统代理（macOS）</span>
+networksetup -getwebproxy Wi-Fi      <span class="pl-c"><span class="pl-c">#</span> HTTP 代理</span>
+networksetup -getsecurewebproxy Wi-Fi <span class="pl-c"><span class="pl-c">#</span> HTTPS 代理</span>
+networksetup -getsocksfirewallproxy Wi-Fi <span class="pl-c"><span class="pl-c">#</span> SOCKS</span>
+
+<span class="pl-c"><span class="pl-c">#</span> 看代理进程是否在跑</span>
+ps aux <span class="pl-k">|</span> grep -iE <span class="pl-s"><span class="pl-pds">"</span>clash|mihomo|sing-box|v2ray|xray|surge<span class="pl-pds">"</span></span>
+
+<span class="pl-c"><span class="pl-c">#</span> 看域名解析到哪（是否被 CDN 分流）</span>
+<span class="pl-k">for</span> <span class="pl-smi">d</span> <span class="pl-k">in</span> llm.goaichat.top ai.goaichat.top model.kimitk.top ciyuan.glmtk.top<span class="pl-k">;</span> <span class="pl-k">do</span>
+  <span class="pl-c1">echo</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-smi">$d</span> -&gt; <span class="pl-s"><span class="pl-pds">$(</span>dig +short <span class="pl-smi">$d</span> <span class="pl-k">|</span> head -1<span class="pl-pds">)</span></span><span class="pl-pds">"</span></span>
+<span class="pl-k">done</span></pre></div>
+<div class="markdown-alert markdown-alert-note" dir="auto"><p class="markdown-alert-title" dir="auto"><svg data-component="Octicon" class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p><p dir="auto">关键判断：这些 API 域名解析到<strong>国内 / 香港 IP</strong>（本例 <code class="notranslate">43.161.x.x</code> 香港腾讯云）——它们<strong>本来就不该走代理</strong>。如果 Clash 开了「全局代理」或 TUN 模式，这些请求会被强行塞进代理绕一圈，<strong>反而更慢</strong>。正确姿势是让它们走 <code class="notranslate">DIRECT</code>（直连）。</p>
+</div>
+<h3 dir="auto">10.3 第三步：看 cc-switch 转发链路（本地代理层）</h3>
+<div class="highlight highlight-source-shell" dir="auto"><pre class="notranslate"><span class="pl-c"><span class="pl-c">#</span> cc-switch 是否在监听</span>
+lsof -nP -iTCP:15721 <span class="pl-k">|</span> grep LISTEN
+
+<span class="pl-c"><span class="pl-c">#</span> Claude Code 实际连的是不是 cc-switch</span>
+ps eww <span class="pl-k">&lt;</span>claude_pid<span class="pl-k">&gt;</span> <span class="pl-k">|</span> tr <span class="pl-s"><span class="pl-pds">'</span> <span class="pl-pds">'</span></span> <span class="pl-s"><span class="pl-pds">'</span>\n<span class="pl-pds">'</span></span> <span class="pl-k">|</span> grep ANTHROPIC_BASE_URL
+<span class="pl-c"><span class="pl-c">#</span> 期望看到 ANTHROPIC_BASE_URL=http://127.0.0.1:15721/...</span>
+
+<span class="pl-c"><span class="pl-c">#</span> cc-switch 转发时连的是「直连上游」还是「走 Clash」</span>
+<span class="pl-c"><span class="pl-c">#</span> 发起一个请求的同时，抓 cc-switch 的对外连接</span>
+lsof -nP -p <span class="pl-k">&lt;</span>ccswitch_pid<span class="pl-k">&gt;</span> -iTCP <span class="pl-k">|</span> grep -v LISTEN
+<span class="pl-c"><span class="pl-c">#</span> 出现 192.168.x.x → 43.161.x.x = 直连香港（正常）</span>
+<span class="pl-c"><span class="pl-c">#</span> 出现 127.0.0.1 → 127.0.0.1:7897 = 走了 Clash（可能被代理绕远）</span></pre></div>
+<p dir="auto">本例实测：cc-switch 进程无 <code class="notranslate">HTTP_PROXY / HTTPS_PROXY</code> 环境变量，转发连接是 <code class="notranslate">192.168.1.6 → 43.161.249.175:443</code>（直连香港）——<strong>没有走 Clash，这是正确且最优的</strong>。若发现它走了 Clash，反而是问题。</p>
+<h3 dir="auto">10.4 本机检查结论速查</h3>
+<p dir="auto"><strong>表 8　本机检查项</strong></p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>检查项</th>
+<th>正常值</th>
+<th>异常时</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code class="notranslate">curl</code> 直连上游</td>
+<td>通、快</td>
+<td>网络 / 节点问题</td>
+</tr>
+<tr>
+<td>系统代理</td>
+<td>可开可关</td>
+<td>全局 / TUN 模式会绕远</td>
+</tr>
+<tr>
+<td>域名解析</td>
+<td>国内 / 香港 IP</td>
+<td>解析到海外 = 可能被劫持</td>
+</tr>
+<tr>
+<td>cc-switch 监听</td>
+<td><code class="notranslate">127.0.0.1:15721</code></td>
+<td>没监听 = Claude 直连官方</td>
+</tr>
+<tr>
+<td>Claude 连 cc-switch</td>
+<td><code class="notranslate">BASE_URL=http://127.0.0.1:15721</code></td>
+<td>连官方 = cc-switch 没接管</td>
+</tr>
+<tr>
+<td>cc-switch 转发</td>
+<td>直连 <code class="notranslate">43.161.x.x</code></td>
+<td>走 <code class="notranslate">7897</code> = 被代理绕远</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<hr>
+<h2 dir="auto">11. 故障转移的架构真相（同源端点互切没用）</h2>
+<p dir="auto"><strong><g-emoji class="g-emoji" alias="warning">⚠️</g-emoji> 最重要的一条，容易被忽略：</strong></p>
+<p dir="auto">本例里 <code class="notranslate">ai.goaichat / llm.goaichat / model.kimitk / ciyuan.glmtk</code> 四个端点，<strong>是同一套后端</strong>——同一个 key、同一批 19 个模型、同源返回、共用同一并发 / 额度限制。</p>
+<p dir="auto">所以端点之间做故障转移，<strong>防不住「后端整体挂 / 整体限流」</strong>：一个端点 429，其他三个大概率同时 429。端点级故障转移只能防「某个域名 / CDN 单点网络故障」，防不了配额和全局限流。</p>
+<p dir="auto"><strong>真正有效的备援是「独立后端」</strong>，例如：</p>
+<ul dir="auto">
+<li><strong>DeepSeek 官方</strong> <code class="notranslate">https://api.deepseek.com/anthropic</code>（Anthropic 原生格式，cc-switch 可直接路由，官方文档见参考资料）</li>
+<li>或另一个完全无关的中转站（不同注册商、不同额度池）</li>
+</ul>
+<p dir="auto"><strong>建议配置</strong>：</p>
+<ol dir="auto">
+<li>主：<code class="notranslate">ai.goaichat.top/v1</code>（实测最快）作主 provider；</li>
+<li>备：DeepSeek 官方（独立后端）加进故障转移队列；</li>
+<li>想要端点级备援，可再复制一个 provider 指向 <code class="notranslate">model.kimitk.top/v1</code> 入队——但要知道它防不住后端整体故障。</li>
+</ol>
+<div class="markdown-alert markdown-alert-warning" dir="auto"><p class="markdown-alert-title" dir="auto"><svg data-component="Octicon" class="octicon octicon-alert mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</p><p dir="auto">检查方式：<code class="notranslate">sqlite3 ~/.cc-switch/cc-switch.db "SELECT id,name,is_current,in_failover_queue FROM providers WHERE app_type='claude';"</code><br>
+若所有 <code class="notranslate">in_failover_queue=0</code>，说明队列是空的，开了故障转移也没目标可切。</p>
+</div>
+<hr>
+<h2 dir="auto">12. 结论</h2>
+<ol dir="auto">
+<li><strong>延迟瓶颈在排队不在网络</strong>：TTFT 波动十几倍是后端排队噪声，网络差异（0.11s vs 0.16s）会被完全淹没；判断「通不通」可一锤定音，「快不快」必须多次采样取中位。</li>
+<li><strong>避开并发墙</strong>：中转站并发硬限制 5，并发 &gt;5 必 429；429 时降并发降速，别加 <code class="notranslate">max_retries</code>。</li>
+<li><strong>配置按表抄</strong>：<code class="notranslate">auto_failover_enabled=1</code> 是总闸；<code class="notranslate">max_retries=2</code>；首字节约 45s；熔断器错误率阈值面板上填 60（不是 0.6）等，全套建议值见表 4、表 5。</li>
+<li><strong>故障转移要切「独立后端」</strong>：同源端点互切防不住整体故障，真正可靠的是 DeepSeek 官方这类独立后端入队。</li>
+<li><strong>先自检再甩锅</strong>：怀疑慢时按第 10 节三步定位，先确认你的链路没走代理绕远，再谈中转站的问题。</li>
+</ol>
+<hr>
+<h2 dir="auto">附录 A：api_latency_probe.py（单端点延迟探测脚本）</h2>
+<p dir="auto">保存为 <code class="notranslate">api_latency_probe.py</code>，用法见第 3.1 节。逻辑：对指定端点多轮发起流式 chat 请求，记录每个请求的 TTFT（首个 chunk 到达时间）与总耗时（到 <code class="notranslate">[DONE]</code>），最终输出成功轮次的中位 / 最小 / 最大；<code class="notranslate">--concurrent &gt;1</code> 时用线程池并发发请求（出于第 5 节的限流原因，生产不建议超过 5）。</p>
+<div class="highlight highlight-source-python" dir="auto"><pre class="notranslate"><span class="pl-c">#!/usr/bin/env python3</span>
+<span class="pl-s">"""</span>
+<span class="pl-s">中转站 API 延迟检测脚本（流式 TTFT + 总耗时 + 并发/串行模式）</span>
+<span class="pl-s">用法:</span>
+<span class="pl-s">  python3 api_latency_probe.py --key sk-xxx --base https://ai.goaichat.top/v1 --model glm-5.3-flash [--rounds 3] [--concurrent 1]</span>
+<span class="pl-s"></span>
+<span class="pl-s">指标说明:</span>
+<span class="pl-s">  TTFT   = 首字节到达时间（排队+网络往返，不含生成），越小越好</span>
+<span class="pl-s">  total  = 请求发出到 [DONE] 全耗时</span>
+<span class="pl-s">  注意: TTFT 波动大（后端排队），单次不可靠，取中位数；并发 &gt;5 会触发 429（中转站硬限制）</span>
+<span class="pl-s">"""</span>
+<span class="pl-k">import</span> <span class="pl-s1">argparse</span>, <span class="pl-s1">json</span>, <span class="pl-s1">time</span>, <span class="pl-s1">ssl</span>, <span class="pl-s1">urllib</span>.<span class="pl-s1">request</span>, <span class="pl-s1">statistics</span>
+<span class="pl-k">from</span> <span class="pl-s1">concurrent</span>.<span class="pl-s1">futures</span> <span class="pl-k">import</span> <span class="pl-v">ThreadPoolExecutor</span>
+
+<span class="pl-k">def</span> <span class="pl-en">one_request</span>(<span class="pl-s1">base</span>, <span class="pl-s1">model</span>, <span class="pl-s1">key</span>, <span class="pl-s1">timeout</span><span class="pl-c1">=</span><span class="pl-c1">60</span>):
+    <span class="pl-s1">t0</span> <span class="pl-c1">=</span> <span class="pl-s1">time</span>.<span class="pl-c1">time</span>()
+    <span class="pl-s1">body</span> <span class="pl-c1">=</span> <span class="pl-s1">json</span>.<span class="pl-c1">dumps</span>({<span class="pl-s">"model"</span>: <span class="pl-s1">model</span>,
+        <span class="pl-s">"messages"</span>: [{<span class="pl-s">"role"</span>: <span class="pl-s">"user"</span>, <span class="pl-s">"content"</span>: <span class="pl-s">"说一个字：好"</span>}],
+        <span class="pl-s">"stream"</span>: <span class="pl-c1">True</span>, <span class="pl-s">"max_tokens"</span>: <span class="pl-c1">16</span>}).<span class="pl-c1">encode</span>()
+    <span class="pl-s1">req</span> <span class="pl-c1">=</span> <span class="pl-s1">urllib</span>.<span class="pl-c1">request</span>.<span class="pl-c1">Request</span>(<span class="pl-s">f"<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">base</span><span class="pl-kos">}</span></span>/chat/completions"</span>, <span class="pl-s1">data</span><span class="pl-c1">=</span><span class="pl-s1">body</span>,
+        <span class="pl-s1">headers</span><span class="pl-c1">=</span>{<span class="pl-s">"Authorization"</span>: <span class="pl-s">f"Bearer <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">key</span><span class="pl-kos">}</span></span>"</span>, <span class="pl-s">"Content-Type"</span>: <span class="pl-s">"application/json"</span>})
+    <span class="pl-s1">ttft</span> <span class="pl-c1">=</span> <span class="pl-c1">None</span>
+    <span class="pl-k">try</span>:
+        <span class="pl-k">with</span> <span class="pl-s1">urllib</span>.<span class="pl-c1">request</span>.<span class="pl-c1">urlopen</span>(<span class="pl-s1">req</span>, <span class="pl-s1">timeout</span><span class="pl-c1">=</span><span class="pl-s1">timeout</span>, <span class="pl-s1">context</span><span class="pl-c1">=</span><span class="pl-s1">ssl</span>.<span class="pl-c1">create_default_context</span>()) <span class="pl-k">as</span> <span class="pl-s1">r</span>:
+            <span class="pl-s1">first</span> <span class="pl-c1">=</span> <span class="pl-s1">time</span>.<span class="pl-c1">time</span>(); <span class="pl-s1">buf</span> <span class="pl-c1">=</span> <span class="pl-s">b""</span>
+            <span class="pl-k">while</span> <span class="pl-c1">True</span>:
+                <span class="pl-s1">chunk</span> <span class="pl-c1">=</span> <span class="pl-s1">r</span>.<span class="pl-c1">read</span>(<span class="pl-c1">4096</span>)
+                <span class="pl-k">if</span> <span class="pl-c1">not</span> <span class="pl-s1">chunk</span>: <span class="pl-k">break</span>
+                <span class="pl-k">if</span> <span class="pl-s1">ttft</span> <span class="pl-c1">is</span> <span class="pl-c1">None</span>: <span class="pl-s1">ttft</span> <span class="pl-c1">=</span> <span class="pl-s1">time</span>.<span class="pl-c1">time</span>() <span class="pl-c1">-</span> <span class="pl-s1">t0</span>
+                <span class="pl-s1">buf</span> <span class="pl-c1">+=</span> <span class="pl-s1">chunk</span>
+                <span class="pl-k">if</span> <span class="pl-s">b"[DONE]"</span> <span class="pl-c1">in</span> <span class="pl-s1">buf</span>: <span class="pl-k">break</span>
+        <span class="pl-k">return</span> <span class="pl-s1">ttft</span>, <span class="pl-s1">time</span>.<span class="pl-c1">time</span>() <span class="pl-c1">-</span> <span class="pl-s1">t0</span>, <span class="pl-s">"OK"</span>
+    <span class="pl-k">except</span> <span class="pl-v">Exception</span> <span class="pl-k">as</span> <span class="pl-s1">e</span>:
+        <span class="pl-k">return</span> <span class="pl-s1">ttft</span>, <span class="pl-s1">time</span>.<span class="pl-c1">time</span>() <span class="pl-c1">-</span> <span class="pl-s1">t0</span>, <span class="pl-en">str</span>(<span class="pl-s1">e</span>)[:<span class="pl-c1">40</span>]
+
+<span class="pl-k">def</span> <span class="pl-en">main</span>():
+    <span class="pl-s1">ap</span> <span class="pl-c1">=</span> <span class="pl-s1">argparse</span>.<span class="pl-c1">ArgumentParser</span>()
+    <span class="pl-s1">ap</span>.<span class="pl-c1">add_argument</span>(<span class="pl-s">"--key"</span>, <span class="pl-s1">required</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)
+    <span class="pl-s1">ap</span>.<span class="pl-c1">add_argument</span>(<span class="pl-s">"--base"</span>, <span class="pl-s1">required</span><span class="pl-c1">=</span><span class="pl-c1">True</span>, <span class="pl-s1">help</span><span class="pl-c1">=</span><span class="pl-s">"如 https://ai.goaichat.top/v1"</span>)
+    <span class="pl-s1">ap</span>.<span class="pl-c1">add_argument</span>(<span class="pl-s">"--model"</span>, <span class="pl-s1">required</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)
+    <span class="pl-s1">ap</span>.<span class="pl-c1">add_argument</span>(<span class="pl-s">"--rounds"</span>, <span class="pl-s1">type</span><span class="pl-c1">=</span><span class="pl-s1">int</span>, <span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-c1">3</span>)
+    <span class="pl-s1">ap</span>.<span class="pl-c1">add_argument</span>(<span class="pl-s">"--concurrent"</span>, <span class="pl-s1">type</span><span class="pl-c1">=</span><span class="pl-s1">int</span>, <span class="pl-s1">default</span><span class="pl-c1">=</span><span class="pl-c1">1</span>, <span class="pl-s1">help</span><span class="pl-c1">=</span><span class="pl-s">"并发数, 中转站通常限制5, 别超"</span>)
+    <span class="pl-s1">a</span> <span class="pl-c1">=</span> <span class="pl-s1">ap</span>.<span class="pl-c1">parse_args</span>()
+
+    <span class="pl-k">if</span> <span class="pl-s1">a</span>.<span class="pl-c1">concurrent</span> <span class="pl-c1">&gt;</span> <span class="pl-c1">1</span>:
+        <span class="pl-en">print</span>(<span class="pl-s">f"[!] 并发 <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">a</span>.<span class="pl-c1">concurrent</span><span class="pl-kos">}</span></span>: 中转站并发限制通常为5, 超出会 429"</span>)
+        <span class="pl-k">with</span> <span class="pl-en">ThreadPoolExecutor</span>(<span class="pl-s1">max_workers</span><span class="pl-c1">=</span><span class="pl-s1">a</span>.<span class="pl-c1">concurrent</span>) <span class="pl-k">as</span> <span class="pl-s1">ex</span>:
+            <span class="pl-s1">futs</span> <span class="pl-c1">=</span> [<span class="pl-s1">ex</span>.<span class="pl-c1">submit</span>(<span class="pl-s1">one_request</span>, <span class="pl-s1">a</span>.<span class="pl-c1">base</span>, <span class="pl-s1">a</span>.<span class="pl-c1">model</span>, <span class="pl-s1">a</span>.<span class="pl-c1">key</span>) <span class="pl-k">for</span> <span class="pl-s1">_</span> <span class="pl-c1">in</span> <span class="pl-en">range</span>(<span class="pl-s1">a</span>.<span class="pl-c1">rounds</span>)]
+            <span class="pl-s1">res</span> <span class="pl-c1">=</span> [<span class="pl-s1">f</span>.<span class="pl-c1">result</span>() <span class="pl-k">for</span> <span class="pl-s1">f</span> <span class="pl-c1">in</span> <span class="pl-s1">futs</span>]
+    <span class="pl-k">else</span>:
+        <span class="pl-s1">res</span> <span class="pl-c1">=</span> []
+        <span class="pl-k">for</span> <span class="pl-s1">i</span> <span class="pl-c1">in</span> <span class="pl-en">range</span>(<span class="pl-s1">a</span>.<span class="pl-c1">rounds</span>):
+            <span class="pl-en">print</span>(<span class="pl-s">f"  round <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">i</span><span class="pl-c1">+</span><span class="pl-c1">1</span><span class="pl-kos">}</span></span>/<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">a</span>.<span class="pl-c1">rounds</span><span class="pl-kos">}</span></span> ..."</span>)
+            <span class="pl-s1">res</span>.<span class="pl-c1">append</span>(<span class="pl-en">one_request</span>(<span class="pl-s1">a</span>.<span class="pl-c1">base</span>, <span class="pl-s1">a</span>.<span class="pl-c1">model</span>, <span class="pl-s1">a</span>.<span class="pl-c1">key</span>))
+            <span class="pl-s1">time</span>.<span class="pl-c1">sleep</span>(<span class="pl-c1">1.5</span>)
+
+    <span class="pl-s1">ok</span> <span class="pl-c1">=</span> [<span class="pl-s1">r</span> <span class="pl-k">for</span> <span class="pl-s1">r</span> <span class="pl-c1">in</span> <span class="pl-s1">res</span> <span class="pl-k">if</span> <span class="pl-s1">r</span>[<span class="pl-c1">2</span>] <span class="pl-c1">==</span> <span class="pl-s">"OK"</span>]
+    <span class="pl-en">print</span>(<span class="pl-s">f"<span class="pl-cce">\n</span>=== <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">a</span>.<span class="pl-c1">base</span><span class="pl-kos">}</span></span> / <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">a</span>.<span class="pl-c1">model</span><span class="pl-kos">}</span></span>  (<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-en">len</span>(<span class="pl-s1">ok</span>)<span class="pl-kos">}</span></span>/<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">a</span>.<span class="pl-c1">rounds</span><span class="pl-kos">}</span></span> 成功) ==="</span>)
+    <span class="pl-k">if</span> <span class="pl-s1">ok</span>:
+        <span class="pl-s1">ttfts</span> <span class="pl-c1">=</span> [<span class="pl-s1">r</span>[<span class="pl-c1">0</span>] <span class="pl-k">for</span> <span class="pl-s1">r</span> <span class="pl-c1">in</span> <span class="pl-s1">ok</span>]; <span class="pl-s1">totals</span> <span class="pl-c1">=</span> [<span class="pl-s1">r</span>[<span class="pl-c1">1</span>] <span class="pl-k">for</span> <span class="pl-s1">r</span> <span class="pl-c1">in</span> <span class="pl-s1">ok</span>]
+        <span class="pl-en">print</span>(<span class="pl-s">f"TTFT  中位=<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">statistics</span>.<span class="pl-c1">median</span>(<span class="pl-s1">ttfts</span>):.3f<span class="pl-kos">}</span></span>s  最小=<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-en">min</span>(<span class="pl-s1">ttfts</span>):.3f<span class="pl-kos">}</span></span>s  最大=<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-en">max</span>(<span class="pl-s1">ttfts</span>):.3f<span class="pl-kos">}</span></span>s"</span>)
+        <span class="pl-en">print</span>(<span class="pl-s">f"总耗时 中位=<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">statistics</span>.<span class="pl-c1">median</span>(<span class="pl-s1">totals</span>):.3f<span class="pl-kos">}</span></span>s  最小=<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-en">min</span>(<span class="pl-s1">totals</span>):.3f<span class="pl-kos">}</span></span>s  最大=<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-en">max</span>(<span class="pl-s1">totals</span>):.3f<span class="pl-kos">}</span></span>s"</span>)
+    <span class="pl-k">for</span> <span class="pl-s1">r</span> <span class="pl-c1">in</span> <span class="pl-s1">res</span>:
+        <span class="pl-k">if</span> <span class="pl-s1">r</span>[<span class="pl-c1">2</span>] <span class="pl-c1">!=</span> <span class="pl-s">"OK"</span>:
+            <span class="pl-en">print</span>(<span class="pl-s">f"  失败: <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">r</span>[<span class="pl-c1">2</span>]<span class="pl-kos">}</span></span>"</span>)
+
+<span class="pl-k">if</span> <span class="pl-s1">__name__</span> <span class="pl-c1">==</span> <span class="pl-s">"__main__"</span>:
+    <span class="pl-en">main</span>()</pre></div>
+<hr>
+<h2 dir="auto">参考资料</h2>
+<ul dir="auto">
+<li>DeepSeek 官方 Anthropic 兼容 API 文档：<a href="https://api-docs.deepseek.com/guides/anthropic_api" rel="nofollow">https://api-docs.deepseek.com/guides/anthropic_api</a> （<code class="notranslate">https://api.deepseek.com/anthropic</code>，cc-switch 可直接路由为独立后端）</li>
+<li>OpenAI Streaming Chat Completions 文档：<a href="https://platform.openai.com/docs/api-reference/chat/create" rel="nofollow">https://platform.openai.com/docs/api-reference/chat/create</a> （流式 <code class="notranslate">[DONE]</code> 标记与 token 分块语义）</li>
+<li>HTTP 429 Too Many Requests（RFC 6585 §4）：<a href="https://datatracker.ietf.org/doc/html/rfc6585" rel="nofollow">https://datatracker.ietf.org/doc/html/rfc6585</a></li>
+<li>Gmeek —— 本博客的引擎：<a href="https://github.com/Meekdai/Gmeek">https://github.com/Meekdai/Gmeek</a></li>
+</ul>
+<hr>
+<p dir="auto"><em>本文基于 2026-10-30 两次真实检测（首测 + 数小时后复测，6 端点 × 19 模型）整理，所有 Key 已脱敏。连通性结论（4 可用 / 2 稳定坏）两次一致；TTFT 数值为当时测量结果，会随后端负载剧烈变化，请以复测为准。</em></p></div>
+    </div>
+
+    <footer class="journal-meta-foot">
+        <div class="journal-received">收稿日期：2026-11-03</div>
+        
+        
+        
+    </footer>
+</div>
+<div style="font-size:small;margin-top:8px;float:right;">相信美好的事物正在发生</div>
+
+</div>
+    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://Senkeller.github.io/Earth">Journal of Earth</a></div>
+<div id="footer2">
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+</div>
+
+<script>
+var now=new Date();
+document.getElementById("copyrightYear").innerHTML=now.getFullYear();
+
+if("07/1/2024"!=""){
+    var startSite=new Date("07/1/2024");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("runday").innerHTML="网站运行 "+diffDay+" 天"+" • ";
+}
+</script></div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z', 'copy': 'M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z', 'check': 'M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.12.2/dist/mermaid.min.js"></script>
+<script src="https://Senkeller.github.io/Earth/assets/journal-markdown.js"></script>
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+if (window.JournalMarkdownAdapter) {
+    window.JournalMarkdownAdapter.init(document.getElementById("postBody"));
+}
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const createClipboardHTML = (codeContent, additionalClasses = '') => `
+        <pre class="notranslate"><code class="notranslate">${codeContent}</code></pre>
+        <div class="clipboard-container position-absolute right-0 top-0 ${additionalClasses}">
+            <clipboard-copy class="ClipboardButton btn m-2 p-0" role="button" style="display: inherit;">
+                <svg height="16" width="16" class="octicon octicon-copy m-2"><path d="${IconList["copy"]}"></path></svg>
+                <svg height="16" width="16" class="octicon octicon-check color-fg-success m-2 d-none"><path d="${IconList["check"]}"></path></svg>
+            </clipboard-copy>
+            <div class="copy-feedback">Copied!</div>
+        </div>
+    `;
+
+    const handleCodeElements = (selector = '') => {
+        document.querySelectorAll(selector).forEach(codeElement => {
+            const codeContent = codeElement.innerHTML;
+            const newStructure = document.createElement('div');
+            newStructure.className = 'snippet-clipboard-content position-relative overflow-auto';
+            newStructure.innerHTML = createClipboardHTML(codeContent);
+
+            const parentElement = codeElement.parentElement;
+            if (selector.includes('highlight')) {
+                parentElement.insertBefore(newStructure, codeElement.nextSibling);
+                parentElement.removeChild(codeElement);
+            } else {
+                parentElement.parentElement.replaceChild(newStructure, parentElement);
+            }
+        });
+    };
+
+    handleCodeElements('pre.notranslate > code.notranslate');
+    handleCodeElements('div.highlight > pre.notranslate');
+
+    let currentFeedback = null;
+    document.querySelectorAll('clipboard-copy').forEach(copyButton => {
+        copyButton.addEventListener('click', () => {
+            const codeContent = copyButton.closest('.snippet-clipboard-content').innerText;
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = codeContent;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+
+            const copyIcon = copyButton.querySelector('.octicon-copy');
+            const checkIcon = copyButton.querySelector('.octicon-check');
+            const copyFeedback = copyButton.nextElementSibling;
+
+            if (currentFeedback && currentFeedback !== copyFeedback) {currentFeedback.style.display = 'none';}
+            currentFeedback = copyFeedback;
+
+            copyIcon.classList.add('d-none');
+            checkIcon.classList.remove('d-none');
+            copyFeedback.style.display = 'block';
+            copyButton.style.borderColor = 'var(--color-success-fg)';
+
+            setTimeout(() => {
+                copyIcon.classList.remove('d-none');
+                checkIcon.classList.add('d-none');
+                copyFeedback.style.display = 'none';
+                copyButton.style.borderColor = '';
+            }, 2000);
+        });
+    });
+});
+
+</script>
+<script src='/Earth/assets/GmeekTOC.js'></script><script src='/Earth/assets/journal-post.js'></script><script src='/Earth/assets/journal-paginate.js'></script><script src='/Earth/assets/journal-markdown.js'></script>
+
+</html>
