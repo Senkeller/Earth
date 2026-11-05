@@ -1,9 +1,15 @@
 function createTOC() {
     var tocElement = document.createElement('div');
     tocElement.className = 'toc';
+    tocElement.setAttribute('role', 'navigation');
+    tocElement.setAttribute('aria-label', '文章目录');
     var contentContainer = document.getElementById('content');
+    var postBody = document.getElementById('postBody');
+    var headingRoot = postBody || contentContainer;
     
-    const headings = contentContainer.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    /* 只收录正文标题。若把刊头里的文章题目（h1.journal-title）也算进来，
+       目录第一项会与文章标题重复。 */
+    const headings = headingRoot.querySelectorAll('h1, h2, h3, h4, h5, h6');
     
     if (headings.length === 0) {
         return;  // 如果没有标题元素，则不创建TOC
@@ -29,7 +35,16 @@ function createTOC() {
         tocElement.appendChild(link);
     });
     
-    tocElement.insertAdjacentHTML('beforeend', '<a class="toc-end" onclick="window.scrollTo({top:0,behavior: \'smooth\'});">Top</a>');
+    const topLink = document.createElement('a');
+    topLink.className = 'toc-end';
+    topLink.href = '#';
+    topLink.setAttribute('aria-label', '回到顶部');
+    topLink.textContent = 'Top';
+    topLink.addEventListener('click', function (event) {
+        event.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    tocElement.appendChild(topLink);
     contentContainer.prepend(tocElement);
 }
 
@@ -78,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function() {
     .toc a:last-child { border-bottom: none; }
     .toc a:hover { background-color: var(--bgColor-accent-muted, #ddf4ff); }
 
-    @media (max-width: 1249px) {
+    @media (max-width: 1419px) {
         .toc {
             position: static !important;
             top: auto !important;

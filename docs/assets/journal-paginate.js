@@ -29,6 +29,17 @@
   /* 窄屏不分页：小屏上固定页高会造成频繁翻页，体验反而更差 */
   var MIN_WIDTH = 720;
 
+  /* 窗口尺寸变化后重新分页的防抖时间 */
+  var RESIZE_DELAY = 250;
+
+  var resizeTimer = null;
+  var loaded = false;
+  var busy = false;
+  /* 分页会把 #postBody 从 DOM 中移除，必须保留引用以便恢复 */
+  var postBodyEl = null;
+  var paperEl = null;
+  var lastWidth = 0;
+
   /* ------------------------------------------------------------------
      溢出检测
      返回第一个溢出页面可视区的元素；无溢出返回 null。
@@ -100,14 +111,52 @@
   }
 
   /* ------------------------------------------------------------------
+     恢复未分页状态
+     在窄屏或窗口尺寸变化时调用。把所有真实内容块按原顺序搬回
+     #postBody（保留 Mermaid 已渲染的 SVG、图片已解码状态），
+     再移除 .jpages 与页码，不重新请求任何资源。
+     ------------------------------------------------------------------ */
+  function unpaginate() {
+    var postBody = postBodyEl || document.getElementById('postBody');
+    if (!postBody) return false;
+
+    var paper = paperEl || postBody.parentElement;
+    if (!paper) return false;
+    var jpages = paper.querySelector('.jpages');
+    if (!jpages) {
+      postBody.removeAttribute('data-paginated');
+      return false;
+    }
+
+    var fragment = document.createDocumentFragment();
+    Array.prototype.forEach.call(jpages.children, function (page) {
+      contentChildren(page).forEach(function (el) {
+        fragment.appendChild(el);
+      });
+    });
+
+    postBody.innerHTML = '';
+    postBody.appendChild(fragment);
+    postBody.removeAttribute('data-paginated');
+
+    /* 分页完成后 #postBody 曾被移出 DOM，这里放回原位置。 */
+    if (!postBody.parentElement) paper.insertBefore(postBody, jpages);
+    paper.removeChild(jpages);
+    return true;
+  }
+
+  /* ------------------------------------------------------------------
      主分页流程
      ------------------------------------------------------------------ */
   function paginate() {
-    var postBody = document.getElementById('postBody');
+    var postBody = postBodyEl || document.getElementById('postBody');
     if (!postBody || postBody.getAttribute('data-paginated')) return;
     if (window.innerWidth <= MIN_WIDTH) return;
 
-    var paper = postBody.parentElement;
+    postBodyEl = postBody;
+    paperEl = postBody.parentElement;
+    if (!paperEl) return;
+    var paper = paperEl;
 
     /* 0. 移除正文开头的冗余标题。
        文章标题已由刊头 .journal-title 呈现；模板允许作者在正文首行再写一次
@@ -145,9 +194,12 @@
         current.removeChild(node);
 
         if (contentChildren(current).length === 0) {
-          /* 这一块本身比一整页还高（超长代码块等）：
-             放回去并给它独立一页，宁可溢出也不能丢内容 */
+          /* 这一块本身比一整页还高（超长代码块、大表格等）：
+             放回去并给它独立一页。CSS 的 .journal-oversized
+             会把这一页改为 height:auto / overflow:visible，
+             因此这里既不会丢内容，也不会被裁切。 */
           current.appendChild(node);
+          current.classList.add('journal-oversized');
           current.appendChild(makePageNumber(jpages.children.length));
           current = createPage(jpages);
         } else {
@@ -155,6 +207,15 @@
           current.appendChild(makePageNumber(jpages.children.length));
           current = createPage(jpages);
           current.appendChild(node);
+
+          /* 新页只有这一块却仍然溢出：说明它是「超大块」。
+             立刻标记为自然高度页并收尾，避免后续块被塞进同一页，
+             也避免 overflow:hidden 把表格/图片裁掉。 */
+          if (contentChildren(current).length === 1 && findOverflow(current)) {
+            current.classList.add('journal-oversized');
+            current.appendChild(makePageNumber(jpages.children.length));
+            current = createPage(jpages);
+          }
         }
       }
     }
@@ -171,16 +232,50 @@
   }
 
   /* ------------------------------------------------------------------
+     窗口尺寸变化
+     - 从宽屏变窄：恢复自然流，避免固定 1300px 纸页在手机/平板上裁切
+     - 从窄屏变宽：重新分页
+     - 宽屏内部缩放：按新宽度重新分页（换行变化会改变块高）
+     ------------------------------------------------------------------ */
+  function refresh() {
+    if (!loaded || busy) return;
+    busy = true;
+    whenContentReady(function () {
+      try {
+        if (window.innerWidth <= MIN_WIDTH) {
+          unpaginate();
+        } else {
+          unpaginate();
+          paginate();
+        }
+        lastWidth = window.innerWidth;
+      } finally {
+        busy = false;
+      }
+    });
+  }
+
+  /* ------------------------------------------------------------------
      启动时机
      必须等 window load：图片与 Mermaid 渲染完成会改变块高，
      提前分页会按错误的高度切分，导致内容错位。
+     若适配器暴露 ready()（Mermaid 异步渲染），也一并等待。
      ------------------------------------------------------------------ */
+  function whenContentReady(fn) {
+    var adapter = window.JournalMarkdownAdapter;
+    if (adapter && typeof adapter.ready === 'function') {
+      Promise.resolve(adapter.ready()).then(fn, fn);
+      return;
+    }
+    fn();
+  }
+
   function start() {
-    var done = false;
     function run() {
-      if (done) return;
-      done = true;
-      paginate();
+      if (loaded) return;
+      loaded = true;
+      lastWidth = window.innerWidth;
+      whenContentReady(paginate);
     }
 
     if (document.readyState === 'complete') {
@@ -192,11 +287,21 @@
         setTimeout(run, 3000);
       });
     }
+
+    window.addEventListener('resize', function () {
+      if (!loaded) return;
+      /* 某些浏览器在滚动条出现/消失时也会触发 resize，宽度没变就不重排 */
+      if (window.innerWidth === lastWidth) return;
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(refresh, RESIZE_DELAY);
+    }, { passive: true });
   }
 
   /* 暴露测试接口 */
   window.JournalPaginator = {
     paginate: paginate,
+    unpaginate: unpaginate,
+    refresh: refresh,
     GEOMETRY: GEOMETRY,
     MIN_WIDTH: MIN_WIDTH
   };

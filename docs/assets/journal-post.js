@@ -16,10 +16,15 @@
     });
   }
 
+  /* 纸页宽 920px，右侧目录宽 222px + 24px 间距。
+     只有视口宽度 >= 1420px 时，两侧才放得下目录而不压住纸页；
+     低于该值时目录改为文前静态块（由 GmeekTOC.js 的媒体查询兜底）。 */
+  var TOC_FIXED_MIN_WIDTH = 1420;
+
   function updateTOC() {
     var toc = document.querySelector('.toc');
     if (!toc) return;
-    if (window.innerWidth < 1250) {
+    if (window.innerWidth < TOC_FIXED_MIN_WIDTH) {
       toc.style.position = 'static';
       toc.style.left = 'auto';
       toc.style.right = 'auto';
