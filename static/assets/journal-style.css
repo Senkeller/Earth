@@ -185,6 +185,16 @@ body {
   text-justify: inter-ideograph;
 }
 .jpages .jpage:last-child { margin-bottom: 0; }
+/* 单块超过一整页（超长表格等）：改用自然高度并显示溢出内容。
+   分页引擎会给这类页面加 .journal-oversized，避免 overflow:hidden 裁掉内容。 */
+.jpages .jpage.journal-oversized {
+  height: auto;
+  min-height: 1300px;
+  overflow: visible;
+  /* 超大表格/长图独占单栏，避免在双栏里被压成半宽 */
+  column-count: 1;
+  column-gap: 0;
+}
 /* 每页底部居中页码（与 PDF 观感一致） */
 /* 每页底部居中页码（与 PDF 观感一致）。
    position:absolute 已使其脱离文档流，不参与分栏计算。
@@ -466,6 +476,16 @@ body {
   .journal-abstract,
   .journal-keywords { padding: 0 0.8em; }
   .jpage.markdown-body { column-count: 1; column-gap: 0; }
+  /* 分页引擎在窄屏会恢复自然流；这两条是 JS 失效时的兜底，
+     确保任何情况下都不会用固定页高或裁切机制隐藏内容。 */
+  .jpages .jpage {
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+    column-count: 1;
+    column-gap: 0;
+  }
+  .jpages .journal-pgno { display: none; }
 }
 
 /* 尊重减少动态：一切过渡关停 */
