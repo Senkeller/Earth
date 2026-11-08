@@ -111,7 +111,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 </blockquote>
 <h2 dir="auto">1. Clash 的工作模型：规则匹配到底怎么走</h2>
 <p dir="auto">Clash 处理一个请求（以 <code class="notranslate">mode: rule</code> 为例）的流程：</p>
-<section class="js-render-needs-enrichment render-needs-enrichment position-relative" data-identity="b085fe45-dc59-444f-9598-40bf45f7facf" data-host="https://viewscreen.githubusercontent.com" data-src="https://viewscreen.githubusercontent.com/markdown/mermaid?docs_host=https%3A%2F%2Fdocs.github.com" data-type="mermaid" aria-label="mermaid rendered output container">
+<section class="js-render-needs-enrichment render-needs-enrichment position-relative" data-identity="dd6c3f4f-df07-4f34-a66f-d8d69f124efc" data-host="https://viewscreen.githubusercontent.com" data-src="https://viewscreen.githubusercontent.com/markdown/mermaid?docs_host=https%3A%2F%2Fdocs.github.com" data-type="mermaid" aria-label="mermaid rendered output container">
   <div class="js-render-enrichment-target" data-json="{&quot;data&quot;:&quot;flowchart LR\n    A[请求进来] --&gt; B[DNS 解析域名]\n    B --&gt; C{从上到下逐条匹配 rules}\n    C --&gt;|命中 DOMAIN-SUFFIX / DOMAIN 指向 DIRECT| D[直连，不经代理节点]\n    C --&gt;|命中 DOMAIN / DOMAIN-SUFFIX 指向策略组| E[走该策略组当前选中的节点]\n    C --&gt;|命中 GEOIP cn DIRECT| D[直连，不经代理节点]\n    C --&gt;|全部未命中| F[兜底 MATCH 漏网之鱼]\n    F --&gt; G[走「漏网之鱼」策略组当前选中的节点]\n&quot;}" data-plain="flowchart LR
     A[请求进来] --&gt; B[DNS 解析域名]
     B --&gt; C{从上到下逐条匹配 rules}
