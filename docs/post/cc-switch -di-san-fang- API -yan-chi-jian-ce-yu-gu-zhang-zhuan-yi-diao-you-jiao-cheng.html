@@ -501,7 +501,7 @@ TTFT  中位=2.537s  最小=2.1s  最大=4.0s
 </table></markdown-accessiblity-table>
 <p dir="auto">熔断器工作逻辑：统计窗口内错误率超过阈值且请求数达标且连续失败达到阈值 → 熔断打开 → 拒绝所有新请求 → 等恢复等待时间 → 半开放少量探测 → 连续成功达到恢复阈值 → 闭合恢复。</p>
 <p dir="auto"><strong>图 1　熔断器状态机</strong></p>
-<section class="js-render-needs-enrichment render-needs-enrichment position-relative" data-identity="338a57c3-e037-409b-80c4-5db1d024dc7c" data-host="https://viewscreen.githubusercontent.com" data-src="https://viewscreen.githubusercontent.com/markdown/mermaid?docs_host=https%3A%2F%2Fdocs.github.com" data-type="mermaid" aria-label="mermaid rendered output container">
+<section class="js-render-needs-enrichment render-needs-enrichment position-relative" data-identity="ff78b0a0-f2b2-46ac-b2ca-c18a459d6980" data-host="https://viewscreen.githubusercontent.com" data-src="https://viewscreen.githubusercontent.com/markdown/mermaid?docs_host=https%3A%2F%2Fdocs.github.com" data-type="mermaid" aria-label="mermaid rendered output container">
   <div class="js-render-enrichment-target" data-json="{&quot;data&quot;:&quot;stateDiagram-v2\n    [*] --&gt; 闭合\n    闭合 --&gt; 打开: 错误率超阈值 且 连续失败达标\n    打开 --&gt; 半开: 恢复等待超时，放行少量探测\n    半开 --&gt; 闭合: 连续成功达恢复阈值\n    半开 --&gt; 打开: 探测失败\n    打开 --&gt; 打开: 拒绝新请求\n&quot;}" data-plain="stateDiagram-v2
     [*] --&gt; 闭合
     闭合 --&gt; 打开: 错误率超阈值 且 连续失败达标
@@ -547,7 +547,7 @@ TTFT  中位=2.537s  最小=2.1s  最大=4.0s
 <h3 dir="auto">9.1 它是「二道贩子」，不是服务商</h3>
 <p dir="auto">中转站<strong>自己不跑模型</strong>。它拿一个上游 API key（官方 / 大渠道），开个反向代理，把你的请求<strong>转发给上游</strong>，中间赚差价。所以你的延迟 = 你的网络 + 中转站排队 + <strong>上游排队</strong> + 上游生成时间。</p>
 <p dir="auto"><strong>图 2　请求链路</strong></p>
-<section class="js-render-needs-enrichment render-needs-enrichment position-relative" data-identity="037dcc9e-af32-451e-9b7e-c8b2846cf73f" data-host="https://viewscreen.githubusercontent.com" data-src="https://viewscreen.githubusercontent.com/markdown/mermaid?docs_host=https%3A%2F%2Fdocs.github.com" data-type="mermaid" aria-label="mermaid rendered output container">
+<section class="js-render-needs-enrichment render-needs-enrichment position-relative" data-identity="55c44db2-4339-4fa0-9068-51cb47f9894c" data-host="https://viewscreen.githubusercontent.com" data-src="https://viewscreen.githubusercontent.com/markdown/mermaid?docs_host=https%3A%2F%2Fdocs.github.com" data-type="mermaid" aria-label="mermaid rendered output container">
   <div class="js-render-enrichment-target" data-json="{&quot;data&quot;:&quot;flowchart LR\n    A[你的电脑 + cc-switch] --&gt; B[中转站 排队/限流]\n    B --&gt; C[上游真实模型服务 队列/限流]\n    C --&gt; D[生成 token]\n&quot;}" data-plain="flowchart LR
     A[你的电脑 + cc-switch] --&gt; B[中转站 排队/限流]
     B --&gt; C[上游真实模型服务 队列/限流]
